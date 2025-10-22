@@ -10,6 +10,23 @@
 
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('images/satpam128.png') }}">
+    <!-- Datatables css -->
+    <link href="{{ asset('template/frontend') }}/assets/vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css"
+        rel="stylesheet" type="text/css" />
+    <link
+        href="{{ asset('template/frontend') }}/assets/vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css"
+        rel="stylesheet" type="text/css" />
+    <link
+        href="{{ asset('template/frontend') }}/assets/vendor/datatables.net-fixedcolumns-bs5/css/fixedColumns.bootstrap5.min.css"
+        rel="stylesheet" type="text/css" />
+    <link
+        href="{{ asset('template/frontend') }}/assets/vendor/datatables.net-fixedheader-bs5/css/fixedHeader.bootstrap5.min.css"
+        rel="stylesheet" type="text/css" />
+    <link
+        href="{{ asset('template/frontend') }}/assets/vendor/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="{{ asset('template/frontend') }}/assets/vendor/datatables.net-select-bs5/css/select.bootstrap5.min.css"
+        rel="stylesheet" type="text/css" />
 
     <!-- Daterangepicker css -->
     <link rel="stylesheet" href="{{ asset('template/frontend') }}/assets/vendor/daterangepicker/daterangepicker.css">
@@ -68,7 +85,10 @@
                     </button>
 
                     <!-- Page Title -->
-                    <h4 class="page-title d-none d-sm-block">Dashboards</h4>
+                    @php
+                        $company = \App\Models\Company::find(Auth::user()->company_id);
+                    @endphp
+                    <h4 class="page-title d-none d-sm-block">{{ $company->company_name ?? 'Insoft Developers' }}</h4>
                 </div>
 
                 <ul class="topbar-menu d-flex align-items-center gap-3">
@@ -209,26 +229,21 @@
                             <!-- item-->
                             <a href="pages-profile.html" class="dropdown-item">
                                 <i class="ri-account-pin-circle-line fs-16 align-middle me-1 "></i>
-                                <span>My Account</span>
+                                <span>Profil</span>
                             </a>
 
                             <!-- item-->
                             <a href="pages-profile.html" class="dropdown-item">
                                 <i class="ri-settings-4-line fs-16 align-middle me-1"></i>
-                                <span>Settings</span>
+                                <span>Pengaturan</span>
                             </a>
 
                             <!-- item-->
                             <a href="pages-faq.html" class="dropdown-item">
                                 <i class="ri-customer-service-2-line fs-16 align-middle me-1"></i>
-                                <span>Support</span>
+                                <span>Paket Saya</span>
                             </a>
 
-                            <!-- item-->
-                            <a href="auth-lock-screen.html" class="dropdown-item">
-                                <i class="ri-lock-line fs-16 align-middle me-1"></i>
-                                <span>Lock Screen</span>
-                            </a>
 
                             <!-- item-->
                             <form method="POST" action="{{ route('logout') }}">
@@ -441,23 +456,70 @@
 
     <script src="{{ asset('template/frontend') }}/assets/vendor/lucide/umd/lucide.min.js"></script>
 
+    <!-- Datatables js -->
+    <script src="{{ asset('template/frontend') }}/assets/vendor/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('template/frontend') }}/assets/vendor/datatables.net-bs5/js/dataTables.bootstrap5.min.js">
+    </script>
+    <script src="{{ asset('template/frontend') }}/assets/vendor/datatables.net-responsive/js/dataTables.responsive.min.js">
+    </script>
+    <script
+        src="{{ asset('template/frontend') }}/assets/vendor/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js">
+    </script>
+    <script
+        src="{{ asset('template/frontend') }}/assets/vendor/datatables.net-fixedcolumns-bs5/js/fixedColumns.bootstrap5.min.js">
+    </script>
+    <script
+        src="{{ asset('template/frontend') }}/assets/vendor/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js">
+    </script>
+    <script src="{{ asset('template/frontend') }}/assets/vendor/datatables.net-buttons/js/dataTables.buttons.min.js">
+    </script>
+    <script src="{{ asset('template/frontend') }}/assets/vendor/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js">
+    </script>
+    <script src="{{ asset('template/frontend') }}/assets/vendor/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="{{ asset('template/frontend') }}/assets/vendor/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="{{ asset('template/frontend') }}/assets/vendor/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="{{ asset('template/frontend') }}/assets/vendor/datatables.net-keytable/js/dataTables.keyTable.min.js">
+    </script>
+    <script src="{{ asset('template/frontend') }}/assets/vendor/datatables.net-select/js/dataTables.select.min.js">
+    </script>
+
     <!-- Apex Charts js -->
-    <script src="{{ asset('template/frontend') }}/assets/vendor/apexcharts/apexcharts.min.js"></script>
+    @if ($view == 'dashboard')
+        <script src="{{ asset('template/frontend') }}/assets/vendor/apexcharts/apexcharts.min.js"></script>
 
-    <!-- Vector Map js -->
-    <script
-        src="{{ asset('template/frontend') }}/assets/vendor/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js">
-    </script>
-    <script
-        src="{{ asset('template/frontend') }}/assets/vendor/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js">
-    </script>
+        <!-- Vector Map js -->
+        <script
+            src="{{ asset('template/frontend') }}/assets/vendor/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js">
+        </script>
+        <script
+            src="{{ asset('template/frontend') }}/assets/vendor/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js">
+        </script>
 
 
-    <!-- Dashboard App js -->
-    <script src="{{ asset('template/frontend') }}/assets/js/pages/dashboard.js"></script>
 
+        <!-- Dashboard App js -->
+        <script src="{{ asset('template/frontend') }}/assets/js/pages/dashboard.js"></script>
+    @endif
     <!-- App js -->
     <script src="{{ asset('template/frontend') }}/assets/js/app.min.js"></script>
+
+    <script>
+        function loading(id) {
+            $("#" + id).text("Processing.....");
+            $("#" + id).attr("disabled", true);
+        }
+
+        function unloading(id, text) {
+            $("#" + id).text(text);
+            $("#" + id).removeAttr("disabled");
+        }
+
+        function generateCode(prefix) {
+            const randomNumber = Math.floor(10000000 + Math.random() * 90000000); // 8 digit random
+            return prefix + randomNumber;
+        }
+    </script>
+    @stack('scripts')
 
 </body>
 

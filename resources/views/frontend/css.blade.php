@@ -1,4 +1,7 @@
 <style>
+    .pull-right{
+        float: right;
+    }
     .logo-lg img {
         width: 164px;
         height: 77px;
@@ -8,5 +11,9 @@
 
     .simplebar {
         margin-top: 50px;
+    }
+
+    .btn-sm {
+        font-size: 12px !important;
     }
 </style>

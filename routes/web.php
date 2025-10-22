@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Frontend\DashboardController;
+use App\Http\Controllers\Frontend\SatpamController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,10 +17,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-
-Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified']);
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/activate/{token}', [RegisteredUserController::class, 'activate'])->name('activate');
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -27,4 +24,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+Route::group(['middleware' => ['auth', 'verified']], function () {
+    Route::get('/', [DashboardController::class, 'index']);
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('satpam', SatpamController::class);
+    Route::get('/satpam_table', [SatpamController::class, 'satpam_table'])->name('satpam.table');
+});
+
+require __DIR__ . '/auth.php';
