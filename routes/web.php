@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resource('lokasi', LokasiController::class);
     Route::get('lokasi_table', [LokasiController::class, 'lokasi_table'])->name('lokasi.table');
     Route::post('/lokasi_activate', [LokasiController::class, 'activate'])->name('lokasi.activate');
+    Route::get('/download_qrcode/{id}',[LokasiController::class, 'download_qrcode']);
 });
 
 require __DIR__ . '/auth.php';

@@ -168,7 +168,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "{{ url('satpam') }}"+"/"+ id,
+                    url: "{{ url('lokasi') }}"+"/"+ id,
                     type: 'DELETE',
                     data: {
                         _token: '{{ csrf_token() }}'

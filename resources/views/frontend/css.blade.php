@@ -1,5 +1,5 @@
 <style>
-    
+    .me-0{margin-right:2px !important;}
     .badge-insoft{
         position: relative;
         top: 70px;
