@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Satpam extends Model
+class Lokasi extends Model
 {
     use HasFactory;
 
@@ -15,11 +15,5 @@ class Satpam extends Model
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class, 'comid', 'id');
-    }
-
-    public function getFacePhotoUrlAttribute()
-    {
-        // Kalau user punya foto di storage, tampilkan URL-nya
-        return $this->face_photo_path ? asset('storage/' . $this->face_photo_path) : asset('images/satpam-default.png');
     }
 }

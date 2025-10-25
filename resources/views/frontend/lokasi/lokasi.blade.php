@@ -10,7 +10,7 @@
 
                 <!-- Page Header -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="mb-0 fw-bold">Data Satpam</h4>
+                    <h4 class="mb-0 fw-bold">Data Lokasi</h4>
                     <button type="button" class="btn btn-info btn-sm rounded-pill" onclick="tambah_data()">
                         <i class="bi bi-plus-lg me-1"></i> Tambah Data
                     </button>
@@ -20,15 +20,16 @@
                 <div class="card shadow-sm border-0">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="list-table" class="table table-striped table-bordered w-100 align-middle">
+                            <table id="list-table" class="table table-striped table-bordered w-100 align-middle nowrap">
                                 <thead>
                                     <tr>
                                         <th class="text-center" width="5%">No</th>
-                                        <th class="text-center" width="8%">Aksi</th>
-                                        <th width="10%">Foto</th>
-                                        <th>Badge ID</th>
-                                        <th>Nama Satpam</th>
-                                        <th>Whatsapp</th>
+                                        <th class="text-center">Aksi</th>
+                                        <th>QRCODE</th>
+                                        <th>Nama Lokasi</th>
+                                        <th>Status</th>
+                                        <th>Latitude</th>
+                                        <th>Longitude</th>
                                         <th>Company</th>
                                         
                                     </tr>
@@ -48,9 +49,9 @@
     <!-- End Page Content -->
     <!-- ============================================================== -->
 
-    @include('frontend.satpam.modal')
+    @include('frontend.lokasi.modal')
 @endsection
 
 @push('scripts')
-    @include('frontend.satpam.satpam_js')
+    @include('frontend.lokasi.lokasi_js')
 @endpush

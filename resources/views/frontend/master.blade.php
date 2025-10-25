@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="A fully responsive admin theme which can be used to build CRM, CMS,ERP etc." name="description" />
     <meta content="Techzaa" name="author" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('images/satpam128.png') }}">
@@ -482,6 +483,8 @@
     </script>
     <script src="{{ asset('template/frontend') }}/assets/vendor/datatables.net-select/js/dataTables.select.min.js">
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <!-- Apex Charts js -->
     @if ($view == 'dashboard')

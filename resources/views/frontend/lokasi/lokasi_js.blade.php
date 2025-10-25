@@ -2,7 +2,7 @@
     var table = $('#list-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{{ route('satpam.table') }}',
+        ajax: '{{ route('lokasi.table') }}',
         columns: [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
@@ -15,24 +15,26 @@
                 orderable: false,
                 searchable: false
             },
-
             {
-                data: 'foto',
-                name: 'foto'
+                data: 'qrcode',
+                name: 'qrcode'
             },
             {
-                data: 'badge_id',
-                name: 'badge_id'
+                data: 'nama_lokasi',
+                name: 'nama_lokasi'
             },
             {
-                data: 'name',
-                name: 'name'
+                data: 'is_active',
+                name: 'is_active'
             },
             {
-                data: 'whatsapp',
-                name: 'whatsapp'
+                data: 'latitude',
+                name: 'latitude'
             },
-
+            {
+                data: 'longitude',
+                name: 'longitude'
+            },
             {
                 data: 'company',
                 name: 'company'
@@ -44,9 +46,9 @@
     function tambah_data() {
         save_method = "add";
         $('input[name=_method]').val('POST');
-        $(".modal-title").text("Tambah Data Satpam");
-        var badge_id = generateCode("SEC");
-        $("#badge_id").val(badge_id);
+        $(".modal-title").text("Tambah Data Lokasi");
+        var qrcode = generateCode("LOC")+"-"+ "{{ Auth::user()->company_id }}";
+        $("#qrcode").val(qrcode);
         resetForm();
         $("#modal-tambah").modal("show");
     }
@@ -55,8 +57,8 @@
         e.preventDefault();
         loading("btn-save-data");
         var id = $('#id').val();
-        if (save_method == "add") url = "{{ url('satpam') }}";
-        else url = "{{ url('satpam') . '/' }}" + id;
+        if (save_method == "add") url = "{{ url('lokasi') }}";
+        else url = "{{ url('lokasi') . '/' }}" + id;
         $.ajax({
             url: url,
             type: "POST",
@@ -105,19 +107,17 @@
         save_method = "edit";
         $('input[name=_method]').val('PATCH');
         $.ajax({
-            url: "{{ url('/satpam') }}" + "/" + id + "/edit",
+            url: "{{ url('/lokasi') }}" + "/" + id + "/edit",
             type: "GET",
             dataType: "JSON",
             success: function(data) {
                 $('#modal-tambah').modal("show");
-                $('.modal-title').text("Edit Data Satpam");
+                $('.modal-title').text("Edit Data Lokasi");
                 $('#id').val(data.id);
-                $("#name").val(data.name);
-                $("#badge_id").val(data.badge_id);
-                $("#foto").val(null);
-                $("#password").val("");
-                $("#whatsapp").val(data.whatsapp);
-
+                $("#nama_lokasi").val(data.nama_lokasi);
+                $("#qrcode").val(data.qrcode);
+                $("#latitude").val(data.latitude);
+                $("#longitude").val(data.longitude);
             }
         })
     }
@@ -135,7 +135,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "{{ route('satpam.activate') }}",
+                    url: "{{ route('lokasi.activate') }}",
                     type: 'POST',
                     data: {
                         id: id,
@@ -193,9 +193,9 @@
     }
 
     function resetForm() {
-        $("#foto").val(null);
-        $("#name").val("");
-        $("#whatsapp").val("");
-        $("#password").val("");
+        $("#nama_lokasi").val(null);
+        $("#latitude").val("");
+        $("#longitude").val("");
+        
     }
 </script>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Frontend\DashboardController;
+use App\Http\Controllers\Frontend\LokasiController;
 use App\Http\Controllers\Frontend\SatpamController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('satpam', SatpamController::class);
     Route::get('/satpam_table', [SatpamController::class, 'satpam_table'])->name('satpam.table');
+    Route::post('/activate', [SatpamController::class, 'activate'])->name('satpam.activate');
+
+    Route::resource('lokasi', LokasiController::class);
+    Route::get('lokasi_table', [LokasiController::class, 'lokasi_table'])->name('lokasi.table');
+    Route::post('/lokasi_activate', [LokasiController::class, 'activate'])->name('lokasi.activate');
 });
 
 require __DIR__ . '/auth.php';

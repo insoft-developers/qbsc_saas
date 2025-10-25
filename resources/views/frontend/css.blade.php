@@ -1,7 +1,19 @@
 <style>
-    .pull-right{
+    
+    .badge-insoft{
+        position: relative;
+        top: 70px;
+    }
+    .btn-insoft {
+        font-size: 10px;
+        padding: 5px 8px;
+        border-radius: 17px;
+    }
+
+    .pull-right {
         float: right;
     }
+
     .logo-lg img {
         width: 164px;
         height: 77px;
