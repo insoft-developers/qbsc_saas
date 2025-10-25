@@ -20,11 +20,12 @@
                 <div class="card shadow-sm border-0">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="list-table" class="table table-striped table-bordered w-100 align-middle">
+                            <table id="list-table" class="table table-striped table-bordered w-100 align-middle nowrap">
                                 <thead>
                                     <tr>
+                                        <th>ID</th>
                                         <th class="text-center" width="5%">No</th>
-                                        <th class="text-center" width="8%">Aksi</th>
+                                        <th class="text-center">Aksi</th>
                                         <th width="10%">Foto</th>
                                         <th>Badge ID</th>
                                         <th>Nama Satpam</th>

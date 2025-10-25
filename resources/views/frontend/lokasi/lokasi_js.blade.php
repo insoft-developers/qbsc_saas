@@ -3,7 +3,16 @@
         processing: true,
         serverSide: true,
         ajax: '{{ route('lokasi.table') }}',
+        order: [
+            [0, 'desc']
+        ],
         columns: [{
+                data: 'id',
+                name: 'id',
+                orderable: true,
+                visible: false
+            },
+            {
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
                 orderable: false,
@@ -47,7 +56,7 @@
         save_method = "add";
         $('input[name=_method]').val('POST');
         $(".modal-title").text("Tambah Data Lokasi");
-        var qrcode = generateCode("LOC")+"-"+ "{{ Auth::user()->company_id }}";
+        var qrcode = generateCode("LOC") + "-" + "{{ Auth::user()->company_id }}";
         $("#qrcode").val(qrcode);
         resetForm();
         $("#modal-tambah").modal("show");
@@ -168,7 +177,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "{{ url('lokasi') }}"+"/"+ id,
+                    url: "{{ url('lokasi') }}" + "/" + id,
                     type: 'DELETE',
                     data: {
                         _token: '{{ csrf_token() }}'
@@ -196,6 +205,6 @@
         $("#nama_lokasi").val(null);
         $("#latitude").val("");
         $("#longitude").val("");
-        
+
     }
 </script>

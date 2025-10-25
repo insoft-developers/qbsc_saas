@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Http;
 
-
 class SatpamController extends Controller
 {
     use CommonTrait;
@@ -47,13 +46,13 @@ class SatpamController extends Controller
                     $button = '';
                     $button .= '<center>';
                     if ($row->is_active == 1) {
-                        $button .= '<button onclick="activate(' . $row->id . ', 0)" title="Non Aktifkan" class="mb-1 btn btn-insoft btn-danger"><i class="bi bi-x-lg"></i></button>';
+                        $button .= '<button onclick="activate(' . $row->id . ', 0)" title="Non Aktifkan" class="me-0 btn btn-insoft btn-danger"><i class="bi bi-x-lg"></i></button>';
                     } else {
-                        $button .= '<button onclick="activate(' . $row->id . ', 1)" title="Aktifkan" class="mb-1 btn btn-insoft btn-success"><i class="bi bi-check-circle"></i></button>';
+                        $button .= '<button onclick="activate(' . $row->id . ', 1)" title="Aktifkan" class="me-0 btn btn-insoft btn-success"><i class="bi bi-check-circle"></i></button>';
                     }
-                    $button .= '<br>';
-                    $button .= '<button onclick="editData(' . $row->id . ')" title="Edit Data" class="mb-1 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
-                    $button .= '<br>';
+
+                    $button .= '<button onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
+
                     $button .= '<button onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
                     $button .= '</center>';
                     return $button;
@@ -91,15 +90,16 @@ class SatpamController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-        $response = Http::attach(
-            'image', file_get_contents($request->file('foto')), 'face.jpg'
-        )->post('http://192.168.100.3:5001/encode');
+        $response = Http::attach('image', file_get_contents($request->file('foto')), 'face.jpg')->post('http://192.168.100.3:5001/encode');
 
         if (!$response->successful()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal membaca wajah, pastikan wajah terlihat jelas.',
-            ], 400);
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Gagal membaca wajah, pastikan wajah terlihat jelas.',
+                ],
+                400,
+            );
         }
 
         $embedding = $response->json('embedding');
@@ -115,12 +115,12 @@ class SatpamController extends Controller
             'password' => $request->password,
             'face_photo_path' => $path,
             'comid' => $this->comid(),
-            'face_embedding' => pack('f*', ...$embedding),
+            'face_embedding' => json_encode($embedding),
         ]);
 
         return response()->json([
             'success' => true,
-            'message' => 'Data Satpam berhasil disimpan.'
+            'message' => 'Data Satpam berhasil disimpan.',
         ]);
     }
 
@@ -179,21 +179,28 @@ class SatpamController extends Controller
 
         // Kalau nanti mau pakai Python face embedding:
         if ($request->hasFile('foto')) {
-            $response = Http::attach('image', file_get_contents($request->file('foto')), 'face.jpg')
-                ->post('http://192.168.100.3:5001/encode');
-        
+            $response = Http::attach('image', file_get_contents($request->file('foto')), 'face.jpg')->post('http://192.168.100.3:5001/encode');
+
+            
             if ($response->successful()) {
                 $embedding = $response->json('embedding');
-                $satpam->face_embedding = pack('f*', ...$embedding);
+                $satpam->face_embedding = json_encode($embedding);
+                $satpam->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Data Satpam berhasil diupdate.',
+                ]);
+            } else {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => 'Gagal membaca wajah, pastikan wajah terlihat jelas.',
+                    ],
+                    400,
+                );
             }
         }
-
-        $satpam->save();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Data Satpam berhasil diupdate.'
-        ]);
     }
 
     /**

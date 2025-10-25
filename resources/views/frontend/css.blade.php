@@ -10,6 +10,10 @@
         border-radius: 17px;
     }
 
+    .border-1{
+         border: 1px solid grey;
+    }
+
     .pull-right {
         float: right;
     }

@@ -23,6 +23,7 @@
                             <table id="list-table" class="table table-striped table-bordered w-100 align-middle nowrap">
                                 <thead>
                                     <tr>
+                                        <th>ID</th>
                                         <th class="text-center" width="5%">No</th>
                                         <th class="text-center">Aksi</th>
                                         <th>QRCODE</th>

@@ -3,10 +3,18 @@
         processing: true,
         serverSide: true,
         ajax: '{{ route('satpam.table') }}',
-        columns: [{
+        order: [[0, 'desc']],
+        columns: [
+            {
+                data: 'id',
+                name: 'id',
+                orderable: true,
+                visible: false
+            },
+            {
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
-                orderable: false,
+                orderable: true,
                 searchable: false
             },
             {

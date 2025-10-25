@@ -9,10 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Yajra\DataTables\Facades\DataTables;
-use Intervention\Image\Laravel\Facades\Image;
-
-
-
 
 class LokasiController extends Controller
 {
@@ -43,7 +39,7 @@ class LokasiController extends Controller
                 ->addColumn('action', function ($row) {
                     $button = '';
                     $button .= '<center>';
-                    $button .= '<a href="' . url('download_qrcode/' . $row->id) . '" title="Download QRCode" class="me-0 btn btn-insoft btn-info"><i class="bi bi-qr-code"></i></a>';
+                    $button .= '<a href="' . url('download_qrcode/' . $row->id) . '" title="Download QRCode" class="me-0 btn btn-insoft btn-light border-1"><i class="bi bi-qr-code"></i></a>';
                     if ($row->is_active == 1) {
                         $button .= '<button onclick="activate(' . $row->id . ', 0)" title="Non Aktifkan" class="me-0 btn btn-insoft btn-danger"><i class="bi bi-x-lg"></i></button>';
                     } else {
@@ -200,21 +196,10 @@ class LokasiController extends Controller
         $text = $lokasi->qrcode; // teks/link dinamis kamu
         $filename = 'qrcode_' . $lokasi->nama_lokasi . '.png'; // bisa diganti sesuai kebutuhan
 
-        $qr = QrCode::format('png')->size(400)->margin(2)->generate($text);
+        $qr = QrCode::format('png')->size(300)->margin(2)->errorCorrection('H')->generate($text);
 
-        // 2️⃣ Buka dengan Intervention Image
-        $qrImage = Image::make($qr);
-
-        // 3️⃣ Tambahkan logo
-        $logoPath = public_path('images/satpam-trans.png'); // letakkan logo kamu di /public/images/logo.png
-        $logo = Image::make($logoPath)->resize(80, 80);
-
-        // 4️⃣ Tempelkan logo ke tengah
-        $qrImage->insert($logo, 'center');
-
-        // 5️⃣ Output ke browser sebagai download PNG
-        return $qrImage->response('png')->withHeaders([
-            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-        ]);
+        return response($qr)
+            ->header('Content-Type', 'image/png')
+            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
     }
 }

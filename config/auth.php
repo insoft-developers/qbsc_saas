@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults
@@ -40,6 +39,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [
+            'driver' => 'sanctum',
+            'provider' => 'satpams',
+        ],
     ],
 
     /*
@@ -63,6 +66,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+        'satpams' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Satpam::class,
         ],
 
         // 'users' => [
@@ -111,5 +118,4 @@ return [
     */
 
     'password_timeout' => 10800,
-
 ];
