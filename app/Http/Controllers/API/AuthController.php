@@ -9,19 +9,33 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $request->validate([
-            'whatsapp' => 'required',
+            'username' => 'required',
             'password' => 'required',
         ]);
 
         $satpam = Satpam::where('whatsapp', $request->username)->first();
 
+        if ($satpam->is_active !== 1) {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Akun anda tidak aktif.',
+                ],
+                401,
+            );
+        }
+
         if (!$satpam || !Hash::check($request->password, $satpam->password)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Username atau password salah.',
-            ], 401);
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Username atau password salah.',
+                ],
+                401,
+            );
         }
 
         // Hapus token lama (optional)
@@ -34,14 +48,7 @@ class AuthController extends Controller
             'success' => true,
             'message' => 'Login berhasil.',
             'token' => $token,
-            'satpam' => [
-                'id' => $satpam->id,
-                'name' => $satpam->name,
-                'badge_id' => $satpam->badge_id,
-                'whatsapp' => $satpam->whatsapp,
-                'face_embedding' => $satpam->face_embedding,
-                'face_photo_path' => asset('storage/' . $satpam->face_photo_path),
-            ],
+            'data' => $satpam,
         ]);
     }
 }

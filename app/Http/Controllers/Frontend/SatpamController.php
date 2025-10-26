@@ -112,7 +112,7 @@ class SatpamController extends Controller
             'name' => $request->name,
             'badge_id' => $request->badge_id,
             'whatsapp' => $request->whatsapp,
-            'password' => $request->password,
+            'password' => bcrypt($request->password),
             'face_photo_path' => $path,
             'comid' => $this->comid(),
             'face_embedding' => json_encode($embedding),
@@ -148,7 +148,6 @@ class SatpamController extends Controller
     {
         $satpam = Satpam::findOrFail($id);
 
-        // Validasi input
         $validated = $request->validate([
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'name' => 'required|string|max:100',
@@ -156,7 +155,7 @@ class SatpamController extends Controller
             'password' => 'nullable|string|min:6',
         ]);
 
-        // Update foto jika ada upload baru
+        // update foto jika ada upload
         if ($request->hasFile('foto')) {
             // hapus foto lama
             if ($satpam->face_photo_path && Storage::disk('public')->exists($satpam->face_photo_path)) {
@@ -166,41 +165,51 @@ class SatpamController extends Controller
             // simpan foto baru
             $path = $request->file('foto')->store('satpam', 'public');
             $satpam->face_photo_path = $path;
-        }
 
-        // Update data lain
-        $satpam->name = $request->name;
-        $satpam->whatsapp = $request->whatsapp;
+            try {
+                // kirim ke API face recognition
+                $response = Http::timeout(10)
+                    ->attach('image', file_get_contents($request->file('foto')), 'face.jpg')
+                    ->post('http://192.168.100.3:5001/encode');
 
-        // Update password hanya jika diisi
-        if (!empty($request->password)) {
-            $satpam->password = bcrypt($request->password);
-        }
-
-        // Kalau nanti mau pakai Python face embedding:
-        if ($request->hasFile('foto')) {
-            $response = Http::attach('image', file_get_contents($request->file('foto')), 'face.jpg')->post('http://192.168.100.3:5001/encode');
-
-            
-            if ($response->successful()) {
-                $embedding = $response->json('embedding');
-                $satpam->face_embedding = json_encode($embedding);
-                $satpam->save();
-
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Data Satpam berhasil diupdate.',
-                ]);
-            } else {
+                if ($response->successful()) {
+                    $satpam->face_embedding = json_encode($response->json('embedding'));
+                } else {
+                    return response()->json(
+                        [
+                            'success' => false,
+                            'message' => 'Gagal membaca wajah dari server AI.',
+                        ],
+                        400,
+                    );
+                }
+            } catch (\Exception $e) {
                 return response()->json(
                     [
                         'success' => false,
-                        'message' => 'Gagal membaca wajah, pastikan wajah terlihat jelas.',
+                        'message' => 'Server AI tidak merespon.',
+                        'error' => $e->getMessage(),
                     ],
-                    400,
+                    500,
                 );
             }
         }
+
+        // Update data lain
+        $satpam->name = $validated['name'];
+        $satpam->whatsapp = $validated['whatsapp'];
+
+        if (!empty($validated['password'])) {
+            $satpam->password = bcrypt($validated['password']);
+        }
+
+        $satpam->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Satpam berhasil diperbarui.',
+            'data' => $satpam,
+        ]);
     }
 
     /**
