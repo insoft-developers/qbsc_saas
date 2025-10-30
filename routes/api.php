@@ -18,4 +18,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/verify_face', [AbsenController::class, 'verifyFace']);
+Route::post('/absen_active', [AbsenController::class, 'absenActive']);
 

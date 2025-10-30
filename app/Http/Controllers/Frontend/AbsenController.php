@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Absensi;
 use App\Models\Satpam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -14,10 +15,12 @@ class AbsenController extends Controller
         $request->validate([
             'image' => 'required|image|max:10240', // max 10MB
             'user_id' => 'required|integer',
+            'absen_model' => 'required',
         ]);
 
         $userId = $request->user_id;
         $file = $request->file('image');
+        $model = $request->absen_model;
 
         // Ambil embedding lama dari DB
         $user = Satpam::find($userId);
@@ -51,32 +54,66 @@ class AbsenController extends Controller
 
         $result = $response->json();
 
-        return response()->json([
-            'success' => $result['success'] ?? false,
-            'matched' => $result['matched'] ?? false,
-            'distance' => $result['distance'] ?? null,
-            'message' => $result['message'] ?? 'Gagal verifikasi wajah',
-        ]);
+        $matched = $result['matched'] ?? false;
+        $distance = $result['distance'] ?? null;
+        $tanggal = date('Y-m-d');
+        $jam = date('Y-m-d H:i:s');
+        if ($matched) {
+            if ($model == 'masuk') {
+                $absensi = Absensi::where('satpam_id', $userId)->whereDate('tanggal', $tanggal)->first();
+                if (!$absensi) {
+                    Absensi::create(['tanggal' => $tanggal, 'satpam_id' => $userId, 'latitude' => $request->latitude, 'longitude' => $request->longitude, 'jam_masuk' => $jam, 'status' => 1, 'description' => 'Absensi Berhasil', 'comid' => $user->comid]);
+                    $message = 'Absensi masuk berhasil.';
+                } else {
+                    $absensi->latitude = $request->latitude;
+                    $absensi->longitude = $request->longitude;
+                    $absensi->jam_masuk = $jam;
+                    $absensi->save();
+                    $message = 'Absensi masuk diupdate';
+                }
+            } else {
+                $absensi = Absensi::where('satpam_id', $userId)->where('status', 1)->orderBy('id', 'desc')->first();
+
+                if ($absensi) {
+                    $absensi->jam_keluar = date('Y-m-d H:i:s');
+                    $absensi->status = 2;
+                    $absensi->save();
+                    $message = 'Absensi pulang berhasil';
+                } else {
+                    $message = 'Belum ada absen masuk';
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'matched' => true,
+                'distance' => $distance,
+                'message' => $message,
+            ]);
+        }
+        return response()->json(['success' => false, 'matched' => false, 'distance' => $distance, 'message' => 'Wajah tidak cocok. Absensi gagal.']);
     }
 
-    private function compareEmbeddings(array $emb1, array $emb2, $threshold = 0.6)
+    public function absenActive(Request $request)
     {
-        if (count($emb1) !== count($emb2)) {
-            return false;
+        $input = $request->all();
+
+        $data = Absensi::where('satpam_id', $input['satpam_id'])->where('tanggal', date('Y-m-d'))->first();
+        if ($data) {
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+            ]);
+        } else {
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'tanggal' => date('Y-m-d H:i:s'),
+                    'jam_masuk' => null,
+                    'jam_keluar' => null,
+                    'status' => null
+                ],
+            ]);
         }
-
-        $dot = 0.0;
-        $normA = 0.0;
-        $normB = 0.0;
-
-        for ($i = 0; $i < count($emb1); $i++) {
-            $dot += $emb1[$i] * $emb2[$i];
-            $normA += $emb1[$i] * $emb1[$i];
-            $normB += $emb2[$i] * $emb2[$i];
-        }
-
-        $cosSim = $dot / (sqrt($normA) * sqrt($normB));
-
-        return $cosSim > $threshold;
     }
 }

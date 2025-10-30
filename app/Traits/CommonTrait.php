@@ -25,4 +25,5 @@ trait CommonTrait
 
         return $prefix . str_pad($number, $length, '0', STR_PAD_LEFT);
     }
+    
 }
