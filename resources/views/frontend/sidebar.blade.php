@@ -107,7 +107,7 @@
                 <div class="collapse" id="sidbarBaseUI">
                     <ul class="side-nav-second-level">
                         <li class="side-nav-item">
-                            <a class="side-nav-link" href="apps-invoice-report.html">Invoice Report</a>
+                            <a class="side-nav-link" href="{{ url('absen_location') }}">Lokasi Absen</a>
                         </li>
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="apps-invoice.html">Invoice</a>

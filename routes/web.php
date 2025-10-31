@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Frontend\AbsenLocationController;
 use App\Http\Controllers\Frontend\DashboardController;
 use App\Http\Controllers\Frontend\LokasiController;
 use App\Http\Controllers\Frontend\SatpamController;
@@ -36,6 +37,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('lokasi_table', [LokasiController::class, 'lokasi_table'])->name('lokasi.table');
     Route::post('/lokasi_activate', [LokasiController::class, 'activate'])->name('lokasi.activate');
     Route::get('/download_qrcode/{id}',[LokasiController::class, 'download_qrcode']);
+    Route::resource('absen_location', AbsenLocationController::class);
+    Route::get('/absen_location_table', [AbsenLocationController::class, 'absen_location_table'])->name('absen.location.table');
 });
 
 require __DIR__ . '/auth.php';

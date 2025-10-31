@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\ValidateLocationController;
 use App\Http\Controllers\Frontend\AbsenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -19,4 +20,6 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/verify_face', [AbsenController::class, 'verifyFace']);
 Route::post('/absen_active', [AbsenController::class, 'absenActive']);
+
+Route::post('/location_data', [ValidateLocationController::class, 'locationData']);
 

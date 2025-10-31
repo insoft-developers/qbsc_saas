@@ -60,19 +60,21 @@ class AbsenController extends Controller
         $jam = date('Y-m-d H:i:s');
         if ($matched) {
             if ($model == 'masuk') {
-                $absensi = Absensi::where('satpam_id', $userId)->whereDate('tanggal', $tanggal)->first();
-                if (!$absensi) {
-                    Absensi::create(['tanggal' => $tanggal, 'satpam_id' => $userId, 'latitude' => $request->latitude, 'longitude' => $request->longitude, 'jam_masuk' => $jam, 'status' => 1, 'description' => 'Absensi Berhasil', 'comid' => $user->comid]);
-                    $message = 'Absensi masuk berhasil.';
-                } else {
-                    $absensi->latitude = $request->latitude;
-                    $absensi->longitude = $request->longitude;
-                    $absensi->jam_masuk = $jam;
-                    $absensi->save();
-                    $message = 'Absensi masuk diupdate';
-                }
+                // $absensi = Absensi::where('satpam_id', $userId)->whereDate('tanggal', $tanggal)->first();
+                // if (!$absensi) {
+                Absensi::create(['tanggal' => $tanggal, 'satpam_id' => $userId, 'latitude' => $request->latitude, 'longitude' => $request->longitude, 'jam_masuk' => $jam, 'status' => 1, 'description' => 'Absensi Berhasil', 'comid' => $user->comid]);
+                $message = 'Absensi masuk berhasil.';
+                // } else {
+                //     $absensi->latitude = $request->latitude;
+                //     $absensi->longitude = $request->longitude;
+                //     $absensi->jam_masuk = $jam;
+                //     $absensi->save();
+                //     $message = 'Absensi masuk diupdate';
+                // }
             } else {
-                $absensi = Absensi::where('satpam_id', $userId)->where('status', 1)->orderBy('id', 'desc')->first();
+                $absensi = Absensi::where('satpam_id', $userId)->where('status', 1)
+                ->whereNull('jam_keluar')
+                ->orderBy('id', 'desc')->first();
 
                 if ($absensi) {
                     $absensi->jam_keluar = date('Y-m-d H:i:s');
@@ -98,7 +100,9 @@ class AbsenController extends Controller
     {
         $input = $request->all();
 
-        $data = Absensi::where('satpam_id', $input['satpam_id'])->where('tanggal', date('Y-m-d'))->first();
+        $data = Absensi::where('satpam_id', $input['satpam_id'])
+        ->orderBy('id','desc')
+        ->first();
         if ($data) {
             return response()->json([
                 'success' => true,
@@ -111,7 +115,7 @@ class AbsenController extends Controller
                     'tanggal' => date('Y-m-d H:i:s'),
                     'jam_masuk' => null,
                     'jam_keluar' => null,
-                    'status' => null
+                    'status' => null,
                 ],
             ]);
         }

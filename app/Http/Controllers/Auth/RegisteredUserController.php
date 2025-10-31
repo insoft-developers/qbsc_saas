@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Mail\ActivationMail;
+use App\Models\AbsenLocation;
 use App\Models\Company;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -54,6 +55,14 @@ class RegisteredUserController extends Controller
             'is_active' => 0,
             'company_id' => $company_id,
             'level' => 'owner'
+        ]);
+
+        AbsenLocation::create([
+            "location_name" => "Pos Utama",
+            "latitude" => 0,
+            "longitude" => 0,
+            "max_distance" => 1,
+            "comid" => $company_id
         ]);
 
         Mail::to($user->email)->send(new ActivationMail($user, $token));
