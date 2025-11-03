@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\PatroliController;
 use App\Http\Controllers\API\ValidateLocationController;
 use App\Http\Controllers\Frontend\AbsenController;
 use Illuminate\Http\Request;
@@ -21,5 +22,10 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/verify_face', [AbsenController::class, 'verifyFace']);
 Route::post('/absen_active', [AbsenController::class, 'absenActive']);
 
+
 Route::post('/location_data', [ValidateLocationController::class, 'locationData']);
+Route::post('/get_data_location', [ValidateLocationController::class,  'getDataLocation']);
+
+Route::post('/update_location_coordinates', [ValidateLocationController::class, 'updateCoordinates']);
+Route::post('/send_patroli_to_server', [PatroliController::class, 'sendPatrolitoServer'] );
 
