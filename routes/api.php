@@ -29,3 +29,7 @@ Route::post('/get_data_location', [ValidateLocationController::class,  'getDataL
 Route::post('/update_location_coordinates', [ValidateLocationController::class, 'updateCoordinates']);
 Route::post('/send_patroli_to_server', [PatroliController::class, 'sendPatrolitoServer'] );
 
+
+
+
+
