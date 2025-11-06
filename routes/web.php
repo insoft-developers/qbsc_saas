@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Frontend\AbsenLocationController;
+use App\Http\Controllers\Frontend\AbsensiController;
 use App\Http\Controllers\Frontend\DashboardController;
 use App\Http\Controllers\Frontend\LokasiController;
+use App\Http\Controllers\Frontend\PatroliController;
 use App\Http\Controllers\Frontend\SatpamController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +41,15 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/download_qrcode/{id}',[LokasiController::class, 'download_qrcode']);
     Route::resource('absen_location', AbsenLocationController::class);
     Route::get('/absen_location_table', [AbsenLocationController::class, 'absen_location_table'])->name('absen.location.table');
+
+    Route::resource('absensi', AbsensiController::class);
+    Route::get('/absensi_table', [AbsensiController::class, 'absensi_table'])->name('absensi.table');
+    Route::get('/absensi_xls', [AbsensiController::class, 'exportXls'])->name('absensi.export.xls');
+    Route::get('/absensi_pdf', [AbsensiController::class, 'exportPdf'])->name('absensi.export.pdf');
+
+    Route::resource('patroli', PatroliController::class);
+    Route::get('/patroli_table', [PatroliController::class, 'patroli_table'])->name('patroli.table');
+    
 });
 
 require __DIR__ . '/auth.php';

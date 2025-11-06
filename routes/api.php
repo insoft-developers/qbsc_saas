@@ -3,7 +3,7 @@
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\PatroliController;
 use App\Http\Controllers\API\ValidateLocationController;
-use App\Http\Controllers\Frontend\AbsenController;
+use App\Http\Controllers\API\AbsenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
