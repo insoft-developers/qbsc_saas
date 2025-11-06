@@ -55,6 +55,34 @@ class AbsensiController extends Controller
                     return $row->status == 1 ? '<span class="badge bg-info rounded-pill"><i class="fa fa-check"></i> Masuk</span>' : '<span class="badge bg-danger rounded-pill">Pulang</span>';
                 })
 
+                // 🔍 Filter manual untuk kolom relasi
+                ->filterColumn('satpam_id', function ($query, $keyword) {
+                    $query->whereHas('satpam', function ($q) use ($keyword) {
+                        $q->where('name', 'like', "%{$keyword}%");
+                    });
+                })
+                ->filterColumn('comid', function ($query, $keyword) {
+                    $query->whereHas('company', function ($q) use ($keyword) {
+                        $q->where('company_name', 'like', "%{$keyword}%");
+                    });
+                })
+
+                ->filterColumn('jam_masuk', function ($query, $keyword) {
+                    $query->where('jam_masuk', 'like', "%{$keyword}%");
+                })
+                ->filterColumn('jam_keluar', function ($query, $keyword) {
+                    $query->where('jam_keluar', 'like', "%{$keyword}%");
+                })
+
+                ->filterColumn('tanggal', function ($query, $keyword) {
+                    // Konversi keyword pencarian (misalnya "05-11-2025") agar bisa dicocokkan dengan kolom tanggal (Y-m-d)
+                    $query->whereRaw("DATE_FORMAT(tanggal, '%d-%m-%Y') LIKE ?", ["%{$keyword}%"]);
+                })
+
+                ->filterColumn('description', function ($query, $keyword) {
+                    $query->where('description', 'like', "%{$keyword}%");
+                })
+
                 ->addColumn('action', function ($row) {
                     $button = '';
                     $button .= '<center>';
