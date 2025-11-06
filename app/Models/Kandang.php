@@ -6,21 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Patroli extends Model
+class Kandang extends Model
 {
     use HasFactory;
+
     protected $guarded = ['id'];
 
-    public function satpam():BelongsTo
-    {
-        return $this->belongsTo(Satpam::class, 'satpam_id', 'id');
-    }
-
-
-    public function lokasi():BelongsTo
-    {
-        return $this->belongsTo(Lokasi::class, 'location_id', 'id');
-    }
 
     public function company():BelongsTo
     {

@@ -43,7 +43,23 @@ class AbsensiController extends Controller
                     return $row->company->company_name ?? '';
                 })
                 ->addColumn('latitude', function ($row) {
-                    return '<div style="text-align:center">' . $row->latitude . ' - ' . $row->longitude . '</div>';
+                    if ($row->latitude && $row->longitude) {
+                        $url = "https://www.google.com/maps/@{$row->latitude},{$row->longitude},21z";
+                        return '
+            <div style="text-align:center">
+                <a href="' .
+                            $url .
+                            '" target="_blank" class="text-primary fw-bold">
+                    ' .
+                            $row->latitude .
+                            ' , ' .
+                            $row->longitude .
+                            '
+                </a>
+            </div>';
+                    } else {
+                        return '<div style="text-align:center">-</div>';
+                    }
                 })
                 ->addColumn('jam_masuk', function ($row) {
                     return '<div style="text-align:center">' . date('H:i:s', strtotime($row->jam_masuk)) . '</div>';

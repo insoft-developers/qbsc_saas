@@ -7,6 +7,7 @@ use App\Http\Controllers\Frontend\DashboardController;
 use App\Http\Controllers\Frontend\LokasiController;
 use App\Http\Controllers\Frontend\PatroliController;
 use App\Http\Controllers\Frontend\SatpamController;
+use App\Http\Controllers\Frontend\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -49,6 +50,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::resource('patroli', PatroliController::class);
     Route::get('/patroli_table', [PatroliController::class, 'patroli_table'])->name('patroli.table');
+    Route::get('/patroli_xls', [PatroliController::class, 'exportXls'])->name('patroli.export.xls');
+    Route::get('/patroli_pdf', [PatroliController::class, 'exportPdf'])->name('patroli.export.pdf');
+
+    Route::resource('user', UserController::class);
+    Route::get('/user_table', [UserController::class, 'user_table'])->name('user.table');
     
 });
 
