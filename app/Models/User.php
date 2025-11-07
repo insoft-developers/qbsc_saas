@@ -28,7 +28,8 @@ class User extends Authenticatable
         'level',
         'activation_token',
         'is_active',
-        'email_verified_at'
+        'email_verified_at',
+        'profile_image'
 
     ];
 

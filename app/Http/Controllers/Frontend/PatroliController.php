@@ -67,12 +67,12 @@ class PatroliController extends Controller
                 ->addColumn('photo_path', function ($row) {
                     if (!empty($row->photo_path)) {
                         $url = asset('storage/' . $row->photo_path);
-                        return '<a href="'.asset('storage/' . $row->photo_path).'" target="_blank"><img  style="cursor:pointer;" src="' . $url . '" alt="Foto" width="50" height="50" class="rounded-circle border"></a>';
+                        return '<a href="' . asset('storage/' . $row->photo_path) . '" target="_blank"><img  style="cursor:pointer;" src="' . $url . '" alt="Foto" width="50" height="50" class="rounded-circle border"></a>';
                     } else {
                         return '-';
                     }
                 })
-                ->addColumn('created_at', function($row){
+                ->addColumn('created_at', function ($row) {
                     return date('d-m-Y H:i', strtotime($row->created_at));
                 })
 
@@ -84,7 +84,7 @@ class PatroliController extends Controller
                     $button .= '</center>';
                     return $button;
                 })
-                ->rawColumns(['action', 'latitude', 'tanggal','photo_path'])
+                ->rawColumns(['action', 'latitude', 'tanggal', 'photo_path'])
                 ->make(true);
 
             // bi bi-trash3
@@ -99,7 +99,7 @@ class PatroliController extends Controller
         $view = 'patroli-satpam';
         $satpams = Satpam::where('comid', $this->comid())->get();
         $locations = Lokasi::where('comid', $this->comid())->get();
-        return view('frontend.aktivitas.patroli.patroli', compact('view','satpams', 'locations'));
+        return view('frontend.aktivitas.patroli.patroli', compact('view', 'satpams', 'locations'));
     }
 
     /**
@@ -157,7 +157,7 @@ class PatroliController extends Controller
 
     public function exportPdf(Request $request)
     {
-        $query = Patroli::where('comid', $this->comid())->with(['satpam', 'company','lokasi']);
+        $query = Patroli::where('comid', $this->comid())->with(['satpam', 'company', 'lokasi']);
 
         if ($request->start_date && $request->end_date) {
             $query->whereBetween('tanggal', [$request->start_date, $request->end_date]);

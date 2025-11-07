@@ -59,9 +59,7 @@
     function tambah_data() {
         save_method = "add";
         $('input[name=_method]').val('POST');
-        $(".modal-title").text("Tambah Data Lokasi");
-        var qrcode = generateCode("LOC") + "-" + "{{ Auth::user()->company_id }}";
-        $("#qrcode").val(qrcode);
+        $(".modal-title").text("Tambah Data User");
         resetForm();
         $("#modal-tambah").modal("show");
     }
@@ -70,8 +68,8 @@
         e.preventDefault();
         loading("btn-save-data");
         var id = $('#id').val();
-        if (save_method == "add") url = "{{ url('lokasi') }}";
-        else url = "{{ url('lokasi') . '/' }}" + id;
+        if (save_method == "add") url = "{{ url('user') }}";
+        else url = "{{ url('user') . '/' }}" + id;
         $.ajax({
             url: url,
             type: "POST",
@@ -120,52 +118,24 @@
         save_method = "edit";
         $('input[name=_method]').val('PATCH');
         $.ajax({
-            url: "{{ url('/lokasi') }}" + "/" + id + "/edit",
+            url: "{{ url('/user') }}" + "/" + id + "/edit",
             type: "GET",
             dataType: "JSON",
             success: function(data) {
                 $('#modal-tambah').modal("show");
-                $('.modal-title').text("Edit Data Lokasi");
+                $('.modal-title').text("Edit Data User");
                 $('#id').val(data.id);
-                $("#nama_lokasi").val(data.nama_lokasi);
-                $("#qrcode").val(data.qrcode);
-                $("#latitude").val(data.latitude);
-                $("#longitude").val(data.longitude);
+                $("#name").val(data.name);
+                $("#email").val(data.email);
+                $("#whatsapp").val(data.whatsapp);
+                $("#password").val(null);
+                $("#profile_image").val(null);
+                $("#is_active").val(data.is_active);
             }
         })
     }
 
-    function activate(id, active) {
-        Swal.fire({
-            title: active == 1 ? 'Yakin ingin mengaktifkan?' : 'Yakin ingin menonaktifkan?',
-            text: active == 1 ? "Data ini akan diaktifkan" : "Data ini akan dinonaktifkan",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: active == 1 ? "Ya Aktifkan" : "Ya, Non Aktifkan",
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: "{{ route('lokasi.activate') }}",
-                    type: 'POST',
-                    data: {
-                        id: id,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        Swal.fire('Berhasil!', response.message, 'success');
-                        reloadTable();
-                    },
-                    error: function(xhr) {
-                        Swal.fire('Gagal!', xhr.responseJSON.message || 'Terjadi kesalahan.',
-                            'error');
-                    }
-                });
-            }
-        });
-    }
+    
 
 
     function deleteData(id) {
@@ -181,7 +151,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "{{ url('lokasi') }}" + "/" + id,
+                    url: "{{ url('user') }}" + "/" + id,
                     type: 'DELETE',
                     data: {
                         _token: '{{ csrf_token() }}'
@@ -206,9 +176,8 @@
     }
 
     function resetForm() {
-        $("#nama_lokasi").val(null);
-        $("#latitude").val("");
-        $("#longitude").val("");
+       $('#form-tambah')[0].reset();
+
 
     }
 </script>

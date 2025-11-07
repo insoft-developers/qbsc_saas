@@ -60,7 +60,7 @@ class LoginRequest extends FormRequest
         // 🔒 Tambahkan validasi is_active
         if ($user->is_active == 0) {
             throw ValidationException::withMessages([
-                'error' => 'Akun Anda belum aktif. Silakan cek email aktivasi Anda.',
+                'error' => 'Akun Anda belum aktif. Silakan cek email aktivasi Anda atau hubungi Administrator.',
             ]);
         }
 
