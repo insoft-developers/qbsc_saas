@@ -60,6 +60,42 @@
             </li>
 
             <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarIcons" aria-expanded="false"
+                    aria-controls="sidebarIcons" class="side-nav-link">
+                    <i class="ri-home-office-line"></i>
+                    <span>Farm</span>
+                    <span class="menu-arrow"></span>
+
+                </a>
+                <div class="collapse" id="sidebarIcons">
+                    <ul class="side-nav-second-level">
+                        <li class="side-nav-item">
+                            <a class="side-nav-link" href="{{ url('kandang') }}">Data Kandang</a>
+                        </li>
+                       
+                    </ul>
+                </div>
+            </li>
+
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarExtendedUI" aria-expanded="false"
+                    aria-controls="sidebarExtendedUI" class="side-nav-link">
+                    <i class="ri-home-gear-line"></i>
+                    <span>Hatchery</span>
+                    <span class="menu-arrow"></span>
+
+                </a>
+                <div class="collapse" id="sidebarExtendedUI">
+                    <ul class="side-nav-second-level">
+                        <li class="side-nav-item">
+                            <a class="side-nav-link" href="#">Data Satpam</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </li>
+
+            <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarPagesAuth" aria-expanded="false"
                     aria-controls="sidebarPagesAuth" class="side-nav-link">
                     <i class=" ri-todo-line"></i>

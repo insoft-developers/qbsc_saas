@@ -17,4 +17,9 @@ class Kandang extends Model
     {
         return $this->belongsTo(Company::class, 'comid', 'id');
     }
+
+    public function pics():BelongsTo
+    {
+        return $this->belongsTo(User::class, 'pic', 'id');
+    }
 }

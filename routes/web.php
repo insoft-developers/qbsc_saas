@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Frontend\AbsenLocationController;
 use App\Http\Controllers\Frontend\AbsensiController;
 use App\Http\Controllers\Frontend\DashboardController;
+use App\Http\Controllers\Frontend\KandangController;
 use App\Http\Controllers\Frontend\LokasiController;
 use App\Http\Controllers\Frontend\PatroliController;
 use App\Http\Controllers\Frontend\SatpamController;
@@ -55,6 +56,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::resource('user', UserController::class);
     Route::get('/user_table', [UserController::class, 'user_table'])->name('user.table');
+
+    Route::resource('kandang', KandangController::class);
+    Route::get('/kandang_table', [KandangController::class, 'kandang_table'])->name('kandang.table');
     
 });
 
