@@ -3,20 +3,22 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Kandang;
+use App\Models\Mesin;
 use App\Models\User;
 use App\Traits\CommonTrait;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-class KandangController extends Controller
+class MesinController extends Controller
 {
-    use CommonTrait;   
-    public function kandang_table(Request $request)
+    use CommonTrait;
+    
+
+    public function mesin_table(Request $request)
     {
         if ($request->ajax()) {
             $comid = $this->comid();
-            $data = Kandang::where('comid', $comid);
+            $data = Mesin::where('comid', $comid);
             return DataTables::of($data)
                 ->addIndexColumn()
                 
@@ -37,6 +39,9 @@ class KandangController extends Controller
                 ->addColumn('pic', function ($row) {
                     return $row->pics->name ?? '';
                 })
+                ->addColumn('jenis', function($row){
+                    return $row->jenis == 1 ? 'Setter':'Hatcher';
+                })
                 ->rawColumns(['action','is_empty'])
                 ->make(true);
 
@@ -48,9 +53,9 @@ class KandangController extends Controller
      */
     public function index()
     {
-        $view = 'kandang';
+        $view = 'mesin';
         $users = User::where('company_id', $this->comid())->get();
-        return view('frontend.farm.kandang.kandang',compact('view','users'));
+        return view('frontend.hatcery.mesin.mesin', compact('view', 'users'));
     }
 
     /**
@@ -70,8 +75,9 @@ class KandangController extends Controller
         $validated = $request->validate([
             'code' => 'required',
             'name' => 'required|max:100|min:3',
-            'std_temp' => 'required',
-            'fan_amount' => 'required',
+            'temperature' => 'required',
+            'humidity' => 'required',
+            'jenis' => 'required',
             'is_empty' => 'required',
             'pic' => 'required',
         ]);
@@ -80,7 +86,7 @@ class KandangController extends Controller
         try {
             $input['comid'] = $this->comid();
             $input['name'] = strtoupper($request->name);
-            Kandang::create($input);
+            Mesin::create($input);
             return response()->json([
                 'success' => true,
                 'message' => 'Data berhasil disimpan',
@@ -106,8 +112,7 @@ class KandangController extends Controller
      */
     public function edit(string $id)
     {
-        $data = Kandang::find($id);
-        return $data;
+        return Mesin::find($id);
     }
 
     /**
@@ -119,8 +124,9 @@ class KandangController extends Controller
         $validated = $request->validate([
             'code' => 'required',
             'name' => 'required|max:100|min:3',
-            'std_temp' => 'required',
-            'fan_amount' => 'required',
+            'temperature' => 'required',
+            'humidity' => 'required',
+            'jenis' => 'required',
             'is_empty' => 'required',
             'pic' => 'required',
         ]);
@@ -129,7 +135,7 @@ class KandangController extends Controller
         try {
             $input['comid'] = $this->comid();
             $input['name'] = strtoupper($request->name);
-            $data = Kandang::find($id);
+            $data = Mesin::find($id);
             $data->update($input);
             return response()->json([
                 'success' => true,
@@ -148,6 +154,6 @@ class KandangController extends Controller
      */
     public function destroy(string $id)
     {
-        return Kandang::destroy($id);
+        return Mesin::destroy($id);
     }
 }

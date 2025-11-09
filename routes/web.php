@@ -4,8 +4,10 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Frontend\AbsenLocationController;
 use App\Http\Controllers\Frontend\AbsensiController;
 use App\Http\Controllers\Frontend\DashboardController;
+use App\Http\Controllers\Frontend\EkspedisiController;
 use App\Http\Controllers\Frontend\KandangController;
 use App\Http\Controllers\Frontend\LokasiController;
+use App\Http\Controllers\Frontend\MesinController;
 use App\Http\Controllers\Frontend\PatroliController;
 use App\Http\Controllers\Frontend\SatpamController;
 use App\Http\Controllers\Frontend\UserController;
@@ -59,6 +61,13 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::resource('kandang', KandangController::class);
     Route::get('/kandang_table', [KandangController::class, 'kandang_table'])->name('kandang.table');
+
+
+    Route::resource('mesin', MesinController::class);
+    Route::get('/mesin_table', [MesinController::class, 'mesin_table'])->name('mesin.table');
+
+    Route::resource('ekspedisi', EkspedisiController::class);
+    Route::get('/ekspedisi_table', [EkspedisiController::class, 'ekspedisi_table'])->name('ekspedisi.table');
     
 });
 

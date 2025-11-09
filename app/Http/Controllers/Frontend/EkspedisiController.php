@@ -3,20 +3,21 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Kandang;
-use App\Models\User;
+use App\Models\Ekspedisi;
 use App\Traits\CommonTrait;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-class KandangController extends Controller
+class EkspedisiController extends Controller
 {
-    use CommonTrait;   
-    public function kandang_table(Request $request)
+    use CommonTrait;
+    
+
+    public function ekspedisi_table(Request $request)
     {
         if ($request->ajax()) {
             $comid = $this->comid();
-            $data = Kandang::where('comid', $comid);
+            $data = Ekspedisi::where('comid', $comid);
             return DataTables::of($data)
                 ->addIndexColumn()
                 
@@ -28,16 +29,12 @@ class KandangController extends Controller
                     $button .= '</center>';
                     return $button;
                 })
-                ->addColumn('is_empty', function ($row) {
-                    return $row->is_empty === 1 ? '<center><span class="badge bg-danger rounded-pill">Kosong</span></center>' : '<center><span class="badge bg-success rounded-pill">Berisi</span></center>';
-                })
+                
                 ->addColumn('comid', function ($row) {
                     return $row->company->company_name ?? '';
                 })
-                ->addColumn('pic', function ($row) {
-                    return $row->pics->name ?? '';
-                })
-                ->rawColumns(['action','is_empty'])
+    
+                ->rawColumns(['action'])
                 ->make(true);
 
             // bi bi-trash3
@@ -48,9 +45,8 @@ class KandangController extends Controller
      */
     public function index()
     {
-        $view = 'kandang';
-        $users = User::where('company_id', $this->comid())->get();
-        return view('frontend.farm.kandang.kandang',compact('view','users'));
+        $view = 'ekspedisi';
+        return view('frontend.hatcery.ekspedisi.ekspedisi', compact('view'));
     }
 
     /**
@@ -70,17 +66,13 @@ class KandangController extends Controller
         $validated = $request->validate([
             'code' => 'required',
             'name' => 'required|max:100|min:3',
-            'std_temp' => 'required',
-            'fan_amount' => 'required',
-            'is_empty' => 'required',
-            'pic' => 'required',
         ]);
 
         // Simpan ke database
         try {
             $input['comid'] = $this->comid();
             $input['name'] = strtoupper($request->name);
-            Kandang::create($input);
+            Ekspedisi::create($input);
             return response()->json([
                 'success' => true,
                 'message' => 'Data berhasil disimpan',
@@ -106,8 +98,7 @@ class KandangController extends Controller
      */
     public function edit(string $id)
     {
-        $data = Kandang::find($id);
-        return $data;
+        return Ekspedisi::find($id);
     }
 
     /**
@@ -119,17 +110,13 @@ class KandangController extends Controller
         $validated = $request->validate([
             'code' => 'required',
             'name' => 'required|max:100|min:3',
-            'std_temp' => 'required',
-            'fan_amount' => 'required',
-            'is_empty' => 'required',
-            'pic' => 'required',
         ]);
 
         // Simpan ke database
         try {
             $input['comid'] = $this->comid();
             $input['name'] = strtoupper($request->name);
-            $data = Kandang::find($id);
+            $data = Ekspedisi::find($id);
             $data->update($input);
             return response()->json([
                 'success' => true,
@@ -148,6 +135,6 @@ class KandangController extends Controller
      */
     public function destroy(string $id)
     {
-        return Kandang::destroy($id);
+        return Ekspedisi::destroy($id);
     }
 }

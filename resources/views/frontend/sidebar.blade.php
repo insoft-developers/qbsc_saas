@@ -88,7 +88,10 @@
                 <div class="collapse" id="sidebarExtendedUI">
                     <ul class="side-nav-second-level">
                         <li class="side-nav-item">
-                            <a class="side-nav-link" href="#">Data Satpam</a>
+                            <a class="side-nav-link" href="{{ url('mesin') }}">Data Mesin</a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a class="side-nav-link" href="{{ url('ekspedisi') }}">Data Ekspedisi</a>
                         </li>
                         
                     </ul>

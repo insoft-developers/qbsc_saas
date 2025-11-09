@@ -2,7 +2,7 @@
     var table = $('#list-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{{ route('kandang.table') }}',
+        ajax: '{{ route('mesin.table') }}',
         order: [
             [0, 'desc']
         ],
@@ -33,12 +33,16 @@
                 name: 'name'
             },
             {
-                data: 'std_temp',
-                name: 'std_temp'
+                data: 'temperature',
+                name: 'temperature'
             },
             {
-                data: 'fan_amount',
-                name: 'fan_amount'
+                data: 'humidity',
+                name: 'humidity'
+            },
+            {
+                data: 'jenis',
+                name: 'jenis'
             },
             {
                 data: 'is_empty',
@@ -59,8 +63,8 @@
     function tambah_data() {
         save_method = "add";
         $('input[name=_method]').val('POST');
-        $(".modal-title").text("Tambah Data Kandang");
-        var qrcode = generateCode("FHH") + "-" + "{{ Auth::user()->company_id }}";
+        $(".modal-title").text("Tambah Data Mesin");
+        var qrcode = generateCode("MSH") + "-" + "{{ Auth::user()->company_id }}";
        
         resetForm();
          $("#code").val(qrcode);
@@ -71,8 +75,8 @@
         e.preventDefault();
         loading("btn-save-data");
         var id = $('#id').val();
-        if (save_method == "add") url = "{{ url('kandang') }}";
-        else url = "{{ url('kandang') . '/' }}" + id;
+        if (save_method == "add") url = "{{ url('mesin') }}";
+        else url = "{{ url('mesin') . '/' }}" + id;
         $.ajax({
             url: url,
             type: "POST",
@@ -121,17 +125,18 @@
         save_method = "edit";
         $('input[name=_method]').val('PATCH');
         $.ajax({
-            url: "{{ url('/kandang') }}" + "/" + id + "/edit",
+            url: "{{ url('/mesin') }}" + "/" + id + "/edit",
             type: "GET",
             dataType: "JSON",
             success: function(data) {
                 $('#modal-tambah').modal("show");
-                $('.modal-title').text("Edit Data Kandang");
+                $('.modal-title').text("Edit Data Mesin");
                 $('#id').val(data.id);
                 $("#name").val(data.name);
                 $("#code").val(data.code);
-                $("#std_temp").val(data.std_temp);
-                $("#fan_amount").val(data.fan_amount);
+                $("#temperature").val(data.temperature);
+                $("#humidity").val(data.humidity);
+                $("#jenis").val(data.jenis);
                 $("#is_empty").val(data.is_empty);
                 $("#pic").val(data.pic);
             }
@@ -154,7 +159,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "{{ url('kandang') }}" + "/" + id,
+                    url: "{{ url('mesin') }}" + "/" + id,
                     type: 'DELETE',
                     data: {
                         _token: '{{ csrf_token() }}'
