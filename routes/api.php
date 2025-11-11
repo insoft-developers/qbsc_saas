@@ -28,6 +28,9 @@ Route::post('/get_data_location', [ValidateLocationController::class,  'getDataL
 
 Route::post('/update_location_coordinates', [ValidateLocationController::class, 'updateCoordinates']);
 Route::post('/send_patroli_to_server', [PatroliController::class, 'sendPatrolitoServer'] );
+Route::post('/patroli_kandang_to_server', [PatroliController::class, 'patroliKandangToServer']);
+Route::post('/get_data_kandang', [PatroliController::class, 'getDataKandang']);
+Route::post('/get_data_mesin', [PatroliController::class, 'getDataMesin']);
 
 
 

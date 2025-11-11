@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kandang;
+use App\Models\Mesin;
 use App\Models\Patroli;
+use App\Models\PatroliKandang;
+use App\Models\Satpam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -84,5 +88,116 @@ class PatroliController extends Controller
                 'error' => $th->getMessage(),
             ]);
         }
+    }
+
+
+    public function patroliKandangToServer(Request $request) {
+        $request->validate([
+            'uuid' => 'required|uuid',
+            'tanggal' => 'required|date',
+            'jam' => 'required',
+            'kandang_id' => 'required',
+            'satpam_id' => 'required',
+            'std_temp' => 'nullable',
+            'temperature' => 'nullable',
+            'fan_amount' => 'nullable',
+            'kipas' => 'nullable',
+            'is_alarm_on' => 'nullable',
+            'is_lamp_on' => 'nullable',
+            'note' => 'nullable|string',
+            'latitude' => 'nullable',
+            'longitude' => 'nullable',
+            'comid' => 'required',
+            'foto' => 'nullable|file|mimes:jpg,jpeg,png', // tidak batasi ukuran
+        ]);
+
+        try {
+            $photoPath = null;
+
+            if ($request->hasFile('foto')) {
+                $file = $request->file('foto');
+
+                // Gunakan Intervention Image
+                $manager = new ImageManager(new Driver());
+                $image = $manager->read($file->getRealPath());
+
+                // Resize otomatis jika terlalu besar
+                if ($image->width() > 1280) {
+                    $image->scale(width: 1280);
+                }
+
+                // Tentukan folder penyimpanan
+                $folder = storage_path('app/public/kandang');
+                if (!file_exists($folder)) {
+                    mkdir($folder, 0777, true);
+                }
+
+                // Buat nama unik
+                $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $savePath = $folder . '/' . $filename;
+
+                // Simpan langsung (sekali saja)
+                $image->save($savePath, 80); // kualitas 80% untuk kompres <1MB
+
+                // Simpan path relatif ke database
+                $photoPath = 'kandang/' . $filename;
+            }
+
+            $patroli = PatroliKandang::create([
+                "uuid" => $request->uuid,
+                "tanggal" => $request->tanggal,
+                "jam"=> $request->jam,
+                "kandang_id" => $request->kandang_id,
+                "satpam_id" => $request->satpam_id,
+                "std_temp" => $request->std_temp,
+                "temperature" => $request->temperature,
+                "fan_amount" => $request->fan_amount,
+                "kipas" => $request->kipas,
+                "is_alarm_on" => $request->is_alarm_on,
+                "is_lamp_on" => $request->is_lamp_on,
+                "note" => $request->note,
+                "foto" => $photoPath,
+                "latitude" => $request->latitude,
+                "longitude" => $request->longitude,
+                "comid" => $request->comid
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data patroli tersimpan',
+                'data' => $patroli,
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal simpan data',
+                'error' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function getDataKandang(Request $request) {
+        $request->validate([
+            "comid" => 'required'
+        ]);
+
+        $data = Kandang::where('comid', $request->comid)->get();
+        return response()->json([
+            "success" => true,
+            "data" => $data
+        ]);
+    }
+
+
+    public function getDataMesin(Request $request) {
+        $request->validate([
+            "comid" => 'required'
+        ]);
+
+        $data = Mesin::where('comid', $request->comid)->get();
+        return response()->json([
+            "success" => true,
+            "data" => $data
+        ]);
     }
 }

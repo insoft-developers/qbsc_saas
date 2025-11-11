@@ -60,19 +60,19 @@ class ValidateLocationController extends Controller
             'satpam_id' => 'required',
         ]);
 
-        $satpam = Satpam::find($request->satpam_id);
+            $satpam = Satpam::find($request->satpam_id);
 
-        $data = AbsenLocation::where('comid', $satpam->comid)->first();
-        if($data) {
-            return response()->json([
-                "success" => true,
-                "data" => $data
-            ]);
-        } else {
-            return response()->json([
-                "success" => false,
-                "message" => 'Lokasi Absen tidak ditemukan!'
-            ]);
-        }
+            $data = AbsenLocation::where('comid', $satpam->comid)->first();
+            if($data) {
+                return response()->json([
+                    "success" => true,
+                    "data" => $data
+                ]);
+            } else {
+                return response()->json([
+                    "success" => false,
+                    "message" => 'Lokasi Absen tidak ditemukan!'
+                ]);
+            }
     }
 }
