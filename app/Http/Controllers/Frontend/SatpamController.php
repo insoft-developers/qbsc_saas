@@ -89,8 +89,8 @@ class SatpamController extends Controller
             'whatsapp' => 'required|string|max:20|unique:satpams,whatsapp',
             'password' => 'required|string|min:6',
         ]);
-
-        $response = Http::attach('image', file_get_contents($request->file('foto')), 'face.jpg')->post('http://192.168.100.3:5001/encode');
+        $face_url = config('services.face_api.url');
+        $response = Http::attach('image', file_get_contents($request->file('foto')), 'face.jpg')->post($face_url.'/encode');
 
         if (!$response->successful()) {
             return response()->json(
@@ -155,6 +155,7 @@ class SatpamController extends Controller
             'password' => 'nullable|string|min:6',
         ]);
 
+        $face_url = config('services.face_api.url');
         // update foto jika ada upload
         if ($request->hasFile('foto')) {
             // hapus foto lama
@@ -170,7 +171,7 @@ class SatpamController extends Controller
                 // kirim ke API face recognition
                 $response = Http::timeout(10)
                     ->attach('image', file_get_contents($request->file('foto')), 'face.jpg')
-                    ->post('http://192.168.100.3:5001/encode');
+                    ->post($face_url.'/encode');
 
                 if ($response->successful()) {
                     $satpam->face_embedding = json_encode($response->json('embedding'));

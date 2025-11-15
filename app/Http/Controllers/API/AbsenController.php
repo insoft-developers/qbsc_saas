@@ -12,6 +12,9 @@ class AbsenController extends Controller
 {
     public function verifyFace(Request $request)
     {
+        $face_url = config('services.face_api.url');
+
+        
         $request->validate([
             'image' => 'required|image|max:10240', // max 10MB
             'user_id' => 'required|integer',
@@ -37,7 +40,7 @@ class AbsenController extends Controller
         $storedEmbedding = $user->face_embedding;
 
         // Kirim gambar + embedding lama ke Flask /verify
-        $response = Http::attach('image', file_get_contents($file->getRealPath()), $file->getClientOriginalName())->post('http://192.168.100.3:5001/verify', [
+        $response = Http::attach('image', file_get_contents($file->getRealPath()), $file->getClientOriginalName())->post($face_url.'/verify', [
             // pastikan dikirim sebagai JSON string, bukan string biasa
             'stored_embedding' => json_encode(json_decode($storedEmbedding)),
         ]);
