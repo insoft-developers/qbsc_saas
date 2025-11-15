@@ -1,54 +1,59 @@
 name: Deploy Application
 
 on:
-    push:
-        branches:
-            - master
+  push:
+    branches:
+      - master
 
 jobs:
-    deploy:
-        runs-on: ubuntu-latest
+  deploy:
+    runs-on: ubuntu-latest
 
-        steps:
-        - name: Checkout Code
-          uses: actions/checkout@v3
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-        - name: Setup PHP
-          uses: shivammathur/setup-php@v2
-          with:
-            php-version: 8.3
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, intl, pdo, pdo_mysql
+          coverage: none
 
-        - name: Install Composer Dependencies
-          run: composer install --optimize-autoloader --no-dev --no-progress --no-interaction --prefer-dist
+      - name: Install Composer Dependencies
+        run: composer install --no-dev --optimize-autoloader --no-progress
 
-        - name: Install Node JS
-          uses: actions/setup-node@v3
-          with: 
-            node-version: '20'
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
 
-        - name: Install NPM Dependencies
-          run: npm install
+      - name: Install NPM Dependencies
+        run: npm install
 
-        - name: Build NPM Asset
-          run: npm run
+      - name: Build Assets
+        run: npm run build  # ubah sesuai script Anda
 
-        - name: Synchronize Files to Server
-          uses: easingthemes/ssh-deploy@v2.1.5
-          env: 
-            SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }} 
-            SOURCE: "."
-            REMOTE_HOST: ${{ secrets.SSH_HOST }}
-            REMOTE_USER: ${{ secrets.SSH_USER }}
-            TARGET: "/www/wwwroot/app.qbsc.cloud"
+      - name: Deploy to Server via SSH
+        uses: easingthemes/ssh-deploy@v2.1.5
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}   # << WAJIB BEGINI
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_USER: ${{ secrets.SSH_USER }}
+          REMOTE_PORT: ${{ secrets.SSH_PORT }}
+          SOURCE: "./"
+          TARGET: "/www/wwwroot/app.qbsc.cloud"
+          EXCLUDE: "node_modules/, .git/, vendor/"           # penting!
 
-        - name: Run Remote/Artisan Commands
-          uses: appleboy/ssh-action@v0.1.6
-          with: 
-            host: ${{ secrets.SSH_HOST }}
-            port: ${{ secrets.SSH_PORT }}
-            username: ${{ secrets.SSH_USER }}
-            key: ${{ secrets.SSH_KEY }}
-            script: |
-                cd /www/wwwroot/app.qbsc.cloud
-                php artisan migrate --force
-                php artisan optimize
+      - name: Run Remote Artisan Commands
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /www/wwwroot/app.qbsc.cloud
+            composer install --no-dev --optimize-autoloader
+            php artisan migrate --force
+            php artisan optimize
