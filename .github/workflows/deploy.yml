@@ -32,18 +32,18 @@ jobs:
         run: npm install
 
       - name: Build Assets
-        run: npm run build  # ubah sesuai script Anda
+        run: npm run build
 
       - name: Deploy to Server via SSH
         uses: easingthemes/ssh-deploy@v2.1.5
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}   # << WAJIB BEGINI
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           REMOTE_HOST: ${{ secrets.SSH_HOST }}
           REMOTE_USER: ${{ secrets.SSH_USER }}
           REMOTE_PORT: ${{ secrets.SSH_PORT }}
           SOURCE: "./"
           TARGET: "/www/wwwroot/app.qbsc.cloud"
-          EXCLUDE: "node_modules/, .git/, vendor/"           # penting!
+          EXCLUDE: "node_modules/, .git/, vendor/"
 
       - name: Run Remote Artisan Commands
         uses: appleboy/ssh-action@v0.1.6
@@ -54,6 +54,11 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /www/wwwroot/app.qbsc.cloud
+
             composer install --no-dev --optimize-autoloader
             php artisan migrate --force
             php artisan optimize
+
+            # FIX PERMISSION (WAJIB)
+            chown -R www:www storage bootstrap/cache
+            chmod -R 775 storage bootstrap/cache
