@@ -33,6 +33,8 @@ class PatroliKandangController extends Controller
             if ($request->kandang_id) {
                 $query->where('kandang_id', $request->kandang_id);
             }
+
+            $query->orderBy('tanggal','desc')->orderBy('jam','desc');
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('tanggal', function ($row) {
