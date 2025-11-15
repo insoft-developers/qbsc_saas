@@ -114,6 +114,9 @@
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="{{  url('patroli') }}">Patroli</a>
                         </li>
+                        <li class="side-nav-item">
+                            <a class="side-nav-link" href="{{  url('patroli_kandang') }}">Patroli Kandang</a>
+                        </li>
                     </ul>
                 </div>
             </li>

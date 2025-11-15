@@ -9,6 +9,7 @@ use App\Http\Controllers\Frontend\KandangController;
 use App\Http\Controllers\Frontend\LokasiController;
 use App\Http\Controllers\Frontend\MesinController;
 use App\Http\Controllers\Frontend\PatroliController;
+use App\Http\Controllers\Frontend\PatroliKandangController;
 use App\Http\Controllers\Frontend\SatpamController;
 use App\Http\Controllers\Frontend\UserController;
 use App\Http\Controllers\ProfileController;
@@ -68,6 +69,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::resource('ekspedisi', EkspedisiController::class);
     Route::get('/ekspedisi_table', [EkspedisiController::class, 'ekspedisi_table'])->name('ekspedisi.table');
+
+    Route::resource('patroli_kandang', PatroliKandangController::class);
+    Route::get('/kandang_suhu_table', [PatroliKandangController::class, 'kandang_suhu_table'])->name('kandang.suhu.table');
     
 });
 
