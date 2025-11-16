@@ -144,7 +144,7 @@
                     <td>{{ $row->jam }}</td>
                     <td>{{ $row->kandang->name ?? '' }}</td>
                     <td>{{ $row->satpam->name ?? '' }}</td>
-                    <td>{{ $row->is_alarm_on }}</td>
+                    <td>{{ $row->is_alarm_on == 1 ? 'ON':'OFF' }}</td>
                     <td>{{ $row->latitude }}</td>
                     <td>{{ $row->longitude }}</td>
                     <td>{{ $row->note }}</td>
@@ -183,7 +183,7 @@
                     <td>{{ $row->jam }}</td>
                     <td>{{ $row->kandang->name ?? '' }}</td>
                     <td>{{ $row->satpam->name ?? '' }}</td>
-                    <td>{{ $row->is_lamp_on }}</td>
+                    <td>{{ $row->is_lamp_on == 1 ? 'ON':'OFF' }}</td>
                     <td>{{ $row->latitude }}</td>
                     <td>{{ $row->longitude }}</td>
                     <td>{{ $row->note }}</td>
