@@ -75,6 +75,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/kandang_kipas_table', [PatroliKandangController::class, 'kandang_kipas_table'])->name('kandang.kipas.table');
     Route::get('/kandang_alarm_table', [PatroliKandangController::class, 'kandang_alarm_table'])->name('kandang.alarm.table');
     Route::get('/kandang_lampu_table', [PatroliKandangController::class, 'kandang_lampu_table'])->name('kandang.lampu.table');
+
+    Route::get('/patroli_kandang_xls', [PatroliKandangController::class, 'exportXls'])->name('patroli.kandang.export.xls');
+    Route::get('/patroli_kandang_pdf', [PatroliKandangController::class, 'exportPdf'])->name('patroli.kandang.export.pdf');
     
 });
 

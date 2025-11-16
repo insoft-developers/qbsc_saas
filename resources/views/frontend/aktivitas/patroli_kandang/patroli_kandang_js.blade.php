@@ -27,10 +27,10 @@
             start_date: $('#filter_start').val() || '',
             end_date: $('#filter_end').val() || '',
             satpam_id: $('#filter_satpam').val() || '',
-            location_id: $('#filter_lokasi').val() || ''
+            kandang_id: $('#filter_kandang').val() || ''
         });
 
-        window.location.href = "{{ route('patroli.export.xls') }}?" + params;
+        window.location.href = "{{ route('patroli.kandang.export.xls') }}?" + params;
     });
 
     $('#btnExportPdf').on('click', function() {
@@ -38,10 +38,10 @@
             start_date: $('#filter_start').val() || '',
             end_date: $('#filter_end').val() || '',
             satpam_id: $('#filter_satpam').val() || '',
-            location_id: $('#filter_lokasi').val() || ''
+            kandang_id: $('#filter_kandang').val() || ''
         });
 
-        window.location.href = "{{ route('patroli.export.pdf') }}?" + params;
+        window.location.href = "{{ route('patroli.kandang.export.pdf') }}?" + params;
 
     });
 

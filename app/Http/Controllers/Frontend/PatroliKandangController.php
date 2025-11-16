@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Exports\PatroliKandangExport;
 use App\Http\Controllers\Controller;
 use App\Models\Kandang;
 use App\Models\KandangAlarm;
@@ -10,8 +11,10 @@ use App\Models\KandangLampu;
 use App\Models\KandangSuhu;
 use App\Models\Satpam;
 use App\Traits\CommonTrait;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+
 use Yajra\DataTables\Facades\DataTables;
 
 class PatroliKandangController extends Controller
@@ -418,5 +421,62 @@ class PatroliKandangController extends Controller
         else if($type == 4) {
             return KandangLampu::destroy($id);
         }
+    }
+
+    public function exportXls(Request $request)
+    {
+        return Excel::download(new PatroliKandangExport($request->start_date ?: null, $request->end_date ?: null, $request->satpam_id ?: null, $request->kandang_id ?: null), 'Data_Patroli_Kandang.xlsx');
+
+        
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $query1 = KandangSuhu::where('comid', $this->comid())
+        ->orderBy('tanggal', 'desc')
+        ->orderBy('jam','desc')
+        ->with(['satpam', 'company', 'kandang']);
+        $query2 = KandangKipas::where('comid', $this->comid())
+        ->orderBy('tanggal', 'desc')
+        ->orderBy('jam','desc')
+        ->with(['satpam', 'company', 'kandang']);
+        $query3 = KandangAlarm::where('comid', $this->comid())
+        ->orderBy('tanggal', 'desc')
+        ->orderBy('jam','desc')
+        ->with(['satpam', 'company', 'kandang']);
+        $query4 = KandangLampu::where('comid', $this->comid())
+        ->orderBy('tanggal', 'desc')
+        ->orderBy('jam','desc')
+        ->with(['satpam', 'company', 'kandang']);
+
+        if ($request->start_date && $request->end_date) {
+            $query1->whereBetween('tanggal', [$request->start_date, $request->end_date]);
+            $query2->whereBetween('tanggal', [$request->start_date, $request->end_date]);
+            $query3->whereBetween('tanggal', [$request->start_date, $request->end_date]);
+            $query4->whereBetween('tanggal', [$request->start_date, $request->end_date]);
+        }
+
+        if ($request->satpam_id) {
+            $query1->where('satpam_id', $request->satpam_id);
+            $query2->where('satpam_id', $request->satpam_id);
+            $query3->where('satpam_id', $request->satpam_id);
+            $query4->where('satpam_id', $request->satpam_id);
+        }
+
+        if ($request->kandang_id) {
+            $query1->where('kandang_id', $request->kandang_id);
+            $query2->where('kandang_id', $request->kandang_id);
+            $query3->where('kandang_id', $request->kandang_id);
+            $query4->where('kandang_id', $request->kandang_id);
+        }
+
+        $suhu = $query1->get();
+        $kipas = $query2->get();
+        $alarm = $query3->get();
+        $lampu = $query4->get();
+
+        $pdf = Pdf::loadView('frontend.aktivitas.patroli_kandang.pdf', compact('suhu','kipas','alarm','lampu'))->setPaper('a4', 'landscape');
+
+        return $pdf->stream('Data_Patroli_Kandang.pdf');
     }
 }
