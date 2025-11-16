@@ -214,5 +214,5 @@
 @endsection
 
 @push('scripts')
-    @include('frontend.aktivitas.patroli_kandang.kandang_suhu_js')
+    @include('frontend.aktivitas.patroli_kandang.patroli_kandang_js')
 @endpush

@@ -72,6 +72,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::resource('patroli_kandang', PatroliKandangController::class);
     Route::get('/kandang_suhu_table', [PatroliKandangController::class, 'kandang_suhu_table'])->name('kandang.suhu.table');
+    Route::get('/kandang_kipas_table', [PatroliKandangController::class, 'kandang_kipas_table'])->name('kandang.kipas.table');
+    Route::get('/kandang_alarm_table', [PatroliKandangController::class, 'kandang_alarm_table'])->name('kandang.alarm.table');
+    Route::get('/kandang_lampu_table', [PatroliKandangController::class, 'kandang_lampu_table'])->name('kandang.lampu.table');
     
 });
 

@@ -1,9 +1,9 @@
 <script>
-    var table_suhu = $('#table-suhu').DataTable({
+    var table_lampu = $('#table-lampu').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            url: "{{ route('kandang.suhu.table') }}",
+            url: "{{ route('kandang.lampu.table') }}",
             data: function(d) {
                 d.start_date = $('#filter_start').val();
                 d.end_date = $('#filter_end').val();
@@ -51,8 +51,8 @@
                 name: 'satpam_id'
             },
             {
-                data: 'temperature',
-                name: 'temperature'
+                data: 'is_lamp_on',
+                name: 'is_lamp_on'
             },
             
             {
