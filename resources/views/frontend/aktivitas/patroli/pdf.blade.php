@@ -1,3 +1,19 @@
+@php
+    function jamDalamRangeLocal($jamKontrol, $jam_awal, $jam_akhir)
+    {
+        $awal = array_map('trim', explode(',', $jam_awal));
+        $akhir = array_map('trim', explode(',', $jam_akhir));
+
+        foreach ($awal as $i => $start) {
+            if ($jamKontrol >= $start && $jamKontrol <= ($akhir[$i] ?? null)) {
+                return true;
+            }
+        }
+        return false;
+    }
+@endphp
+
+
 <!DOCTYPE html>
 <html>
 
@@ -31,6 +47,7 @@
                 <th>No</th>
                 <th>Tanggal</th>
                 <th>Jam</th>
+                <th>Jam Patroli</th>
                 <th>Lokasi</th>
                 <th>Nama Satpam</th>
                 <th>Latitude</th>
@@ -42,10 +59,26 @@
         </thead>
         <tbody>
             @foreach ($data as $i => $row)
-                <tr>
+                @php
+                    $awal = explode(',', $row->jam_awal);
+                    $akhir = explode(',', $row->jam_akhir);
+                    $html = '';
+                    foreach ($awal as $index => $a) {
+                        $html .= date('H:i', strtotime($a)) . '-' . date('H:i', strtotime($akhir[$index])) . ' ';
+                    }
+
+                    $range = jamDalamRangeLocal($row->jam, $row->jam_awal, $row->jam_akhir);
+
+                @endphp
+
+                <tr style="background:{{ $range ? 'white':'red' }};color:{{$range ? 'black':'white'}}">
                     <td>{{ $i + 1 }}</td>
                     <td>{{ date('d-m-Y', strtotime($row->tanggal)) }}</td>
-                    <td>{{ $row->jam }}</td>
+                    <td>
+                        {{ $row->jam }}
+                    </td>
+
+                    <td>{{ $html }}</td>
                     <td>{{ $row->lokasi->nama_lokasi ?? '' }}</td>
                     <td>{{ $row->satpam->name ?? '' }}</td>
                     <td>{{ $row->latitude }}</td>

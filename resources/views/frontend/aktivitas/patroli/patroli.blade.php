@@ -82,6 +82,7 @@
                                         <th class="text-center">Aksi</th>
                                         <th>Tanggal</th>
                                         <th>Jam</th>
+                                        <th>Jam Patroli</th>
                                         <th>Lokasi</th>
                                         <th>Satpam</th>
                                         <th>LatLng</th>

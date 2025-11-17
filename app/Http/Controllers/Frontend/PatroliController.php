@@ -39,6 +39,25 @@ class PatroliController extends Controller
                 ->addColumn('satpam_id', function ($row) {
                     return $row->satpam->name ?? '';
                 })
+                ->addColumn('jam', function ($row) {
+                    $isInRange = $this->jamDalamRange($row->jam, $row->jam_awal, $row->jam_akhir);
+
+                    if ($isInRange) {
+                        return '<span>' . $row->jam . '</span>';
+                    } else {
+                        return '<span style="color:red;font-weight:bold;">' . $row->jam . '</span>';
+                    }
+                })
+                ->addColumn('jam_awal', function ($row) {
+                    $awal = explode(',', $row->jam_awal);
+                    $akhir = explode(',', $row->jam_akhir);
+                    $html = '';
+                    foreach ($awal as $index => $a) {
+                        $html .= $a . '-' . $akhir[$index] . '<br>';
+                    }
+
+                    return $html;
+                })
                 ->addColumn('comid', function ($row) {
                     return $row->company->company_name ?? '';
                 })
@@ -84,7 +103,7 @@ class PatroliController extends Controller
                     $button .= '</center>';
                     return $button;
                 })
-                ->rawColumns(['action', 'latitude', 'tanggal', 'photo_path'])
+                ->rawColumns(['action', 'latitude', 'tanggal', 'photo_path', 'jam_awal','jam'])
                 ->make(true);
 
             // bi bi-trash3
@@ -175,6 +194,6 @@ class PatroliController extends Controller
 
         $pdf = Pdf::loadView('frontend.aktivitas.patroli.pdf', compact('data'))->setPaper('a4', 'landscape');
 
-        return $pdf->download('Data_Patroli.pdf');
+        return $pdf->stream('Data_Patroli.pdf');
     }
 }

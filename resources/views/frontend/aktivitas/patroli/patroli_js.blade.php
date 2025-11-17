@@ -43,6 +43,10 @@
                 name: 'jam'
             },
             {
+                data: 'jam_awal',
+                name: 'jam_awal'
+            },
+            {
                 data: 'location_id',
                 name: 'location_id'
             },
