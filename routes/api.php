@@ -31,6 +31,7 @@ Route::post('/send_patroli_to_server', [PatroliController::class, 'sendPatrolito
 Route::post('/patroli_kandang_to_server', [PatroliController::class, 'patroliKandangToServer']);
 Route::post('/get_data_kandang', [PatroliController::class, 'getDataKandang']);
 Route::post('/get_data_mesin', [PatroliController::class, 'getDataMesin']);
+Route::post('/get_data_ekspedisi', [PatroliController::class, 'getDataEkspedisi']);
 Route::post('/sync_suhu_kandang', [PatroliController::class, 'syncSuhuKandang']);
 Route::post('/sync_kipas_kandang', [PatroliController::class, 'syncKipasKandang']);
 Route::post('/sync_alarm_kandang', [PatroliController::class, 'syncAlarmKandang']);
