@@ -8,6 +8,7 @@ use App\Models\KandangAlarm;
 use App\Models\KandangKipas;
 use App\Models\KandangLampu;
 use App\Models\KandangSuhu;
+use App\Models\Lokasi;
 use App\Models\Mesin;
 use App\Models\Patroli;
 use App\Models\PatroliKandang;
@@ -66,10 +67,14 @@ class PatroliController extends Controller
                 $photoPath = 'patroli/' . $filename;
             }
 
+            $lokasi = Lokasi::find($request->location_id);
+
             $patroli = Patroli::create([
                 'uuid' => $request->id,
                 'tanggal' => $request->tanggal,
                 'jam' => $request->jam,
+                'jam_awal' => $lokasi->jam_awal,
+                'jam_akhir' => $lokasi->jam_akhir,
                 'location_id' => $request->location_id,
                 'location_code' => $request->location_code,
                 'satpam_id' => $request->satpam_id,

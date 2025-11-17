@@ -10,6 +10,10 @@
         border-radius: 17px;
     }
 
+    .btn-jam{
+            margin-top: 33px;
+    }
+
     .border-1{
          border: 1px solid grey;
     }

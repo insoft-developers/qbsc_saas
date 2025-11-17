@@ -1,4 +1,6 @@
 <script>
+    let countIndex = 1;
+
     var table = $('#list-table').DataTable({
         processing: true,
         serverSide: true,
@@ -31,6 +33,10 @@
             {
                 data: 'nama_lokasi',
                 name: 'nama_lokasi'
+            },
+            {
+                data: 'jam_awal',
+                name: 'jam_awal'
             },
             {
                 data: 'is_active',
@@ -122,13 +128,63 @@
             success: function(data) {
                 $('#modal-tambah').modal("show");
                 $('.modal-title').text("Edit Data Lokasi");
-                $('#id').val(data.id);
-                $("#nama_lokasi").val(data.nama_lokasi);
-                $("#qrcode").val(data.qrcode);
-                $("#latitude").val(data.latitude);
-                $("#longitude").val(data.longitude);
+                $('#id').val(data.data.id);
+                $("#nama_lokasi").val(data.data.nama_lokasi);
+                $("#qrcode").val(data.data.qrcode);
+                $("#latitude").val(data.data.latitude);
+                $("#longitude").val(data.data.longitude);
+                show_editted_jam(data.awal, data.akhir);
             }
         })
+    }
+
+    function show_editted_jam(jam_awal, jam_akhir) {
+        countIndex = 0;
+        $("#container-jam").html('');
+        if (jam_awal.length > 0) {
+            
+           
+           
+            for (var i = 0; i < jam_awal.length; i++) {
+                countIndex++;
+                var html = '';
+                html += `<div class="row mt-2" id="row_${countIndex}">
+            <div class="col-md-5">
+                <label for="jam_awal" class="form-label">Jam Awal</label>
+                <input value="${jam_awal[i]}" type="time" id="jam_awal_${countIndex}" name="jam_awal[]" class="form-control"
+                    step="1">
+            </div>
+            <div class="col-md-5">
+                <label for="jam_akhir" class="form-label">Jam Akhir</label>
+                <input value="${jam_akhir[i]}" type="time" id="jam_akhir_${countIndex}" name="jam_akhir[]" class="form-control"
+                    step="1">
+            </div>
+            <div class="col-md-1" >
+                <center>
+                    <button type="button" onclick="tambahJam()" title="Edit Data"
+                        class="me-0 btn btn-insoft btn-jam btn-success"><i
+                            class="bi bi-plus-lg"></i></button>
+                    
+                </center>
+            </div>
+           <div class="col-md-1" style="margin-left: -5px;">
+                <center>
+
+                    <button type="button" onclick="hapusJam(${countIndex})" title="Hapus Data"
+                        class="btn btn-insoft btn-jam btn-danger"><i
+                            class="bi bi-trash3"></i></button>
+                </center>
+            </div>
+        </div>`;
+
+                $("#container-jam").append(html);
+                
+            }
+
+             
+        } else {
+            tambahJam();
+        }
     }
 
     function activate(id, active) {
@@ -205,6 +261,54 @@
         $("#nama_lokasi").val(null);
         $("#latitude").val("");
         $("#longitude").val("");
+        $("#container-jam").children().not("#row_1").remove();
+        countIndex = 1;
+        $("#jam_awal_1").val("");
+        $("#jam_akhir_1").val("");
 
+
+    }
+
+
+
+    function tambahJam() {
+        countIndex++;
+
+        var html = '';
+        html += `<div class="row mt-2" id="row_${countIndex}">
+            <div class="col-md-5">
+                <label for="jam_awal" class="form-label">Jam Awal</label>
+                <input type="time" id="jam_awal_${countIndex}" name="jam_awal[]" class="form-control"
+                    step="1">
+            </div>
+            <div class="col-md-5">
+                <label for="jam_akhir" class="form-label">Jam Akhir</label>
+                <input type="time" id="jam_akhir_${countIndex}" name="jam_akhir[]" class="form-control"
+                    step="1">
+            </div>
+            <div class="col-md-1" >
+                <center>
+                    <button type="button" onclick="tambahJam()" title="Edit Data"
+                        class="me-0 btn btn-insoft btn-jam btn-success"><i
+                            class="bi bi-plus-lg"></i></button>
+                    
+                </center>
+            </div>
+           <div class="col-md-1" style="margin-left: -5px;">
+                <center>
+
+                    <button type="button" onclick="hapusJam(${countIndex})" title="Hapus Data"
+                        class="btn btn-insoft btn-jam btn-danger"><i
+                            class="bi bi-trash3"></i></button>
+                </center>
+            </div>
+        </div>`;
+
+        $("#container-jam").append(html);
+    }
+
+
+    function hapusJam(index) {
+        $("#row_" + index).remove();
     }
 </script>

@@ -28,6 +28,7 @@
                                         <th class="text-center">Aksi</th>
                                         <th>QRCODE</th>
                                         <th>Nama Lokasi</th>
+                                        <th>Jam Patroli</th>
                                         <th>Status</th>
                                         <th>Latitude</th>
                                         <th>Longitude</th>

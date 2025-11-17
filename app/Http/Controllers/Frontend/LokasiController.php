@@ -36,6 +36,20 @@ class LokasiController extends Controller
                 ->addColumn('longitude', function ($row) {
                     return $row->longitude == null ? 'Belum Diset' : $row->longitude;
                 })
+                ->addColumn('jam_awal', function($row){
+                    $html = '<ul>';
+                    if($row->jam_awal == null && $row->jam_akhir == null) {} 
+                    else {
+                        $jam_awal_arr = explode(",", $row->jam_awal);
+                        $jam_akhir_arr = explode(",", $row->jam_akhir);
+                        foreach($jam_awal_arr as $arrIndex => $jarr) {
+                            $html .= '<li>'.$jarr.'-'.$jam_akhir_arr[$arrIndex].'</li>';
+                        }
+                        
+                    }
+                    $html .= '</ul>';
+                    return $html;
+                })
                 ->addColumn('action', function ($row) {
                     $button = '';
                     $button .= '<center>';
@@ -51,7 +65,7 @@ class LokasiController extends Controller
                     $button .= '</center>';
                     return $button;
                 })
-                ->rawColumns(['action', 'is_active'])
+                ->rawColumns(['action', 'is_active','jam_awal'])
                 ->make(true);
 
             // bi bi-trash3
@@ -81,12 +95,22 @@ class LokasiController extends Controller
         $validated = $request->validate([
             'qrcode' => 'required',
             'nama_lokasi' => 'required|max:100|min:3',
+            'jam_awal.*' => 'required',
+            'jam_akhir.*' => 'required'  
         ]);
 
         // Simpan ke database
         try {
+
+            $jam_awal_str = implode(",", $input['jam_awal']);
+            $jam_akhir_str = implode(",", $input['jam_akhir']);
+
+            $input['jam_awal'] = $jam_awal_str;
+            $input['jam_akhir'] = $jam_akhir_str;
+
             $input['comid'] = $this->comid();
             $input['nama_lokasi'] = strtoupper($request->nama_lokasi);
+
             Lokasi::create($input);
             return response()->json([
                 'success' => true,
@@ -113,7 +137,12 @@ class LokasiController extends Controller
      */
     public function edit(string $id)
     {
-        $data = Lokasi::find($id);
+        $lokasi = Lokasi::find($id);
+        $data['data'] = $lokasi;
+        $jam_awal_arr = explode(",", $lokasi->jam_awal);
+        $jam_akhir_arr = explode(",", $lokasi->jam_akhir);
+        $data['awal'] = $jam_awal_arr;
+        $data['akhir'] = $jam_akhir_arr;
         return $data;
     }
 
@@ -129,10 +158,19 @@ class LokasiController extends Controller
         $validated = $request->validate([
             'qrcode' => 'required',
             'nama_lokasi' => 'required|max:100|min:3',
+            'jam_awal.*' => 'required',
+            'jam_akhir.*' => 'required'  
         ]);
 
         // Simpan ke database
         try {
+
+            $jam_awal_str = implode(",", $input['jam_awal']);
+            $jam_akhir_str = implode(",", $input['jam_akhir']);
+
+            $input['jam_awal'] = $jam_awal_str;
+            $input['jam_akhir'] = $jam_akhir_str;
+
             $input['comid'] = $this->comid();
             $input['nama_lokasi'] = strtoupper($request->nama_lokasi);
             $data->update($input);
