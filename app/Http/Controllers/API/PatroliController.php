@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Ekspedisi;
 use App\Models\Kandang;
 use App\Models\KandangAlarm;
 use App\Models\KandangKipas;
@@ -191,6 +192,19 @@ class PatroliController extends Controller
         ]);
 
         $data = Kandang::where('comid', $request->comid)->get();
+        return response()->json([
+            "success" => true,
+            "data" => $data
+        ]);
+    }
+
+
+    public function getDataEkspedisi(Request $request) {
+        $request->validate([
+            "comid" => 'required'
+        ]);
+
+        $data = Ekspedisi::where('comid', $request->comid)->get();
         return response()->json([
             "success" => true,
             "data" => $data
