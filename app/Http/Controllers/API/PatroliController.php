@@ -580,6 +580,7 @@ class PatroliController extends Controller
                 $photoPath = 'doc/' . $filename;
             }
 
+            $input['foto'] = $photoPath;
             $doc = DocChick::create($input);
 
             return response()->json([
