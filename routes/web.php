@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Frontend\AbsenLocationController;
 use App\Http\Controllers\Frontend\AbsensiController;
 use App\Http\Controllers\Frontend\DashboardController;
+use App\Http\Controllers\Frontend\DocOutController;
 use App\Http\Controllers\Frontend\EkspedisiController;
 use App\Http\Controllers\Frontend\KandangController;
 use App\Http\Controllers\Frontend\LokasiController;
@@ -78,6 +79,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::get('/patroli_kandang_xls', [PatroliKandangController::class, 'exportXls'])->name('patroli.kandang.export.xls');
     Route::get('/patroli_kandang_pdf', [PatroliKandangController::class, 'exportPdf'])->name('patroli.kandang.export.pdf');
+
+    Route::resource('doc_out', DocOutController::class);
+    Route::get('/doc_out_table', [DocOutController::class, 'doc_out_table'])->name('doc.out.table');
+    Route::get('/doc_export_xls', [DocOutController::class, 'export_xls'])->name('doc.export.xls');
+    Route::get('/doc_export_pdf', [DocOutController::class, 'export_pdf'])->name('doc.export.pdf');
     
 });
 

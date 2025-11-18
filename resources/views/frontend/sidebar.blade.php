@@ -32,10 +32,7 @@
                 </a>
             </li>
 
-            <li class="side-nav-title">Menu</li>
-
-
-
+            
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarPagesinvoice" aria-expanded="false"
                     aria-controls="sidebarPagesinvoice" class="side-nav-link">
@@ -87,9 +84,9 @@
                 </a>
                 <div class="collapse" id="sidebarExtendedUI">
                     <ul class="side-nav-second-level">
-                        <li class="side-nav-item">
+                        {{-- <li class="side-nav-item">
                             <a class="side-nav-link" href="{{ url('mesin') }}">Data Mesin</a>
-                        </li>
+                        </li> --}}
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="{{ url('ekspedisi') }}">Data Ekspedisi</a>
                         </li>
@@ -116,6 +113,9 @@
                         </li>
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="{{  url('patroli_kandang') }}">Patroli Kandang</a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a class="side-nav-link" href="{{  url('doc_out') }}">DOC Keluar</a>
                         </li>
                     </ul>
                 </div>
@@ -161,14 +161,14 @@
                 </div>
             </li>
             <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarExtendedUI" aria-expanded="false"
-                    aria-controls="sidebarExtendedUI" class="side-nav-link">
+                <a data-bs-toggle="collapse" href="#sidebarTables" aria-expanded="false"
+                    aria-controls="sidebarTables" class="side-nav-link">
                     <i class=" ri-money-dollar-circle-line"></i>
                     <span>Beli Paket</span>
                     <span class="menu-arrow"></span>
 
                 </a>
-                <div class="collapse" id="sidebarExtendedUI">
+                <div class="collapse" id="sidebarTables">
                     <ul class="side-nav-second-level">
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="apps-invoice-report.html">Invoice Report</a>
