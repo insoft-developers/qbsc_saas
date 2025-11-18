@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\DocChick;
 use App\Models\Ekspedisi;
 use App\Models\Kandang;
 use App\Models\KandangAlarm;
@@ -519,6 +520,72 @@ class PatroliController extends Controller
                 'success' => true,
                 'message' => 'Data patroli tersimpan',
                 'data' => $patroli,
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal simpan data',
+                'error' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function syncDocReport(Request $request) {
+        $input = $request->all();
+        $request->validate([
+            'uuid' => 'required|uuid',
+            'tanggal' => 'required|date',
+            'jam' => 'required',
+            'satpam_id' => 'required',
+            'jumlah' => 'required',
+            'ekspedisi_id' => 'required',
+            'tujuan' => 'nullable',
+            'no_polisi' => 'nullable',
+            'jenis' => 'required',
+            'note' => 'nullable|string',
+            'comid' => 'required',
+            'input_date' => 'required',
+            'foto' => 'nullable|file|mimes:jpg,jpeg,png', // tidak batasi ukuran
+        ]);
+
+        try {
+            $photoPath = null;
+
+            if ($request->hasFile('foto')) {
+                $file = $request->file('foto');
+
+                // Gunakan Intervention Image
+                $manager = new ImageManager(new Driver());
+                $image = $manager->read($file->getRealPath());
+
+                // Resize otomatis jika terlalu besar
+                if ($image->width() > 1280) {
+                    $image->scale(width: 1280);
+                }
+
+                // Tentukan folder penyimpanan
+                $folder = storage_path('app/public/doc');
+                if (!file_exists($folder)) {
+                    mkdir($folder, 0777, true);
+                }
+
+                // Buat nama unik
+                $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $savePath = $folder . '/' . $filename;
+
+                // Simpan langsung (sekali saja)
+                $image->save($savePath, 80); // kualitas 80% untuk kompres <1MB
+
+                // Simpan path relatif ke database
+                $photoPath = 'doc/' . $filename;
+            }
+
+            $doc = DocChick::create($input);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Doc tersimpan',
+                'data' => $doc,
             ]);
         } catch (\Throwable $th) {
             return response()->json([

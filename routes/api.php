@@ -36,6 +36,7 @@ Route::post('/sync_suhu_kandang', [PatroliController::class, 'syncSuhuKandang'])
 Route::post('/sync_kipas_kandang', [PatroliController::class, 'syncKipasKandang']);
 Route::post('/sync_alarm_kandang', [PatroliController::class, 'syncAlarmKandang']);
 Route::post('/sync_lampu_kandang', [PatroliController::class, 'syncLampuKandang']);
+Route::post('/sync_doc_report', [PatroliController::class, 'syncDocReport']);
 
 
 
