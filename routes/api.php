@@ -6,7 +6,6 @@ use App\Http\Controllers\API\ValidateLocationController;
 use App\Http\Controllers\API\AbsenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+Route::get('/shift_testing', [ValidateLocationController::class, 'testing']);
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/verify_face', [AbsenController::class, 'verifyFace']);

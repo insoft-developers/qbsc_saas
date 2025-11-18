@@ -155,7 +155,7 @@
                             <a class="side-nav-link" href="{{ url('absen_location') }}">Lokasi Absen</a>
                         </li>
                         <li class="side-nav-item">
-                            <a class="side-nav-link" href="apps-invoice.html">Invoice</a>
+                            <a class="side-nav-link" href="{{ url('jam_shift') }}">Jam Shift</a>
                         </li>
                     </ul>
                 </div>

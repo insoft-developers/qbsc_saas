@@ -6,6 +6,7 @@ use App\Http\Controllers\Frontend\AbsensiController;
 use App\Http\Controllers\Frontend\DashboardController;
 use App\Http\Controllers\Frontend\DocOutController;
 use App\Http\Controllers\Frontend\EkspedisiController;
+use App\Http\Controllers\Frontend\JamShiftController;
 use App\Http\Controllers\Frontend\KandangController;
 use App\Http\Controllers\Frontend\LokasiController;
 use App\Http\Controllers\Frontend\MesinController;
@@ -84,6 +85,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/doc_out_table', [DocOutController::class, 'doc_out_table'])->name('doc.out.table');
     Route::get('/doc_export_xls', [DocOutController::class, 'export_xls'])->name('doc.export.xls');
     Route::get('/doc_export_pdf', [DocOutController::class, 'export_pdf'])->name('doc.export.pdf');
+
+    Route::resource('jam_shift', JamShiftController::class);
+    Route::get('/jam_shift_table', [JamShiftController::class, 'jam_shift_table'])->name('jam.shift.table');
+
     
 });
 

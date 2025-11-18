@@ -14,9 +14,8 @@ class AbsenController extends Controller
     {
         $face_url = config('services.face_api.url');
 
-        
         $request->validate([
-            'image' => 'required|image|max:10240', // max 10MB
+            'image' => 'required|image|max:10240',
             'user_id' => 'required|integer',
             'absen_model' => 'required',
         ]);
@@ -25,7 +24,6 @@ class AbsenController extends Controller
         $file = $request->file('image');
         $model = $request->absen_model;
 
-        // Ambil embedding lama dari DB
         $user = Satpam::find($userId);
         if (!$user || !$user->face_embedding) {
             return response()->json(
@@ -39,9 +37,7 @@ class AbsenController extends Controller
 
         $storedEmbedding = $user->face_embedding;
 
-        // Kirim gambar + embedding lama ke Flask /verify
-        $response = Http::attach('image', file_get_contents($file->getRealPath()), $file->getClientOriginalName())->post($face_url.'/verify', [
-            // pastikan dikirim sebagai JSON string, bukan string biasa
+        $response = Http::attach('image', file_get_contents($file->getRealPath()), $file->getClientOriginalName())->post($face_url . '/verify', [
             'stored_embedding' => json_encode(json_decode($storedEmbedding)),
         ]);
 
@@ -63,21 +59,10 @@ class AbsenController extends Controller
         $jam = date('Y-m-d H:i:s');
         if ($matched) {
             if ($model == 'masuk') {
-                // $absensi = Absensi::where('satpam_id', $userId)->whereDate('tanggal', $tanggal)->first();
-                // if (!$absensi) {
                 Absensi::create(['tanggal' => $tanggal, 'satpam_id' => $userId, 'latitude' => $request->latitude, 'longitude' => $request->longitude, 'jam_masuk' => $jam, 'status' => 1, 'description' => 'Absensi Berhasil', 'comid' => $user->comid]);
                 $message = 'Absensi masuk berhasil.';
-                // } else {
-                //     $absensi->latitude = $request->latitude;
-                //     $absensi->longitude = $request->longitude;
-                //     $absensi->jam_masuk = $jam;
-                //     $absensi->save();
-                //     $message = 'Absensi masuk diupdate';
-                // }
             } else {
-                $absensi = Absensi::where('satpam_id', $userId)->where('status', 1)
-                ->whereNull('jam_keluar')
-                ->orderBy('id', 'desc')->first();
+                $absensi = Absensi::where('satpam_id', $userId)->where('status', 1)->whereNull('jam_keluar')->orderBy('id', 'desc')->first();
 
                 if ($absensi) {
                     $absensi->jam_keluar = date('Y-m-d H:i:s');
@@ -96,6 +81,7 @@ class AbsenController extends Controller
                 'message' => $message,
             ]);
         }
+
         return response()->json(['success' => false, 'matched' => false, 'distance' => $distance, 'message' => 'Wajah tidak cocok. Absensi gagal.']);
     }
 
@@ -103,9 +89,7 @@ class AbsenController extends Controller
     {
         $input = $request->all();
 
-        $data = Absensi::where('satpam_id', $input['satpam_id'])
-        ->orderBy('id','desc')
-        ->first();
+        $data = Absensi::where('satpam_id', $input['satpam_id'])->orderBy('id', 'desc')->first();
         if ($data) {
             return response()->json([
                 'success' => true,

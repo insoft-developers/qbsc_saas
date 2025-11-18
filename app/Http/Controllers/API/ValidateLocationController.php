@@ -6,11 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Models\AbsenLocation;
 use App\Models\Lokasi;
 use App\Models\Satpam;
+use App\Traits\CommonTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ValidateLocationController extends Controller
 {
+    use CommonTrait;
+    public function testing() {
+        $clockIn = '17:55:01';
+        $comid = 1;
+        $data = $this->shiftDetection($clockIn, $comid);
+        dd($data);
+    }
+    
     public function updateCoordinates(Request $request) {
         $request->validate([
             "comid" => 'required',

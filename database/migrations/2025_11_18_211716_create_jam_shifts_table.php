@@ -1,0 +1,35 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('jam_shifts', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->time('jam_masuk_awal')->nullable();
+            $table->time('jam_masuk');
+            $table->time('jam_masuk_akhir')->nullable();
+            $table->time('jam_pulang_awal')->nullable();
+            $table->time('jam_pulang');
+            $table->time('jam_pulang_akhir')->nullable();
+            $table->integer('comid');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('jam_shifts');
+    }
+};
