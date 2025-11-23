@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Absensi;
+use App\Models\JamShift;
 use App\Models\Satpam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -59,7 +60,13 @@ class AbsenController extends Controller
         $jam = date('Y-m-d H:i:s');
         if ($matched) {
             if ($model == 'masuk') {
-                Absensi::create(['tanggal' => $tanggal, 'satpam_id' => $userId, 'latitude' => $request->latitude, 'longitude' => $request->longitude, 'jam_masuk' => $jam, 'status' => 1, 'description' => 'Absensi Berhasil', 'comid' => $user->comid]);
+                $myShift = JamShift::find($request->shift_id);
+
+                $shift_id = $myShift->id ?? null;
+                $nama_shift = $myShift->name ?? null;
+                $jam_masuk_shift = $myShift->jam_masuk ?? null;
+                $jam_pulang_shift = $myShift->jam_pulang ?? null;
+                Absensi::create(['tanggal' => $tanggal, 'satpam_id' => $userId, 'latitude' => $request->latitude, 'longitude' => $request->longitude, 'jam_masuk' => $jam, 'shift_id' => $shift_id, 'shift_name' => $nama_shift, 'jam_setting_masuk' => $jam_masuk_shift, 'jam_setting_pulang' => $jam_pulang_shift, 'status' => 1, 'description' => 'Absensi Berhasil', 'comid' => $user->comid]);
                 $message = 'Absensi masuk berhasil.';
             } else {
                 $absensi = Absensi::where('satpam_id', $userId)->where('status', 1)->whereNull('jam_keluar')->orderBy('id', 'desc')->first();
@@ -107,4 +114,17 @@ class AbsenController extends Controller
             ]);
         }
     }
+
+    public function getDataShift(Request $request)
+    {
+        $input = $request->all();
+        $data = JamShift::where('comid', $input['comid'])->get();
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ]);
+    }
+
+    
 }
+

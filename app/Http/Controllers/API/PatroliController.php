@@ -591,7 +591,7 @@ class PatroliController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal simpan data',
+                'message' => $th->getMessage(),
                 'error' => $th->getMessage(),
             ]);
         }

@@ -22,6 +22,7 @@ Route::get('/shift_testing', [ValidateLocationController::class, 'testing']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/verify_face', [AbsenController::class, 'verifyFace']);
 Route::post('/absen_active', [AbsenController::class, 'absenActive']);
+Route::post('/get_data_shift', [AbsenController::class, 'getDataShift']);
 
 
 Route::post('/location_data', [ValidateLocationController::class, 'locationData']);

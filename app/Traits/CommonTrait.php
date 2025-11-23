@@ -74,7 +74,7 @@ trait CommonTrait
 
             // Cek apakah clock-in ada dalam range shift ini
             if ($clockInAdjusted->between($start, $end)) {
-                return $shift['name']; // return object shift lengkap
+                return $shift; // return object shift lengkap
             }
         }
 
