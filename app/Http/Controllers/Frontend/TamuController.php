@@ -2,17 +2,104 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Exports\SituasiExport;
 use App\Http\Controllers\Controller;
+use App\Models\JamShift;
+use App\Models\LaporanSituasi;
+use App\Models\Satpam;
+use App\Models\Tamu;
+use App\Traits\CommonTrait;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
 
 class TamuController extends Controller
 {
+    use CommonTrait;
+    public function tamu_table(Request $request)
+    {
+        if ($request->ajax()) {
+            $comid = $this->comid();
+            $query = Tamu::where('comid', $comid)->with(['satpam:id,name', 'company:id,company_name']);
+            if ($request->start_date && $request->end_date) {
+                $start = Carbon::parse($request->start_date)->startOfDay();
+                $end = Carbon::parse($request->end_date)->endOfDay();
+
+                $query->whereBetween('created_at', [$start, $end]);
+            }
+
+            if ($request->satpam_id) {
+                $query->where('satpam_id', $request->satpam_id);
+            }
+            $query->orderBy('created_at', 'desc');
+            return DataTables::of($query)
+                ->addIndexColumn()
+
+                ->addColumn('action', function ($row) {
+                    $button = '';
+                    $button .= '<center>';
+                    $button .= '<a href="' . url('copy_link_tamu/' . $row->uuid) . '" title="Copy Link QRCode" class="me-0 btn btn-insoft btn-light border-1"><i class="bi bi-qr-code"></i></a>';
+                    $button .= '<button onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
+                    $button .= '<button onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
+                    $button .= '</center>';
+                    return $button;
+                })
+                ->addColumn('created_at', function ($row) {
+                    return date('d-m-Y H:i', strtotime($row->created_at));
+                })
+                ->addColumn('satpam_id', function ($row) {
+                    return $row->satpam->name ?? '';
+                })
+                ->addColumn('is_status', function ($row) {
+                    if ($row->is_status == 1) {
+                        return 'Appointment';
+                    } elseif ($row->is_status == 2) {
+                        return 'Tiba';
+                    } elseif ($row->is_status == 3) {
+                        return 'Pulang';
+                    }
+                })
+                ->addColumn('catatan', function($row){
+                    return '<div style="white-space:normal;width:200px;">'.$row->catatan.'</div>';
+                })
+                ->addColumn('nama_tamu', function($row){
+                    return '<div style="white-space:normal;width:200px;">'.$row->nama_tamu.'</div>';
+                })
+
+                ->addColumn('tujuan', function($row){
+                    return '<div style="white-space:normal;width:150px;">'.$row->tujuan.'</div>';
+                })
+                ->addColumn('foto', function ($row) {
+                    if (!empty($row->foto)) {
+                        $url = asset('storage/' . $row->foto);
+                        return '<a href="' . asset('storage/' . $row->foto) . '" target="_blank"><img  style="cursor:pointer;" src="' . $url . '" alt="Foto" width="50" height="50" class="rounded-circle border"></a>';
+                    } else {
+                        return '-';
+                    }
+                })
+
+                ->addColumn('comid', function ($row) {
+                    return $row->company->company_name ?? '';
+                })
+
+                ->rawColumns(['action', 'foto','catatan','nama_tamu','tujuan'])
+                ->make(true);
+
+            // bi bi-trash3
+        }
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $view = 'laporan-tamu';
+        $satpams = Satpam::where('comid', $this->comid())->get();
+        return view('frontend.laporan.tamu.tamu', compact('view', 'satpams'));
     }
 
     /**
@@ -28,7 +115,32 @@ class TamuController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+        $validated = $request->validate([
+            'nama_tamu' => 'required|string|max:100',
+            'jumlah_tamu' => 'required',
+            'tujuan' => 'required',
+            'whatsapp' => 'nullable',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        // Simpan foto ke storage
+        $path = null;
+
+        if ($request->hasFile('foto')) {
+            $path = $request->file('foto')->store('tamu', 'public');
+        }
+
+        // Simpan ke database
+        $input['foto'] = $path;
+        $input['uuid'] = Str::uuid();
+        $input['is_status'] = 1;
+        $input['comid'] = $this->comid();
+        Tamu::create($input);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data berhasil disimpan.',
+        ]);
     }
 
     /**
@@ -42,17 +154,49 @@ class TamuController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
+    public function edit(string $id) {
+        return Tamu::find($id);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+    public function update(Request $request, string $id) {
+        $input = $request->all();
+        $validated = $request->validate([
+            'nama_tamu' => 'required|string|max:100',
+            'jumlah_tamu' => 'required',
+            'tujuan' => 'required',
+            'whatsapp' => 'nullable',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $data = Tamu::find($id);
+
+        // Simpan foto ke storage
+        $path = $data->foto;
+
+        // Jika ada foto baru diupload
+        if ($request->hasFile('foto')) {
+            // Hapus foto lama jika ada
+            if ($data->foto && Storage::disk('public')->exists($data->foto)) {
+                Storage::disk('public')->delete($data->foto);
+            }
+
+            // Upload foto baru
+            $path = $request->file('foto')->store('tamu', 'public');
+        }
+
+        // Simpan ke database
+        $input['foto'] = $path;
+        $data->update($input);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data berhasil disimpan.',
+        ]);
+
+
+        
     }
 
     /**
@@ -60,6 +204,40 @@ class TamuController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        return LaporanSituasi::destroy($id);
+    }
+
+    public function export_xls(Request $request)
+    {
+        return Excel::download(new SituasiExport($request->start_date ?: null, $request->end_date ?: null, $request->satpam_id ?: null), 'Laporan Situasi.xlsx');
+    }
+
+    public function export_pdf(Request $request)
+    {
+        $query = LaporanSituasi::where('comid', $this->comid())->with(['satpam', 'company']);
+
+        if ($request->start_date && $request->end_date) {
+            $start = Carbon::parse($request->start_date)->startOfDay();
+            $end = Carbon::parse($request->end_date)->endOfDay();
+
+            $query->whereBetween('tanggal', [$start, $end]);
+        }
+
+        if ($request->satpam_id) {
+            $query->where('satpam_id', $request->satpam_id);
+        }
+
+        $data = $query->get();
+
+        $pdf = Pdf::loadView('frontend.laporan.situasi.pdf', compact('data'))->setPaper('a4', 'landscape');
+
+        return $pdf->stream('Laporan Situasi.pdf');
+    }
+
+
+    public function copy_link_tamu($uuid) {
+
+        $tamu = Tamu::with('company')->where('uuid', $uuid)->where('is_status','<',3)->first();
+        return view('frontend.laporan.tamu.qrcode', compact('tamu'));
     }
 }

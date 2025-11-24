@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Exports\SituasiExport;
 use App\Http\Controllers\Controller;
 use App\Models\JamShift;
 use App\Models\LaporanSituasi;
+use App\Models\Satpam;
 use App\Traits\CommonTrait;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class LaporanSituasiController extends Controller
@@ -16,8 +21,22 @@ class LaporanSituasiController extends Controller
     {
         if ($request->ajax()) {
             $comid = $this->comid();
-            $data = LaporanSituasi::where('comid', $comid);
-            return DataTables::of($data)
+            $query = LaporanSituasi::where('comid', $comid)->with(['satpam:id,name', 'company:id,company_name']);
+            if ($request->start_date && $request->end_date) {
+                $start = Carbon::parse($request->start_date)->startOfDay();
+                $end = Carbon::parse($request->end_date)->endOfDay();
+
+                $query->whereBetween('tanggal', [$start, $end]);
+            }
+
+            if ($request->satpam_id) {
+                $query->where('satpam_id', $request->satpam_id);
+            }
+            if ($request->ekspedisi_id) {
+                $query->where('ekspedisi_id', $request->ekspedisi_id);
+            }
+            $query->orderBy('tanggal', 'desc');
+            return DataTables::of($query)
                 ->addIndexColumn()
 
                 ->addColumn('action', function ($row) {
@@ -68,7 +87,7 @@ class LaporanSituasiController extends Controller
                     return $row->company->company_name ?? '';
                 })
 
-                ->rawColumns(['action', 'laporan','foto'])
+                ->rawColumns(['action', 'laporan', 'foto'])
                 ->make(true);
 
             // bi bi-trash3
@@ -80,7 +99,8 @@ class LaporanSituasiController extends Controller
     public function index()
     {
         $view = 'laporan-situasi';
-        return view('frontend.laporan.situasi.situasi', compact('view'));
+        $satpams = Satpam::where('comid', $this->comid())->get();
+        return view('frontend.laporan.situasi.situasi', compact('view', 'satpams'));
     }
 
     /**
@@ -94,10 +114,7 @@ class LaporanSituasiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-       
-    }
+    public function store(Request $request) {}
 
     /**
      * Display the specified resource.
@@ -110,18 +127,12 @@ class LaporanSituasiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-       
-    }
+    public function edit(string $id) {}
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-       
-    }
+    public function update(Request $request, string $id) {}
 
     /**
      * Remove the specified resource from storage.
@@ -129,5 +140,33 @@ class LaporanSituasiController extends Controller
     public function destroy(string $id)
     {
         return LaporanSituasi::destroy($id);
+    }
+
+
+    public function export_xls(Request $request)
+    {
+        return Excel::download(new SituasiExport($request->start_date ?: null, $request->end_date ?: null, $request->satpam_id ?: null), 'Laporan Situasi.xlsx');
+    }
+
+    public function export_pdf(Request $request)
+    {
+        $query = LaporanSituasi::where('comid', $this->comid())->with(['satpam', 'company']);
+
+        if ($request->start_date && $request->end_date) {
+            $start = Carbon::parse($request->start_date)->startOfDay();
+            $end = Carbon::parse($request->end_date)->endOfDay();
+
+            $query->whereBetween('tanggal', [$start, $end]);
+        }
+
+        if ($request->satpam_id) {
+            $query->where('satpam_id', $request->satpam_id);
+        }
+
+        $data = $query->get();
+
+        $pdf = Pdf::loadView('frontend.laporan.situasi.pdf', compact('data'))->setPaper('a4', 'landscape');
+
+        return $pdf->stream('Laporan Situasi.pdf');
     }
 }

@@ -10,8 +10,10 @@
 
                 <!-- Page Header -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="mb-0 fw-bold">Laporan Situasi</h4>
-                    
+                    <h4 class="mb-0 fw-bold">Laporan Tamu</h4>
+                    <button type="button" class="btn btn-info btn-sm rounded-pill" onclick="tambah_data()">
+                        <i class="bi bi-plus-lg me-1"></i> Tambah Tamu
+                    </button>
                 </div>
 
                 <!-- Data Table -->
@@ -70,10 +72,16 @@
                                         <th>ID</th>
                                         <th class="text-center" width="5%">No</th>
                                         <th class="text-center">Aksi</th>
-                                        <th width="10%">Nama Satpam</th>
-                                        <th>Waktu</th>
-                                        <th width="50%">Laporan</th>
-                                        <th width="10%">Foto</th>
+                                        <th>Tanggal</th>
+                                        <th>Nama Tamu</th>
+                                        <th>Jumlah</th>
+                                        <th>Tujuan</th>
+                                        <th>Whatsapp</th>
+                                        <th>Tiba</th>
+                                        <th>Pulang</th>
+                                        <th>Status</th>
+                                        <th>Foto</th>
+                                        <th>Catatan</th>
                                         <th width="10%">Perusahaan</th>
                                         
                                     </tr>
@@ -93,9 +101,9 @@
     <!-- End Page Content -->
     <!-- ============================================================== -->
 
-
+    @include('frontend.laporan.tamu.modal')
 @endsection
 
 @push('scripts')
-    @include('frontend.laporan.situasi.situasi_js')
+    @include('frontend.laporan.tamu.tamu_js')
 @endpush

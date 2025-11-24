@@ -3,7 +3,7 @@
         processing: true,
         serverSide: true,
         ajax: {
-            url: "{{ route('laporan.situasi.table') }}",
+            url: "{{ route('tamu.table') }}",
             data: function(d) {
                 d.start_date = $('#filter_start').val();
                 d.end_date = $('#filter_end').val();
@@ -33,20 +33,44 @@
                 searchable: false
             },
             {
-                data: 'satpam_id',
-                name: 'satpam_id'
+                data: 'created_at',
+                name: 'created_at'
             },
             {
-                data: 'tanggal',
-                name: 'tanggal'
+                data: 'nama_tamu',
+                name: 'nama_tamu'
             },
             {
-                data: 'laporan',
-                name: 'laporan'
+                data: 'jumlah_tamu',
+                name: 'jumlah_tamu'
+            },
+            {
+                data: 'tujuan',
+                name: 'tujuan'
+            },
+            {
+                data: 'whatsapp',
+                name: 'whatsapp'
+            },
+            {
+                data: 'arrive_at',
+                name: 'arrive_at'
+            },
+            {
+                data: 'leave_at',
+                name: 'leave_at'
+            },
+            {
+                data: 'is_status',
+                name: 'is_status'
             },
             {
                 data: 'foto',
                 name: 'foto'
+            },
+            {
+                data: 'catatan',
+                name: 'catatan'
             },
             {
                 data: 'comid',
@@ -56,6 +80,86 @@
         ]
     });
 
+    function tambah_data() {
+        save_method = "add";
+        $('input[name=_method]').val('POST');
+        $(".modal-title").text("Tambah Tamu");
+        resetForm();
+        $("#modal-tambah").modal("show");
+    }
+
+    $("#form-tambah").submit(function(e) {
+        e.preventDefault();
+        loading("btn-save-data");
+        var id = $('#id').val();
+        if (save_method == "add") url = "{{ url('tamu') }}";
+        else url = "{{ url('tamu') . '/' }}" + id;
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: new FormData($('#modal-tambah form')[0]),
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                if (data.success) {
+                    $('#modal-tambah').modal('hide');
+                    reloadTable();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: data.message,
+                        showConfirmButton: false,
+                        scrollbarPadding: false,
+                    });
+                }
+            },
+            error: function(xhr) {
+                if (xhr.status === 422) {
+                    let errors = xhr.responseJSON.errors;
+                    let msg = Object.values(errors).map(e => e[0]).join('<br>');
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Validasi Gagal',
+                        html: msg
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Terjadi kesalahan: ' + xhr.responseJSON?.message
+                    });
+                }
+            },
+            complete: function() {
+                $('#btn-save-data').prop('disabled', false).text('Simpan');
+            }
+
+        });
+    });
+
+
+    function editData(id) {
+        save_method = "edit";
+        $('input[name=_method]').val('PATCH');
+        $.ajax({
+            url: "{{ url('/tamu') }}" + "/" + id + "/edit",
+            type: "GET",
+            dataType: "JSON",
+            success: function(data) {
+                $('#modal-tambah').modal("show");
+                $('.modal-title').text("Edit Tamu");
+                $('#id').val(data.id);
+                $("#nama_tamu").val(data.nama_tamu);
+                $("#jumlah_tamu").val(data.jumlah_tamu);
+                $("#tujuan").val(data.tujuan);
+                $("#whatsapp").val(data.whatsapp);
+                $("#foto").val(null);
+                $("#catatan").val(data.catatan);
+            }
+        })
+    }
+
+    
 
     $('#btnFilter').on('click', function() {
         table.ajax.reload();
@@ -130,6 +234,10 @@
         table.ajax.reload(null, false);
     }
 
+    function resetForm() {
+       $('#form-tambah')[0].reset();
+
+    }
     
 
     $(document).on('click', '.read-more', function() {

@@ -14,6 +14,7 @@ use App\Http\Controllers\Frontend\MesinController;
 use App\Http\Controllers\Frontend\PatroliController;
 use App\Http\Controllers\Frontend\PatroliKandangController;
 use App\Http\Controllers\Frontend\SatpamController;
+use App\Http\Controllers\Frontend\TamuController;
 use App\Http\Controllers\Frontend\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/activate/{token}', [RegisteredUserController::class, 'activate'])->name('activate');
+Route::get('/copy_link_tamu/{uuid}', [TamuController::class, 'copy_link_tamu']);
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -92,6 +94,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::resource('laporan_situasi', LaporanSituasiController::class);
     Route::get('/laporan_situasi_table', [LaporanSituasiController::class, 'laporan_situasi_table'])->name('laporan.situasi.table');
+    Route::get('/situasi_export_xls', [LaporanSituasiController::class, 'export_xls'])->name('situasi.export.xls');
+    Route::get('/situasi_export_pdf', [LaporanSituasiController::class, 'export_pdf'])->name('situasi.export.pdf');
+
+    Route::resource('tamu', TamuController::class);
+    Route::get('/tamu_table', [TamuController::class, 'tamu_table'])->name('tamu.table');
 
     
 });
