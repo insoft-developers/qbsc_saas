@@ -8,6 +8,7 @@ use App\Http\Controllers\Frontend\DocOutController;
 use App\Http\Controllers\Frontend\EkspedisiController;
 use App\Http\Controllers\Frontend\JamShiftController;
 use App\Http\Controllers\Frontend\KandangController;
+use App\Http\Controllers\Frontend\LaporanSituasiController;
 use App\Http\Controllers\Frontend\LokasiController;
 use App\Http\Controllers\Frontend\MesinController;
 use App\Http\Controllers\Frontend\PatroliController;
@@ -88,6 +89,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::resource('jam_shift', JamShiftController::class);
     Route::get('/jam_shift_table', [JamShiftController::class, 'jam_shift_table'])->name('jam.shift.table');
+
+    Route::resource('laporan_situasi', LaporanSituasiController::class);
+    Route::get('/laporan_situasi_table', [LaporanSituasiController::class, 'laporan_situasi_table'])->name('laporan.situasi.table');
 
     
 });
