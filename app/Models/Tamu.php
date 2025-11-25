@@ -17,8 +17,18 @@ class Tamu extends Model
         return $this->belongsTo(Satpam::class, 'satpam_id', 'id');
     }
 
+    public function satpam_pulang():BelongsTo
+    {
+        return $this->belongsTo(Satpam::class, 'satpam_id_pulang', 'id');
+    }
+
     public function company():BelongsTo
     {
         return $this->belongsTo(Company::class, 'comid','id');
+    }
+
+    public function user():BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 }

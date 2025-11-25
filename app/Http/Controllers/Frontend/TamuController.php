@@ -8,10 +8,12 @@ use App\Models\JamShift;
 use App\Models\LaporanSituasi;
 use App\Models\Satpam;
 use App\Models\Tamu;
+use App\Models\User;
 use App\Traits\CommonTrait;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
@@ -33,8 +35,19 @@ class TamuController extends Controller
             }
 
             if ($request->satpam_id) {
-                $query->where('satpam_id', $request->satpam_id);
+                $query->where(function ($q) use ($request) {
+                    $q->where('satpam_id', $request->satpam_id)->orWhere('satpam_id_pulang', $request->satpam_id);
+                });
             }
+
+            if($request->user_id) {
+                if($request->user_id == -1) {
+                    $query->whereNull('created_by');
+                } else {
+                    $query->where('created_by', $request->user_id);
+                }
+            }
+
             $query->orderBy('created_at', 'desc');
             return DataTables::of($query)
                 ->addIndexColumn()
@@ -42,36 +55,60 @@ class TamuController extends Controller
                 ->addColumn('action', function ($row) {
                     $button = '';
                     $button .= '<center>';
-                    $button .= '<a href="' . url('copy_link_tamu/' . $row->uuid) . '" title="Copy Link QRCode" class="me-0 btn btn-insoft btn-light border-1"><i class="bi bi-qr-code"></i></a>';
-                    $button .= '<button onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
-                    $button .= '<button onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
+                    if ($row->is_status == 1 || $row->is_status == 2) {
+                        if (Auth::user()->id === $row->created_by) {
+                            $button .= '<button title="Copy Link QRCode" class="me-0 btn btn-insoft btn-light border-1 copyLink" data-link="' . url('copy_link_tamu/' . $row->uuid) . '"><i class="bi bi-qr-code"></i></button>';
+                        } else {
+                            $button .= '<button disabled title="Copy Link QRCode" class="me-0 btn btn-insoft btn-light border-1"><i class="bi bi-qr-code"></i></button>';
+                        }
+                    } else {
+                        $button .= '<button disabled title="Copy Link QRCode" class="me-0 btn btn-insoft btn-light border-1"><i class="bi bi-qr-code"></i></button>';
+                    }
+
+                    if ($row->created_by === Auth::user()->id) {
+                        $button .= '<button onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
+                        $button .= '<button onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
+                    } else {
+                        $button .= '<button disabled title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
+                        $button .= '<button disabled title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
+                    }
                     $button .= '</center>';
                     return $button;
                 })
                 ->addColumn('created_at', function ($row) {
                     return date('d-m-Y H:i', strtotime($row->created_at));
                 })
+
+                ->addColumn('arrive_at', function ($row) {
+                    return $row->arrive_at == null ? '' : date('d-m-Y H:i', strtotime($row->arrive_at));
+                })
+
+                ->addColumn('leave_at', function ($row) {
+                    return $row->leave_at == null ? '' : date('d-m-Y H:i', strtotime($row->leave_at));
+                })
                 ->addColumn('satpam_id', function ($row) {
-                    return $row->satpam->name ?? '';
+                    $satpam_masuk = $row->satpam->name ?? '';
+                    $satpam_pulang = $row->satpam_pulang->name ?? '';
+                    return '- ' . $satpam_masuk . '<br>- ' . $satpam_pulang;
                 })
                 ->addColumn('is_status', function ($row) {
                     if ($row->is_status == 1) {
-                        return 'Appointment';
+                        return '<div class="badge bg-info">Appointment</div>';
                     } elseif ($row->is_status == 2) {
-                        return 'Tiba';
+                        return '<div class="badge bg-success">Tiba</div>';
                     } elseif ($row->is_status == 3) {
-                        return 'Pulang';
+                        return '<div class="badge bg-danger">Pulang</div>';
                     }
                 })
-                ->addColumn('catatan', function($row){
-                    return '<div style="white-space:normal;width:200px;">'.$row->catatan.'</div>';
+                ->addColumn('catatan', function ($row) {
+                    return '<div style="white-space:normal;width:200px;">' . $row->catatan . '</div>';
                 })
-                ->addColumn('nama_tamu', function($row){
-                    return '<div style="white-space:normal;width:200px;">'.$row->nama_tamu.'</div>';
+                ->addColumn('nama_tamu', function ($row) {
+                    return '<div style="white-space:normal;width:200px;">' . $row->nama_tamu . '</div>';
                 })
 
-                ->addColumn('tujuan', function($row){
-                    return '<div style="white-space:normal;width:150px;">'.$row->tujuan.'</div>';
+                ->addColumn('tujuan', function ($row) {
+                    return '<div style="white-space:normal;width:150px;">' . $row->tujuan . '</div>';
                 })
                 ->addColumn('foto', function ($row) {
                     if (!empty($row->foto)) {
@@ -81,12 +118,14 @@ class TamuController extends Controller
                         return '-';
                     }
                 })
-
+                ->addColumn('created_by', function ($row) {
+                    return $row->user->name ?? '';
+                })
                 ->addColumn('comid', function ($row) {
                     return $row->company->company_name ?? '';
                 })
 
-                ->rawColumns(['action', 'foto','catatan','nama_tamu','tujuan'])
+                ->rawColumns(['action', 'foto', 'catatan', 'nama_tamu', 'tujuan', 'is_status', 'satpam_id'])
                 ->make(true);
 
             // bi bi-trash3
@@ -99,7 +138,8 @@ class TamuController extends Controller
     {
         $view = 'laporan-tamu';
         $satpams = Satpam::where('comid', $this->comid())->get();
-        return view('frontend.laporan.tamu.tamu', compact('view', 'satpams'));
+        $users = User::where('company_id', $this->comid())->get();
+        return view('frontend.laporan.tamu.tamu', compact('view', 'satpams', 'users'));
     }
 
     /**
@@ -136,6 +176,7 @@ class TamuController extends Controller
         $input['uuid'] = Str::uuid();
         $input['is_status'] = 1;
         $input['comid'] = $this->comid();
+        $input['created_by'] = Auth::user()->id;
         Tamu::create($input);
         return response()->json([
             'success' => true,
@@ -154,14 +195,16 @@ class TamuController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id) {
+    public function edit(string $id)
+    {
         return Tamu::find($id);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id) {
+    public function update(Request $request, string $id)
+    {
         $input = $request->all();
         $validated = $request->validate([
             'nama_tamu' => 'required|string|max:100',
@@ -194,9 +237,6 @@ class TamuController extends Controller
             'success' => true,
             'message' => 'Data berhasil disimpan.',
         ]);
-
-
-        
     }
 
     /**
@@ -234,10 +274,9 @@ class TamuController extends Controller
         return $pdf->stream('Laporan Situasi.pdf');
     }
 
-
-    public function copy_link_tamu($uuid) {
-
-        $tamu = Tamu::with('company')->where('uuid', $uuid)->where('is_status','<',3)->first();
+    public function copy_link_tamu($uuid)
+    {
+        $tamu = Tamu::with('company')->where('uuid', $uuid)->where('is_status', '<', 3)->first();
         return view('frontend.laporan.tamu.qrcode', compact('tamu'));
     }
 }

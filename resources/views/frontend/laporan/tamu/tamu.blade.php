@@ -31,16 +31,26 @@
                                         <label for="filter_end" class="form-label mb-0">Sampai Tanggal</label>
                                         <input type="date" id="filter_end" class="form-control form-control-sm">
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <label for="filter_satpam" class="form-label mb-0">Nama Satpam</label>
                                         <select id="filter_satpam" class="form-select form-select-sm">
                                             <option value="">Semua</option>
-                                            @foreach($satpams as $satpam)
-                                            <option value="{{ $satpam->id }}">{{ $satpam->name }}</option>
+                                            @foreach ($satpams as $satpam)
+                                                <option value="{{ $satpam->id }}">{{ $satpam->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                    
+                                    <div class="col-md-2">
+                                        <label for="filter_user" class="form-label mb-0">Dibuat Oleh</label>
+                                        <select id="filter_user" class="form-select form-select-sm">
+                                            <option value="">Semua</option>
+                                            <option value="-1">Satpam</option>
+                                            @foreach ($users as $user)
+                                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
                                     <div class="col-md-3 d-flex gap-1">
                                         <button id="btnFilter" class="btn btn-sm btn-primary flex-fill">
                                             <i class="bi bi-filter me-1"></i> Filter
@@ -81,9 +91,11 @@
                                         <th>Pulang</th>
                                         <th>Status</th>
                                         <th>Foto</th>
+                                        <th>Satpam<br>in/out</th>
                                         <th>Catatan</th>
+                                        <th>Dibuat oleh</th>
                                         <th width="10%">Perusahaan</th>
-                                        
+
                                     </tr>
                                 </thead>
                                 <tbody></tbody>

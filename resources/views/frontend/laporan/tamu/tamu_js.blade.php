@@ -8,7 +8,7 @@
                 d.start_date = $('#filter_start').val();
                 d.end_date = $('#filter_end').val();
                 d.satpam_id = $('#filter_satpam').val();
-               
+                d.user_id = $("#filter_user").val();
             }
         },
         order: [
@@ -69,8 +69,16 @@
                 name: 'foto'
             },
             {
+                data: 'satpam_id',
+                name: 'satpam_id'
+            },
+            {
                 data: 'catatan',
                 name: 'catatan'
+            },
+            {
+                data: 'created_by',
+                name: 'created_by'
             },
             {
                 data: 'comid',
@@ -159,7 +167,7 @@
         })
     }
 
-    
+
 
     $('#btnFilter').on('click', function() {
         table.ajax.reload();
@@ -169,7 +177,8 @@
         $('#filter_start').val('');
         $('#filter_end').val('');
         $('#filter_satpam').val('');
-        
+        $("#filter_user").val('');
+
         table.ajax.reload();
     });
 
@@ -178,7 +187,7 @@
             start_date: $('#filter_start').val() || '',
             end_date: $('#filter_end').val() || '',
             satpam_id: $('#filter_satpam').val() || '',
-           
+
         });
 
         window.location.href = "{{ route('situasi.export.xls') }}?" + params;
@@ -189,7 +198,7 @@
             start_date: $('#filter_start').val() || '',
             end_date: $('#filter_end').val() || '',
             satpam_id: $('#filter_satpam').val() || '',
-            
+
         });
 
         window.location.href = "{{ route('situasi.export.pdf') }}?" + params;
@@ -235,10 +244,10 @@
     }
 
     function resetForm() {
-       $('#form-tambah')[0].reset();
+        $('#form-tambah')[0].reset();
 
     }
-    
+
 
     $(document).on('click', '.read-more', function() {
         let parent = $(this).closest('td');
@@ -252,5 +261,23 @@
         parent.find('.laporan-short').show();
         parent.find('.laporan-full').hide();
         $(this).text('Selengkapnya').removeClass('read-less').addClass('read-more');
+    });
+
+    $(document).on('click', '.copyLink', function() {
+        let link = $(this).data('link');
+
+        let temp = $('<input>');
+        $('body').append(temp);
+        temp.val(link).select();
+        document.execCommand("copy");
+        temp.remove();
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Link QR berhasil disalin!',
+            text: link,
+            timer: 1500,
+            showConfirmButton: false
+        });
     });
 </script>
