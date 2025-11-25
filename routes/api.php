@@ -5,6 +5,7 @@ use App\Http\Controllers\API\PatroliController;
 use App\Http\Controllers\API\ValidateLocationController;
 use App\Http\Controllers\API\AbsenController;
 use App\Http\Controllers\API\LaporanSituasiController;
+use App\Http\Controllers\API\TamuController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 /*
@@ -41,6 +42,8 @@ Route::post('/sync_alarm_kandang', [PatroliController::class, 'syncAlarmKandang'
 Route::post('/sync_lampu_kandang', [PatroliController::class, 'syncLampuKandang']);
 Route::post('/sync_doc_report', [PatroliController::class, 'syncDocReport']);
 Route::post('/laporan_situasi', [LaporanSituasiController::class, 'laporan_situasi']);
+
+Route::post('check_qr_tamu', [TamuController::class, 'checkQrTamu']);
 
 
 
