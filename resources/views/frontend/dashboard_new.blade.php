@@ -88,133 +88,7 @@
              </div><!-- end row -->
 
              <div class="row">
-                 <div class="col-xxl-4 order-1 order-lg-2">
-                     <div class="card">
-                         <div class="card-header d-flex align-items-center">
-                             <div class="flex-grow-1">
-                                 <h4 class="card-title">Orders Status</h4>
-                                 <p class="text-muted fw-semibold mb-0">Your Orders</p>
-                             </div>
-                             <div class="dropdown">
-                                 <a href="#" class="dropdown-toggle arrow-none card-drop"
-                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                     <i class="ri-more-2-fill"></i>
-                                 </a>
-                                 <div class="dropdown-menu dropdown-menu-end">
-                                     <!-- item-->
-                                     <a href="javascript:void(0);" class="dropdown-item">Sales Report</a>
-                                     <!-- item-->
-                                     <a href="javascript:void(0);" class="dropdown-item">Export Report</a>
-                                     <!-- item-->
-                                     <a href="javascript:void(0);" class="dropdown-item">Profit</a>
-                                     <!-- item-->
-                                     <a href="javascript:void(0);" class="dropdown-item">Action</a>
-                                 </div>
-                             </div>
-                         </div>
-                         <div class="card-body p-0">
-                             <div class="timeline-alt p-3">
-                                 <div class="timeline-item">
-                                     <i class="mdi mdi-upload bg-info-subtle text-info timeline-icon"></i>
-                                     <div class="timeline-item-info">
-                                         <a href="javascript:void(0);" class="text-info fw-bold mb-1 d-block">You sold
-                                             an item</a>
-                                         <small>Paul Burgess just purchased “Hyper - Admin
-                                             Dashboard”!</small>
-                                         <p class="mb-0 pb-2">
-                                             <small class="text-muted">5 minutes ago</small>
-                                         </p>
-                                     </div>
-                                 </div>
-
-                                 <div class="timeline-item">
-                                     <i class="mdi mdi-airplane bg-primary-subtle text-primary timeline-icon"></i>
-                                     <div class="timeline-item-info">
-                                         <a href="javascript:void(0);"
-                                             class="text-primary fw-bold mb-1 d-block">Product on the
-                                             Bootstrap Market</a>
-                                         <small>Dave Gamache added
-                                             <span class="fw-bold">Admin Dashboard</span>
-                                         </small>
-                                         <p class="mb-0 pb-2">
-                                             <small class="text-muted">30 minutes ago</small>
-                                         </p>
-                                     </div>
-                                 </div>
-
-                                 <div class="timeline-item">
-                                     <i class="mdi mdi-microphone bg-info-subtle text-info timeline-icon"></i>
-                                     <div class="timeline-item-info">
-                                         <a href="javascript:void(0);" class="text-info fw-bold mb-1 d-block">Robert
-                                             Delaney</a>
-                                         <small>Send you message
-                                             <span class="fw-bold">"Are you there?"</span>
-                                         </small>
-                                         <p class="mb-0 pb-2">
-                                             <small class="text-muted">2 hours ago</small>
-                                         </p>
-                                     </div>
-                                 </div>
-
-                                 <div class="timeline-item">
-                                     <i class="mdi mdi-upload bg-primary-subtle text-primary timeline-icon"></i>
-                                     <div class="timeline-item-info">
-                                         <a href="javascript:void(0);"
-                                             class="text-primary fw-bold mb-1 d-block">Audrey Tobey</a>
-                                         <small>Uploaded a photo
-                                             <span class="fw-bold">"Error.jpg"</span>
-                                         </small>
-                                         <p class="mb-0 pb-2">
-                                             <small class="text-muted">14 hours ago</small>
-                                         </p>
-                                     </div>
-                                 </div>
-
-                                 <div class="timeline-item">
-                                     <i class="mdi mdi-upload bg-info-subtle text-info timeline-icon"></i>
-                                     <div class="timeline-item-info">
-                                         <a href="javascript:void(0);" class="text-info fw-bold mb-1 d-block">You sold
-                                             an item</a>
-                                         <small>Paul Burgess just purchased “Hyper - Admin
-                                             Dashboard”!</small>
-                                         <p class="mb-0 pb-2">
-                                             <small class="text-muted">16 hours ago</small>
-                                         </p>
-                                     </div>
-                                 </div>
-
-                                 <div class="timeline-item">
-                                     <i class="mdi mdi-airplane bg-primary-subtle text-primary timeline-icon"></i>
-                                     <div class="timeline-item-info">
-                                         <a href="javascript:void(0);"
-                                             class="text-primary fw-bold mb-1 d-block">Product on the
-                                             Bootstrap Market</a>
-                                         <small>Dave Gamache added
-                                             <span class="fw-bold">Admin Dashboard</span>
-                                         </small>
-                                         <p class="mb-0 pb-2">
-                                             <small class="text-muted">22 hours ago</small>
-                                         </p>
-                                     </div>
-                                 </div>
-
-                                 <div class="timeline-item">
-                                     <i class="mdi mdi-microphone bg-info-subtle text-info timeline-icon"></i>
-                                     <div class="timeline-item-info">
-                                         <a href="javascript:void(0);" class="text-info fw-bold mb-1 d-block">Robert
-                                             Delaney</a>
-                                         <small>Send you message
-                                             <span class="fw-bold">"Are you there?"</span>
-                                         </small>
-                                         <p class="mb-0">
-                                             <small class="text-muted">2 days ago</small>
-                                         </p>
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
+                 
 
                  <div class="col-xxl-8 order-2 order-lg-1">
                      <div class="card">
@@ -225,8 +99,11 @@
                              </div>
 
                              <div class="">
-                                 <a class="btn btn-outline-primary">
+                                 <a href="{{ url('/absensi') }}" class="btn btn-outline-primary">
                                      Lihat Semua
+                                 </a>
+                                 <a onclick="refresh_absensi()" class="btn btn-outline-success">
+                                     Refresh
                                  </a>
 
                              </div>

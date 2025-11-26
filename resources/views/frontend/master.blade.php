@@ -521,6 +521,17 @@
             const randomNumber = Math.floor(10000000 + Math.random() * 90000000); // 8 digit random
             return prefix + randomNumber;
         }
+
+        function formatTanggal(tanggal) {
+            const [tahun, bulan, hari] = tanggal.split("-");
+            return `${hari}-${bulan}-${tahun}`;
+        }
+
+        function formatTanggalWaktu(tanggalWaktu) {
+            const [tanggal, waktu] = tanggalWaktu.split(" ");
+            const [tahun, bulan, hari] = tanggal.split("-");
+            return `${hari}-${bulan}-${tahun} ${waktu}`;
+        }
     </script>
     @stack('scripts')
 

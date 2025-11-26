@@ -2,6 +2,7 @@
     tampilkan_absensi_satpam();
 
     function tampilkan_absensi_satpam() {
+        $("#table-dashboard-absensi tbody").html('<tr><td colspan="7"><center><p>Refreshing data ....</p></center></td></tr>');
         $.ajax({
             url: "{{ route('tampilkan.absensi.satpam') }}",
             type: "POST",
@@ -14,42 +15,88 @@
                     var absensi = data.data;
                     var html = '';
                     for (var i = 0; i < absensi.length; i++) {
-                        html += `<tr>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <div class="avatar-sm">
-                                    <img style="width:60px;height:50px;" src="{{ asset('storage') }}/` + absensi[i].satpam.face_photo_path + `" 
 
-                                        alt="" class="img-fluid rounded-circle">
-                                </div>
-                                <div class="ps-2">
-                                    <h5 class="mb-1">${absensi[i].satpam.name ?? ''}</h5>
-                                    <p class="text-muted fs-6 mb-0">${absensi[i].satpam.whatsapp ?? ''}</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="fw-semibold">${absensi[i].tanggal}</span>
-                        </td>
-                        <td>
-                            <h5 class="mb-0 ms-1">${absensi[i].shift_name}</h5>
-                        </td>
-                        <td>
-                            <h5 class="mb-0 ms-1">America</h5>
-                        </td>
-                        <td>
-                            <h5 class="mb-0 ms-1">America</h5>
-                        </td>
-                        <td>
-                            <h5 class="mb-0">Wade Warren</h5>
-                        </td>
-                        
-                        <td>
-                            <span class="badge bg-primary-subtle text-primary">Pending
-                                Approval</span>
-                        </td>
+                        if (absensi[i].status == 1) {
+                            $masuk = `
+                            <span class="badge bg-primary-subtle text-primary">
+                                Masuk
+                            </span>`;
+                        } else {
+                            $masuk = `
+                            <span class="badge bg-danger-subtle text-danger">
+                                Pulang
+                            </span>`;
+                        }
 
-                    </tr>`;
+                        if (absensi[i].jam_keluar == null) {
+                            jam_keluar = `<span class="text-danger">-
+                                        </span>`;
+                        } else {
+                            jam_keluar = `<span class="text-danger">
+                                        ${formatTanggalWaktu(absensi[i].jam_keluar)}<br><small class="text-muted">${absensi[i].catatan_keluar}</small>
+                                    </span>`;
+                        }
+
+                        html += `
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm me-2">
+                                            <img 
+                                                src="{{ asset('storage') }}/` + (absensi[i].satpam?.face_photo_path ??
+                            '') + `" 
+                                                alt="Foto Satpam"
+                                                class="rounded-circle shadow-sm"
+                                                style="width: 55px; height: 55px; object-fit: cover;"
+                                            >
+                                        </div>
+
+                                        <div>
+                                            <h6 class="mb-1 fw-semibold">${absensi[i].satpam?.name ?? "-"}</h6>
+                                            <small class="text-muted">
+                                                ${absensi[i].satpam?.whatsapp ?? "-"}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="fw-semibold">
+                                        ${formatTanggal(absensi[i].tanggal)}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="fw-semibold text-dark">
+                                        ${absensi[i].shift_name ?? "-"}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="text-success">
+                                        ${formatTanggalWaktu(absensi[i].jam_masuk)}<br><small class="text-muted">${absensi[i].catatan_masuk}</small>
+                                    </span>
+                                </td>
+
+                                <td>
+                                    ${jam_keluar}
+                                </td>
+
+                                <td>
+                                    <small class="text-muted d-block">
+                                        Lat: ${absensi[i].latitude ?? "-"}
+                                    </small>
+                                    <small class="text-muted d-block">
+                                        Lng: ${absensi[i].longitude ?? "-"}
+                                    </small>
+                                </td>
+
+                                <td class="text-center">
+                                    ${$masuk}
+                                </td>
+                            </tr>
+                            `;
+
 
                         $("#table-dashboard-absensi tbody").html(html);
                     }
@@ -59,5 +106,10 @@
 
             }
         })
+    }
+
+    function refresh_absensi() {
+
+        tampilkan_absensi_satpam();
     }
 </script>
