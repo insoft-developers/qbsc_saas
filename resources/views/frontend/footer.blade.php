@@ -5,7 +5,7 @@
             <div class="col-12 text-center">
                 <script>
                     document.write(new Date().getFullYear())
-                </script> © QBSC - by <b>Insoft Developers</b>
+                </script> © QBSC (QRbased Security Control System) - by <b>Insoft Developers</b>
             </div>
         </div>
     </div>

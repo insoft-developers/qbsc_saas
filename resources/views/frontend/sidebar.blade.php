@@ -161,24 +161,21 @@
                 </div>
             </li>
             <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarTables" aria-expanded="false"
-                    aria-controls="sidebarTables" class="side-nav-link">
-                    <i class=" ri-money-dollar-circle-line"></i>
-                    <span>Beli Paket</span>
-                    <span class="menu-arrow"></span>
+                <a href="{{ url('/emergency') }}" class="side-nav-link">
+                    <i class="ri-dashboard-2-line"></i>
+                    <span> Kontak Darurat </span>
 
                 </a>
-                <div class="collapse" id="sidebarTables">
-                    <ul class="side-nav-second-level">
-                        <li class="side-nav-item">
-                            <a class="side-nav-link" href="apps-invoice-report.html">Invoice Report</a>
-                        </li>
-                        <li class="side-nav-item">
-                            <a class="side-nav-link" href="apps-invoice.html">Invoice</a>
-                        </li>
-                    </ul>
-                </div>
             </li>
+            <li class="side-nav-item">
+                <a href="{{ url('/paket') }}" class="side-nav-link">
+                    <i class="ri-money-dollar-circle-line"></i>
+                    <span> Beli Paket </span>
+
+                </a>
+            </li>
+             
+            
 
 
         </ul>

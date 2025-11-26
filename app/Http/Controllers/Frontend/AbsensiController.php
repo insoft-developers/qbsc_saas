@@ -271,6 +271,6 @@ class AbsensiController extends Controller
 
         $pdf = Pdf::loadView('frontend.aktivitas.absensi.pdf', compact('data'))->setPaper('a4', 'landscape');
 
-        return $pdf->download('Data_Absensi.pdf');
+        return $pdf->stream('Data_Absensi.pdf');
     }
 }

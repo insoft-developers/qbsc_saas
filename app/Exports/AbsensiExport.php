@@ -32,8 +32,8 @@ class AbsensiExport implements FromCollection, WithHeadings, ShouldAutoSize
     {
         // Pilih kolom yang diperlukan saja agar query ringan
         $query = Absensi::select([
-            'id', 'tanggal', 'latitude', 'longitude', 'jam_masuk', 'jam_keluar',
-            'status', 'description', 'satpam_id','comid'
+            'id', 'tanggal', 'latitude', 'longitude','shift_name','jam_setting_masuk', 'jam_masuk', 'jam_setting_pulang', 'jam_keluar',
+            'status', 'catatan_masuk', 'catatan_keluar', 'satpam_id','comid'
         ])
         ->where('comid', $this->comid())
         ->with(['satpam:id,name', 'company:id,company_name']);
@@ -63,10 +63,14 @@ class AbsensiExport implements FromCollection, WithHeadings, ShouldAutoSize
                 'Nama Satpam' => optional($row->satpam)->name ?? '-',
                 'Latitude' => $row->latitude ?? '-',
                 'Longitude' => $row->longitude ?? '-',
+                'Shift' => $row->shift_name,
+                'Jam Shift Masuk' => $row->jam_setting_masuk,
                 'Masuk' => $row->jam_masuk ? date('d-m-Y H:i', strtotime($row->jam_masuk)) : '-',
+                'Jam Shift Keluar' => $row->jam_setting_pulang,
                 'Keluar' => $row->jam_keluar ? date('d-m-Y H:i', strtotime($row->jam_keluar)) : '-',
                 'Status' => $row->status ?? '-',
-                'Keterangan' => $row->description ?? '-',
+                'Catatan Masuk' => $row->catatan_masuk,
+                'Catatan Pulang' => $row->catatan_keluar,
                 'Perusahaan' => $row->company->company_name ?? '', // nanti bisa ditambah kalau sudah ada relasi
             ];
         });
@@ -79,10 +83,14 @@ class AbsensiExport implements FromCollection, WithHeadings, ShouldAutoSize
             'Nama Satpam',
             'Latitude',
             'Longitude',
+            'Shift',
+            'Jam Shift Masuk',
             'Masuk',
+            'Jam Shift Keluar',
             'Keluar',
             'Status',
-            'Keterangan',
+            'Catatan Masuk',
+            'Catatan Pulang',
             'Perusahaan'
         ];
     }

@@ -46,8 +46,20 @@
                 name: 'latitude'
             },
             {
+                data: 'shift_name',
+                name: 'shift_name'
+            },
+            {
+                data: 'jam_setting_masuk',
+                name: 'jam_setting_masuk'
+            },
+            {
                 data: 'jam_masuk',
                 name: 'jam_masuk'
+            },
+            {
+                data: 'jam_setting_pulang',
+                name: 'jam_setting_pulang'
             },
             {
                 data: 'jam_keluar',
@@ -58,8 +70,12 @@
                 name: 'status'
             },
             {
-                data: 'description',
-                name: 'description'
+                data: 'catatan_masuk',
+                name: 'catatan_masuk'
+            },
+            {
+                data: 'catatan_keluar',
+                name: 'catatan_keluar'
             },
 
             {

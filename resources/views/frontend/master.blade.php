@@ -488,7 +488,7 @@
 
     <!-- Apex Charts js -->
     @if ($view == 'dashboard')
-        <script src="{{ asset('template/frontend') }}/assets/vendor/apexcharts/apexcharts.min.js"></script>
+        {{-- <script src="{{ asset('template/frontend') }}/assets/vendor/apexcharts/apexcharts.min.js"></script> --}}
 
         <!-- Vector Map js -->
         <script
@@ -501,7 +501,7 @@
 
 
         <!-- Dashboard App js -->
-        <script src="{{ asset('template/frontend') }}/assets/js/pages/dashboard.js"></script>
+        {{-- <script src="{{ asset('template/frontend') }}/assets/js/pages/dashboard.js"></script> --}}
     @endif
     <!-- App js -->
     <script src="{{ asset('template/frontend') }}/assets/js/app.min.js"></script>

@@ -27,10 +27,14 @@
                 <th>Tanggal</th>
                 <th>Nama Satpam</th>
                 <th>Lokasi</th>
+                <th>Shift</th>
+                <th>Jam Shift Masuk</th>  
                 <th>Masuk</th>
+                <th>Jam Shift Pulang</th>
                 <th>Keluar</th>
                 <th>Status</th>
-                <th>Keterangan</th>
+                <th>Catatan Masuk</th>
+                <th>Catatan Pulang</th>
                 <th>Perusahaan</th>
             </tr>
         </thead>
@@ -41,10 +45,14 @@
                     <td>{{ date('d-m-Y', strtotime($row->tanggal)) }}</td>
                     <td>{{ $row->satpam->name ?? '' }}</td>
                     <td>{{ $row->latitude }} - {{ $row->longitude }}</td>
+                    <td>{{ $row->shift_name }}</td>
+                    <td>{{ $row->jam_setting_masuk }}</td>
                     <td>{{ $row->jam_masuk ? date('d-m-Y H:i', strtotime($row->jam_masuk)) : '' }}</td>
+                    <td>{{ $row->jam_setting_pulang }}</td>
                     <td>{{ $row->jam_keluar ? date('d-m-Y H:i', strtotime($row->jam_keluar)) : '' }}</td>
                     <td>{{ $row->status == 1 ? 'Masuk':'Pulang' }}</td>
-                    <td>{{ $row->description }}</td>
+                    <td>{{ $row->catatan_masuk }}</td>
+                    <td>{{ $row->catatan_keluar }}</td>
                     <td>{{ $row->company->company_name ?? '' }}</td>
                 </tr>
             @endforeach

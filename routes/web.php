@@ -6,6 +6,7 @@ use App\Http\Controllers\Frontend\AbsensiController;
 use App\Http\Controllers\Frontend\DashboardController;
 use App\Http\Controllers\Frontend\DocOutController;
 use App\Http\Controllers\Frontend\EkspedisiController;
+use App\Http\Controllers\Frontend\EmergencyListController;
 use App\Http\Controllers\Frontend\JamShiftController;
 use App\Http\Controllers\Frontend\KandangController;
 use App\Http\Controllers\Frontend\LaporanSituasiController;
@@ -41,6 +42,9 @@ Route::middleware('auth')->group(function () {
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/', [DashboardController::class, 'index']);
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/tampilkan_absensi_satpam', [DashboardController::class, 'tampilkan_absensi_satpam'])->name('tampilkan.absensi.satpam');
+
+
     Route::resource('satpam', SatpamController::class);
     Route::get('/satpam_table', [SatpamController::class, 'satpam_table'])->name('satpam.table');
     Route::post('/activate', [SatpamController::class, 'activate'])->name('satpam.activate');
@@ -101,6 +105,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/tamu_table', [TamuController::class, 'tamu_table'])->name('tamu.table');
     Route::get('/tamu_export_xls', [TamuController::class, 'export_xls'])->name('tamu.export.xls');
     Route::get('/tamu_export_pdf', [TamuController::class, 'export_pdf'])->name('tamu.export.pdf');
+
+    Route::resource('emergency', EmergencyListController::class);
+    Route::get('/emergency_table', [EmergencyListController::class, 'emergency_table'])->name('emergency.table');
 
     
 });
