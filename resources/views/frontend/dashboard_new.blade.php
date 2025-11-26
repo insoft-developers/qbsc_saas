@@ -134,6 +134,54 @@
                      </div>
                  </div><!-- end col-->
              </div>
+
+             <div class="row">
+                 
+
+                 <div class="col-xxl-8 order-2 order-lg-1">
+                     <div class="card">
+                         <div class="card-header d-flex justify-content-between flex-wrap align-items-center">
+                             <div>
+                                 <h4 class="card-title">Patroli Terbaru</h4>
+                                 
+                             </div>
+
+                             <div class="">
+                                 <a href="{{ url('/patroli') }}" class="btn btn-outline-primary">
+                                     Lihat Semua
+                                 </a>
+                                 <a onclick="refresh_patroli()" class="btn btn-outline-success">
+                                     Refresh
+                                 </a>
+
+                             </div>
+                         </div>
+                         <div class="card-body p-0">
+                             <div class="table-responsive">
+                                 <table id="table-dashboard-patroli" class="table align-middle mb-0">
+                                     <thead>
+                                         <tr class="table-light text-capitalize">
+                                             <th>Nama Satpam</th>
+                                             <th>Tanggal</th>
+                                             <th>Jam</th>
+                                             <th>Titik Point</th>
+                                             <th>Lokasi</th>
+                                             <th>Foto</th>
+                                             <th>Keterangan</th>
+                                         </tr>
+                                     </thead>
+                                     <!-- end table heading -->
+
+                                     <tbody>
+                                     </tbody>
+                                     <!-- end table body -->
+                                 </table>
+                                 <!-- end table -->
+                             </div>
+                         </div>
+                     </div>
+                 </div><!-- end col-->
+             </div>
              <!-- end row -->
          </div>
          <!-- end container -->

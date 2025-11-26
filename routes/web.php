@@ -43,6 +43,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/', [DashboardController::class, 'index']);
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/tampilkan_absensi_satpam', [DashboardController::class, 'tampilkan_absensi_satpam'])->name('tampilkan.absensi.satpam');
+    Route::post('/tampilkan_patroli_satpam', [DashboardController::class, 'tampilkan_patroli_satpam'])->name('tampilkan.patroli.satpam');
 
 
     Route::resource('satpam', SatpamController::class);
