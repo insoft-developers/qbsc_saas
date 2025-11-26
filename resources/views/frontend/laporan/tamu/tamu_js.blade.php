@@ -187,10 +187,11 @@
             start_date: $('#filter_start').val() || '',
             end_date: $('#filter_end').val() || '',
             satpam_id: $('#filter_satpam').val() || '',
+            user_id: $('#filter_user').val() || '',
 
         });
 
-        window.location.href = "{{ route('situasi.export.xls') }}?" + params;
+        window.location.href = "{{ route('tamu.export.xls') }}?" + params;
     });
 
     $('#btnExportPdf').on('click', function() {
@@ -198,10 +199,11 @@
             start_date: $('#filter_start').val() || '',
             end_date: $('#filter_end').val() || '',
             satpam_id: $('#filter_satpam').val() || '',
+            user_id: $('#filter_user').val() || '',
 
         });
 
-        window.location.href = "{{ route('situasi.export.pdf') }}?" + params;
+        window.location.href = "{{ route('tamu.export.pdf') }}?" + params;
 
     });
 

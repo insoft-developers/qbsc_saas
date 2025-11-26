@@ -99,6 +99,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::resource('tamu', TamuController::class);
     Route::get('/tamu_table', [TamuController::class, 'tamu_table'])->name('tamu.table');
+    Route::get('/tamu_export_xls', [TamuController::class, 'export_xls'])->name('tamu.export.xls');
+    Route::get('/tamu_export_pdf', [TamuController::class, 'export_pdf'])->name('tamu.export.pdf');
 
     
 });

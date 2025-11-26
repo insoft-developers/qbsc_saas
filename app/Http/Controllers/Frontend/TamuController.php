@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Exports\SituasiExport;
+use App\Exports\TamuExport;
 use App\Http\Controllers\Controller;
 use App\Models\JamShift;
 use App\Models\LaporanSituasi;
@@ -40,8 +41,8 @@ class TamuController extends Controller
                 });
             }
 
-            if($request->user_id) {
-                if($request->user_id == -1) {
+            if ($request->user_id) {
+                if ($request->user_id == -1) {
                     $query->whereNull('created_by');
                 } else {
                     $query->where('created_by', $request->user_id);
@@ -249,12 +250,12 @@ class TamuController extends Controller
 
     public function export_xls(Request $request)
     {
-        return Excel::download(new SituasiExport($request->start_date ?: null, $request->end_date ?: null, $request->satpam_id ?: null), 'Laporan Situasi.xlsx');
+        return Excel::download(new TamuExport($request->start_date ?: null, $request->end_date ?: null, $request->satpam_id ?: null, $request->user_id ?: null), 'Laporan Tamu.xlsx');
     }
 
     public function export_pdf(Request $request)
     {
-        $query = LaporanSituasi::where('comid', $this->comid())->with(['satpam', 'company']);
+        $query = Tamu::where('comid', $this->comid())->with(['satpam:id,name', 'company:id,company_name', 'satpam_pulang:id,name', 'user:id,name']);
 
         if ($request->start_date && $request->end_date) {
             $start = Carbon::parse($request->start_date)->startOfDay();
@@ -264,14 +265,24 @@ class TamuController extends Controller
         }
 
         if ($request->satpam_id) {
-            $query->where('satpam_id', $request->satpam_id);
+            $query->where(function ($q) use ($request) {
+                $q->where('satpam_id', $request->satpam_id)->orWhere('satpam_id_pulang', $request->satpam_id);
+            });
+        }
+
+        if ($request->user_id) {
+            if ($request->user_id == -1) {
+                $query->whereNull('created_by');
+            } else {
+                $query->where('created_by', $request->user_id);
+            }
         }
 
         $data = $query->get();
 
-        $pdf = Pdf::loadView('frontend.laporan.situasi.pdf', compact('data'))->setPaper('a4', 'landscape');
+        $pdf = Pdf::loadView('frontend.laporan.tamu.pdf', compact('data'))->setPaper('a4', 'landscape');
 
-        return $pdf->stream('Laporan Situasi.pdf');
+        return $pdf->stream('Laporan Tamu.pdf');
     }
 
     public function copy_link_tamu($uuid)
