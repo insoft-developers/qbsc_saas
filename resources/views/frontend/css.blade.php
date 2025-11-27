@@ -1,21 +1,31 @@
 <style>
-    .me-0{margin-right:2px !important;}
-    .badge-insoft{
+    #table-laporan-kandang th,
+    #table-laporan-kandang td {
+        padding: 6px 4px !important;
+        font-size: 11px;
+    }
+
+    .me-0 {
+        margin-right: 2px !important;
+    }
+
+    .badge-insoft {
         position: relative;
         top: 70px;
     }
+
     .btn-insoft {
         font-size: 10px;
         padding: 5px 8px;
         border-radius: 17px;
     }
 
-    .btn-jam{
-            margin-top: 33px;
+    .btn-jam {
+        margin-top: 33px;
     }
 
-    .border-1{
-         border: 1px solid grey;
+    .border-1 {
+        border: 1px solid grey;
     }
 
     .pull-right {

@@ -9,6 +9,7 @@ use App\Http\Controllers\Frontend\EkspedisiController;
 use App\Http\Controllers\Frontend\EmergencyListController;
 use App\Http\Controllers\Frontend\JamShiftController;
 use App\Http\Controllers\Frontend\KandangController;
+use App\Http\Controllers\Frontend\LaporanKandangController;
 use App\Http\Controllers\Frontend\LaporanSituasiController;
 use App\Http\Controllers\Frontend\LokasiController;
 use App\Http\Controllers\Frontend\MesinController;
@@ -109,6 +110,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::resource('emergency', EmergencyListController::class);
     Route::get('/emergency_table', [EmergencyListController::class, 'emergency_table'])->name('emergency.table');
+
+    Route::get('/laporan_kandang', [LaporanKandangController::class, 'index']);
+    Route::post('/tampilkan_laporan_kandang', [LaporanKandangController::class, 'tampilkan_laporan'])->name('tampilkan.laporan.kandang');
 
     
 });

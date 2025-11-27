@@ -137,6 +137,9 @@
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="{{ url('tamu') }}">Laporan Tamu</a>
                         </li>
+                        <li class="side-nav-item">
+                            <a class="side-nav-link" href="{{ url('laporan_kandang') }}">Laporan Kandang</a>
+                        </li>
                     </ul>
                 </div>
             </li>
