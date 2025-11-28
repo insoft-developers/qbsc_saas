@@ -194,4 +194,21 @@
         });
 
     });
+
+
+    $("#btnExportPdf").click(function() {
+
+        let periode = $("#filter_periode").val();
+        let tahun = $("#filter_tahun").val();
+        let kandang = $("#filter_kandang").val();
+
+        let url = "{{ route('laporan.kandang.export.pdf') }}";
+
+        // Buat URL dengan parameter GET
+        url += "?periode=" + periode + "&tahun=" + tahun + "&kandang=" + kandang;
+
+        // BUKA TAB BARU STREAM PDF
+        window.open(url, "_blank");
+
+    });
 </script>

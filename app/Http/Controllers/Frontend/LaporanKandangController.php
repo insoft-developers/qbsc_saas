@@ -6,6 +6,7 @@ use App\Exports\LaporanKandangExport;
 use App\Http\Controllers\Controller;
 use App\Models\Kandang;
 use App\Traits\CommonTrait;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -79,6 +80,36 @@ class LaporanKandangController extends Controller
         ];
 
         return Excel::download(new LaporanKandangExport($data), 'laporan-kandang.xlsx');
+    }
+
+
+    public function export_pdf(Request $request)
+    {
+        $input = $request->all();
+
+        $bulan = $input['tahun'] . '-' . $input['periode'];
+        $daysInMonth = Carbon::parse($bulan . '-01')->daysInMonth;
+
+        $jamList = ['00:00:00', '01:00:00', '02:00:00', '03:00:00', '04:00:00', '05:00:00', '06:30:00', '16:00:00', '17:00:00', '18:00:00', '19:00:00', '20:00:00', '21:00:00', '22:00:00', '23:00:00'];
+
+        $kandang = Kandang::find($input['kandang']);
+        $kandang_id = $kandang->id;
+        $comid = $this->comid();
+        // === Ambil data laporan (pakai logika backend yang sudah kamu buat) ===
+        $laporan = $this->data_laporan($input, $comid, $kandang_id);
+
+        $data = [
+            'hari' => $daysInMonth,
+            'jam' => $jamList,
+            'kandang' => $kandang,
+            'laporan' => $laporan,
+            'periode' => $input['periode'],
+            'tahun' => $input['tahun'],
+        ];
+
+        $pdf = Pdf::loadView('frontend.laporan.kandang.laporan_kandang_pdf', compact('data'))->setPaper('a4', 'landscape');
+
+        return $pdf->stream('laporan-kandang.pdf');
     }
 
     protected function data_laporan($input, $comid, $kandang_id) {
