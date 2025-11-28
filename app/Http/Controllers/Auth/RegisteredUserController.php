@@ -40,7 +40,8 @@ class RegisteredUserController extends Controller
         $token = Str::random(64);
 
         $company = Company::create([
-            "company_name" => $request->company_name
+            "company_name" => $request->company_name,
+            "is_peternakan" => $request->is_peternakan
         ]);
 
         $company_id = $company->id;

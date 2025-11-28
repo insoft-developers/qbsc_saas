@@ -176,6 +176,16 @@
                 <small class="text-danger">{{ $message }}</small>
             @enderror
 
+            <label class="form-label">Jenis Perusahaan</label>
+            <select name="is_peternakan" class="form-control" required>
+                <option value="" selected disabled>Pilih Jenis Perusahaan</option>
+                <option value="1">Perusahaan Peternakan</option>
+                <option value="2">Perusahaan Lainnya</option>
+            </select>
+            @error('is_peternakan')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+
             <label class="form-label">Nama Lengkap</label>
             <input type="text" name="name" class="form-control" placeholder="Cth: Andi Santoso" required>
             @error('name')
