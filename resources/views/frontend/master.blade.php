@@ -486,6 +486,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
+
     <!-- Apex Charts js -->
     @if ($view == 'dashboard')
         {{-- <script src="{{ asset('template/frontend') }}/assets/vendor/apexcharts/apexcharts.min.js"></script> --}}

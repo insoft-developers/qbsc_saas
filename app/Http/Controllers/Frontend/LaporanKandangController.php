@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Exports\LaporanKandangExport;
 use App\Http\Controllers\Controller;
 use App\Models\Kandang;
 use App\Traits\CommonTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LaporanKandangController extends Controller
 {
@@ -33,6 +35,53 @@ class LaporanKandangController extends Controller
         // Jam yang ingin ditampilkan
         $jamList = ['00:00:00', '01:00:00', '02:00:00', '03:00:00', '04:00:00', '05:00:00', '06:00:00', '07:00:00', '08:00:00', '09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00', '18:00:00', '19:00:00', '20:00:00', '21:00:00', '22:00:00', '23:00:00'];
         $comid = $this->comid();
+        
+        $laporan = $this->data_laporan($input, $comid, $kandang_id);
+
+        // ========================
+        //   RESPONSE
+        // ========================
+        $data = [
+            'hari' => $daysInMonth,
+            'jam' => $jamList,
+            'kandang' => DB::table('kandangs')->find($kandang_id),
+            'laporan' => $laporan,
+        ];
+
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ]);
+    }
+
+    public function export_xls(Request $request)
+    {
+        $input = $request->all();
+
+        $bulan = $input['tahun'] . '-' . $input['periode'];
+        $daysInMonth = Carbon::parse($bulan . '-01')->daysInMonth;
+
+        $jamList = ['00:00:00', '01:00:00', '02:00:00', '03:00:00', '04:00:00', '05:00:00', '06:30:00', '16:00:00', '17:00:00', '18:00:00', '19:00:00', '20:00:00', '21:00:00', '22:00:00', '23:00:00'];
+
+        $kandang = Kandang::find($input['kandang']);
+        $kandang_id = $kandang->id;
+        $comid = $this->comid();
+        // === Ambil data laporan (pakai logika backend yang sudah kamu buat) ===
+        $laporan = $this->data_laporan($input, $comid, $kandang_id);
+
+        $data = [
+            'hari' => $daysInMonth,
+            'jam' => $jamList,
+            'kandang' => $kandang,
+            'laporan' => $laporan,
+            'periode' => $input['periode'],
+            'tahun' => $input['tahun'],
+        ];
+
+        return Excel::download(new LaporanKandangExport($data), 'laporan-kandang.xlsx');
+    }
+
+    protected function data_laporan($input, $comid, $kandang_id) {
         // ========================
         //   GET DATA RAW
         // ========================
@@ -125,19 +174,6 @@ class LaporanKandangController extends Controller
             }
         }
 
-        // ========================
-        //   RESPONSE
-        // ========================
-        $data = [
-            'hari' => $daysInMonth,
-            'jam' => $jamList,
-            'kandang' => DB::table('kandangs')->find($kandang_id),
-            'laporan' => $laporan,
-        ];
-
-        return response()->json([
-            'success' => true,
-            'data' => $data,
-        ]);
+        return $laporan;
     }
 }

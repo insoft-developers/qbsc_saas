@@ -1,4 +1,12 @@
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const bulanSekarang = new Date().toISOString().slice(5, 7); // "01" - "12"
+        document.getElementById('filter_periode').value = bulanSekarang;
+        $("#btnFilter").trigger("click");
+
+    });
+
+
     $("#btnFilter").click(function() {
         $("#table-container").html('<center>loading data ...</center>');
         var periode = $("#filter_periode").val();
@@ -77,18 +85,38 @@
 
                                 let value = "-";
 
+                                // CEK apakah ada data
                                 if (
                                     data.data.laporan[tanggal] &&
                                     data.data.laporan[tanggal][item] &&
-                                    data.data.laporan[tanggal][item][type]
+                                    data.data.laporan[tanggal][item][type] !==
+                                    undefined
                                 ) {
                                     value = data.data.laporan[tanggal][item][type];
+
+                                    // ============================
+                                    // 1️⃣ KONVERSI ALARM & LAMPU
+                                    // ============================
+                                    if (type === "Alarm" || type === "Lampu") {
+                                        value = (value == 1) ? "on" : "off";
+                                    }
+
+                                    // ============================
+                                    // 2️⃣ KIPAS: HITUNG 1/total
+                                    // ============================
+                                    if (type === "Kipas") {
+                                        let arr = value.split(",").map(
+                                            Number); // ubah "1,0,1" → array
+                                        let onCount = arr.filter(v => v === 1)
+                                            .length;
+                                        let total = arr.length;
+                                        value = `${onCount}/${total}`;
+                                    }
                                 }
 
                                 html += `<td>${value}</td>`;
+
                             }
-
-
                             html += '</tr>';
                         });
                     });
@@ -96,7 +124,8 @@
 
                     html += '</tbody>';
                     html += '</table>';
-                    $("#table-container").html(html);
+                    $("#table-container").html(
+                        html);
                 }
             }
         })
@@ -134,4 +163,35 @@
 
         return periode + ' ' + tahun;
     }
+
+
+    $("#btnExportXls").click(function() {
+
+        let periode = $("#filter_periode").val();
+        let tahun = $("#filter_tahun").val();
+        let kandang = $("#filter_kandang").val();
+
+        $.ajax({
+            url: "{{ route('laporan.kandang.export.xls') }}",
+            type: "POST",
+            data: {
+                periode: periode,
+                tahun: tahun,
+                kandang: kandang,
+                _token: "{{ csrf_token() }}"
+            },
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(blob) {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "laporan-kandang.xlsx";
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }
+        });
+
+    });
 </script>

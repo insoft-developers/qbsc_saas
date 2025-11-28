@@ -113,6 +113,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::get('/laporan_kandang', [LaporanKandangController::class, 'index']);
     Route::post('/tampilkan_laporan_kandang', [LaporanKandangController::class, 'tampilkan_laporan'])->name('tampilkan.laporan.kandang');
+    Route::post('/laporan_kandang_export_xls', [LaporanKandangController::class, 'export_xls'])->name('laporan.kandang.export.xls');
 
     
 });
