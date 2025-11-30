@@ -207,13 +207,16 @@
                             <i class="ri-moon-line fs-22"></i>
                         </div>
                     </li>
+                    @php
+                        $users = \App\Models\User::find(Auth::user()->id);
+                    @endphp
 
                     <li class="dropdown">
                         <a class="nav-link dropdown-toggle arrow-none nav-user" data-bs-toggle="dropdown"
                             href="#" role="button" aria-haspopup="false" aria-expanded="false">
                             <span class="account-user-avatar">
-                                <img src="{{ asset('template/frontend') }}/assets/images/users/avatar-1.jpg"
-                                    alt="user-image" width="32" class="rounded-circle">
+                                <img src="{{ $users->profile_image == null ? asset('images/default.png') : asset('storage/'.$users->profile_image) }}"
+                                    alt="user-image" width="32" height="32" class="rounded-circle">
                             </span>
                             <span class="d-lg-block d-none">
                                 <h5 class="my-0 fw-normal">{{ Auth::user()->name }}<i
@@ -228,7 +231,7 @@
                             </div>
 
                             <!-- item-->
-                            <a href="pages-profile.html" class="dropdown-item">
+                            <a href="{{ url('profile') }}" class="dropdown-item">
                                 <i class="ri-account-pin-circle-line fs-16 align-middle me-1 "></i>
                                 <span>Profil</span>
                             </a>

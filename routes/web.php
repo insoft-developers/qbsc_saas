@@ -19,7 +19,7 @@ use App\Http\Controllers\Frontend\PerusahaanController;
 use App\Http\Controllers\Frontend\SatpamController;
 use App\Http\Controllers\Frontend\TamuController;
 use App\Http\Controllers\Frontend\UserController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Frontend\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -119,6 +119,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::resource('perusahaan', PerusahaanController::class);
     Route::get('/perusahaan_table', [PerusahaanController::class, 'perusahaan_table'])->name('perusahaan.table');
+
+    Route::get('profile', [ProfileController::class, 'index']);
+    Route::post('profile_update', [ProfileController::class, 'update'])->name('profile.update');
 
     
 });
