@@ -234,9 +234,9 @@
                             </a>
 
                             <!-- item-->
-                            <a href="pages-profile.html" class="dropdown-item">
+                            <a href="{{ url('perusahaan') }}" class="dropdown-item">
                                 <i class="ri-settings-4-line fs-16 align-middle me-1"></i>
-                                <span>Pengaturan</span>
+                                <span>Perusahaan</span>
                             </a>
 
                             <!-- item-->

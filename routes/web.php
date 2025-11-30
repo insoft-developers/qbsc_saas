@@ -15,6 +15,7 @@ use App\Http\Controllers\Frontend\LokasiController;
 use App\Http\Controllers\Frontend\MesinController;
 use App\Http\Controllers\Frontend\PatroliController;
 use App\Http\Controllers\Frontend\PatroliKandangController;
+use App\Http\Controllers\Frontend\PerusahaanController;
 use App\Http\Controllers\Frontend\SatpamController;
 use App\Http\Controllers\Frontend\TamuController;
 use App\Http\Controllers\Frontend\UserController;
@@ -71,29 +72,29 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resource('user', UserController::class);
     Route::get('/user_table', [UserController::class, 'user_table'])->name('user.table');
 
-    Route::resource('kandang', KandangController::class);
-    Route::get('/kandang_table', [KandangController::class, 'kandang_table'])->name('kandang.table');
+    Route::resource('kandang', KandangController::class)->middleware('checkCom');
+    Route::get('/kandang_table', [KandangController::class, 'kandang_table'])->name('kandang.table')->middleware('checkCom');;
 
 
-    Route::resource('mesin', MesinController::class);
-    Route::get('/mesin_table', [MesinController::class, 'mesin_table'])->name('mesin.table');
+    Route::resource('mesin', MesinController::class)->middleware('checkCom');;
+    Route::get('/mesin_table', [MesinController::class, 'mesin_table'])->name('mesin.table')->middleware('checkCom');;
 
-    Route::resource('ekspedisi', EkspedisiController::class);
-    Route::get('/ekspedisi_table', [EkspedisiController::class, 'ekspedisi_table'])->name('ekspedisi.table');
+    Route::resource('ekspedisi', EkspedisiController::class)->middleware('checkCom');
+    Route::get('/ekspedisi_table', [EkspedisiController::class, 'ekspedisi_table'])->name('ekspedisi.table')->middleware('checkCom');;
 
-    Route::resource('patroli_kandang', PatroliKandangController::class);
-    Route::get('/kandang_suhu_table', [PatroliKandangController::class, 'kandang_suhu_table'])->name('kandang.suhu.table');
-    Route::get('/kandang_kipas_table', [PatroliKandangController::class, 'kandang_kipas_table'])->name('kandang.kipas.table');
-    Route::get('/kandang_alarm_table', [PatroliKandangController::class, 'kandang_alarm_table'])->name('kandang.alarm.table');
-    Route::get('/kandang_lampu_table', [PatroliKandangController::class, 'kandang_lampu_table'])->name('kandang.lampu.table');
+    Route::resource('patroli_kandang', PatroliKandangController::class)->middleware('checkCom');
+    Route::get('/kandang_suhu_table', [PatroliKandangController::class, 'kandang_suhu_table'])->name('kandang.suhu.table')->middleware('checkCom');
+    Route::get('/kandang_kipas_table', [PatroliKandangController::class, 'kandang_kipas_table'])->name('kandang.kipas.table')->middleware('checkCom');
+    Route::get('/kandang_alarm_table', [PatroliKandangController::class, 'kandang_alarm_table'])->name('kandang.alarm.table')->middleware('checkCom');
+    Route::get('/kandang_lampu_table', [PatroliKandangController::class, 'kandang_lampu_table'])->name('kandang.lampu.table')->middleware('checkCom');
 
-    Route::get('/patroli_kandang_xls', [PatroliKandangController::class, 'exportXls'])->name('patroli.kandang.export.xls');
-    Route::get('/patroli_kandang_pdf', [PatroliKandangController::class, 'exportPdf'])->name('patroli.kandang.export.pdf');
+    Route::get('/patroli_kandang_xls', [PatroliKandangController::class, 'exportXls'])->name('patroli.kandang.export.xls')->middleware('checkCom');
+    Route::get('/patroli_kandang_pdf', [PatroliKandangController::class, 'exportPdf'])->name('patroli.kandang.export.pdf')->middleware('checkCom');
 
-    Route::resource('doc_out', DocOutController::class);
-    Route::get('/doc_out_table', [DocOutController::class, 'doc_out_table'])->name('doc.out.table');
-    Route::get('/doc_export_xls', [DocOutController::class, 'export_xls'])->name('doc.export.xls');
-    Route::get('/doc_export_pdf', [DocOutController::class, 'export_pdf'])->name('doc.export.pdf');
+    Route::resource('doc_out', DocOutController::class)->middleware('checkCom');
+    Route::get('/doc_out_table', [DocOutController::class, 'doc_out_table'])->name('doc.out.table')->middleware('checkCom');
+    Route::get('/doc_export_xls', [DocOutController::class, 'export_xls'])->name('doc.export.xls')->middleware('checkCom');
+    Route::get('/doc_export_pdf', [DocOutController::class, 'export_pdf'])->name('doc.export.pdf')->middleware('checkCom');
 
     Route::resource('jam_shift', JamShiftController::class);
     Route::get('/jam_shift_table', [JamShiftController::class, 'jam_shift_table'])->name('jam.shift.table');
@@ -111,10 +112,13 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resource('emergency', EmergencyListController::class);
     Route::get('/emergency_table', [EmergencyListController::class, 'emergency_table'])->name('emergency.table');
 
-    Route::get('/laporan_kandang', [LaporanKandangController::class, 'index']);
-    Route::post('/tampilkan_laporan_kandang', [LaporanKandangController::class, 'tampilkan_laporan'])->name('tampilkan.laporan.kandang');
-    Route::post('/laporan_kandang_export_xls', [LaporanKandangController::class, 'export_xls'])->name('laporan.kandang.export.xls');
-    Route::get('/laporan_kandang_export_pdf', [LaporanKandangController::class, 'export_pdf'])->name('laporan.kandang.export.pdf');
+    Route::get('/laporan_kandang', [LaporanKandangController::class, 'index'])->middleware('checkCom');
+    Route::post('/tampilkan_laporan_kandang', [LaporanKandangController::class, 'tampilkan_laporan'])->name('tampilkan.laporan.kandang')->middleware('checkCom');
+    Route::post('/laporan_kandang_export_xls', [LaporanKandangController::class, 'export_xls'])->name('laporan.kandang.export.xls')->middleware('checkCom');
+    Route::get('/laporan_kandang_export_pdf', [LaporanKandangController::class, 'export_pdf'])->name('laporan.kandang.export.pdf')->middleware('checkCom');
+
+    Route::resource('perusahaan', PerusahaanController::class);
+    Route::get('/perusahaan_table', [PerusahaanController::class, 'perusahaan_table'])->name('perusahaan.table');
 
     
 });

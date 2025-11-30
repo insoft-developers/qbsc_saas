@@ -22,7 +22,7 @@
                                  </div>
                                  <div class="avatar-sm mb-4">
                                      <div class="avatar-title bg-primary-subtle text-primary fs-24 rounded">
-                                         <i class="bi bi-receipt"></i>
+                                         <i class="bi bi-people"></i>
                                      </div>
                                  </div>
                              </div>
@@ -48,7 +48,7 @@
                                  </div>
                                  <div class="avatar-sm mb-4">
                                      <div class="avatar-title bg-dark-subtle text-dark fs-24 rounded">
-                                         <i class="bi bi-people"></i>
+                                         <i class="bi bi-building"></i>
                                      </div>
                                  </div>
                              </div>
@@ -74,7 +74,7 @@
                                  </div>
                                  <div class="avatar-sm mb-4">
                                      <div class="avatar-title bg-danger-subtle text-danger fs-24 rounded">
-                                         <i class="bi bi-clipboard-data"></i>
+                                         <i class="bi bi-person"></i>
                                      </div>
                                  </div>
                              </div>

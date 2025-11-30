@@ -16,6 +16,13 @@
                 if (data.success) {
                     var absensi = data.data;
                     var html = '';
+
+                    if (absensi.length < 1) {
+                        $("#table-dashboard-absensi tbody").html(
+                            '<tr><td colspan="7"><center><p>Data absensi masih kosong</p></center></td></tr>'
+                            );
+                        return;
+                    }
                     for (var i = 0; i < absensi.length; i++) {
 
                         if (absensi[i].status == 1) {
@@ -109,8 +116,6 @@
 
                         $("#table-dashboard-absensi tbody").html(html);
                     }
-                } else {
-
                 }
 
             }
@@ -136,6 +141,13 @@
                 if (data.success) {
                     var patroli = data.data;
                     var html = '';
+
+                    if (patroli.length < 1) {
+                        $("#table-dashboard-patroli tbody").html(
+                            '<tr><td colspan="7"><center><p>Data patroli masih kosong</p></center></td></tr>'
+                            );
+                        return;
+                    }
 
                     for (var i = 0; i < patroli.length; i++) {
                         if (patroli[i].latitude && patroli[i].longitude) {

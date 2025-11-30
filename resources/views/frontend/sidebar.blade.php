@@ -55,7 +55,7 @@
                     </ul>
                 </div>
             </li>
-
+            @comtype(1)
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarIcons" aria-expanded="false"
                     aria-controls="sidebarIcons" class="side-nav-link">
@@ -73,6 +73,7 @@
                     </ul>
                 </div>
             </li>
+           
 
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarExtendedUI" aria-expanded="false"
@@ -95,6 +96,8 @@
                 </div>
             </li>
 
+            @endcomtype
+
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarPagesAuth" aria-expanded="false"
                     aria-controls="sidebarPagesAuth" class="side-nav-link">
@@ -111,12 +114,14 @@
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="{{  url('patroli') }}">Patroli</a>
                         </li>
+                         @comtype(1)
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="{{  url('patroli_kandang') }}">Patroli Kandang</a>
                         </li>
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="{{  url('doc_out') }}">DOC Keluar</a>
                         </li>
+                        @endcomtype
                     </ul>
                 </div>
             </li>
@@ -137,9 +142,11 @@
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="{{ url('tamu') }}">Laporan Tamu</a>
                         </li>
+                         @comtype(1)
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="{{ url('laporan_kandang') }}">Laporan Kandang</a>
                         </li>
+                        @endcomtype
                     </ul>
                 </div>
             </li>
@@ -159,6 +166,9 @@
                         </li>
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="{{ url('jam_shift') }}">Jam Shift</a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a class="side-nav-link" href="{{ url('perusahaan') }}">Perusahaan</a>
                         </li>
                     </ul>
                 </div>
