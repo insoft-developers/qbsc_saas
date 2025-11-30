@@ -72,7 +72,7 @@
             <th rowspan="2">KANDANG</th>
             <th rowspan="2">JAM</th>
             <th rowspan="2">JENIS</th>
-            <th colspan="{{ $data['hari'] }}">HARI</th>
+            <th colspan="{{ $data['hari'] }}">TANGGAL</th>
         </tr>
         <tr>
             @for ($i = 1; $i <= $data['hari']; $i++)

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
@@ -53,5 +54,31 @@ class ProfileController extends Controller
         $user->save();
 
         return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
+    }
+
+    public function change()
+    {
+        $view = 'change-password';
+        return view('frontend.setting.password.change_password', compact('view'));
+    }
+
+    public function update_password(Request $request)
+    {
+        $request->validate([
+            'current_password' => ['required'],
+            'new_password' => ['required', 'min:6', 'confirmed'],
+        ]);
+
+        $user = auth()->user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Password lama tidak sesuai.']);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
+        return back()->with('success', 'Password berhasil diperbarui.');
     }
 }

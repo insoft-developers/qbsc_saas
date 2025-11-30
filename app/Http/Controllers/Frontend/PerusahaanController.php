@@ -27,10 +27,11 @@ class PerusahaanController extends Controller
                     return $data->is_peternakan == 1 ? 'Peternakan':'Perusahaan Lain';
                 })
                 ->addColumn('action', function ($row) {
+                    $disabled = $this->isOwner() ? '': 'disabled'; 
                     $button = '';
                     $button .= '<center>';
         
-                    $button .= '<button onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
+                    $button .= '<button '.$disabled.' onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
 
                     $button .= '</center>';
                     return $button;

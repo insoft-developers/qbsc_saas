@@ -23,10 +23,11 @@ class AbsenLocationController extends Controller
                     return $row->company->company_name ?? '';
                 })
                 ->addColumn('action', function ($row) {
+                    $disabled = $this->isOwner() ? '': 'disabled'; 
                     $button = '';
                     $button .= '<center>';
         
-                    $button .= '<button onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
+                    $button .= '<button '.$disabled.' onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
 
                     $button .= '</center>';
                     return $button;

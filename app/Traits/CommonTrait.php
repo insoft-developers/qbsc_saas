@@ -16,6 +16,15 @@ trait CommonTrait
         return $user->company_id;
     }
 
+    public function isOwner() {
+        $user = User::find(Auth::user()->id);
+        if($user->level == 'owner') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function codeGenerate($table, $field = 'badge_id', $prefix = 'SEC', $length = 8)
     {
         $last = DB::table($table)->orderBy('id', 'desc')->value($field);

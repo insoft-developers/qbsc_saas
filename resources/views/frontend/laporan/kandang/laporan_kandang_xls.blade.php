@@ -47,7 +47,7 @@
             <th rowspan="2">KANDANG</th>
             <th rowspan="2">JAM</th>
             <th rowspan="2">JENIS</th>
-            <th colspan="{{ $hari }}">HARI</th>
+            <th colspan="{{ $hari }}">TANGGAL</th>
         </tr>
         <tr>
             @for ($i = 1; $i <= $hari; $i++)

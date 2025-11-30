@@ -40,9 +40,10 @@ class LaporanSituasiController extends Controller
                 ->addIndexColumn()
 
                 ->addColumn('action', function ($row) {
+                    $disabled = $this->isOwner() ? '': 'disabled'; 
                     $button = '';
                     $button .= '<center>';
-                    $button .= '<button onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
+                    $button .= '<button '.$disabled.' onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
                     $button .= '</center>';
                     return $button;
                 })

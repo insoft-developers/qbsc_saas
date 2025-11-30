@@ -51,17 +51,20 @@ class LokasiController extends Controller
                     return $html;
                 })
                 ->addColumn('action', function ($row) {
+
+                    $disabled = $this->isOwner() ? '': 'disabled'; 
+
                     $button = '';
                     $button .= '<center>';
                     $button .= '<a href="' . url('download_qrcode/' . $row->id) . '" title="Download QRCode" class="me-0 btn btn-insoft btn-light border-1"><i class="bi bi-qr-code"></i></a>';
                     if ($row->is_active == 1) {
-                        $button .= '<button onclick="activate(' . $row->id . ', 0)" title="Non Aktifkan" class="me-0 btn btn-insoft btn-danger"><i class="bi bi-x-lg"></i></button>';
+                        $button .= '<button '.$disabled.' onclick="activate(' . $row->id . ', 0)" title="Non Aktifkan" class="me-0 btn btn-insoft btn-danger"><i class="bi bi-x-lg"></i></button>';
                     } else {
-                        $button .= '<button onclick="activate(' . $row->id . ', 1)" title="Aktifkan" class="me-0 btn btn-insoft btn-success"><i class="bi bi-check-circle"></i></button>';
+                        $button .= '<button '.$disabled.' onclick="activate(' . $row->id . ', 1)" title="Aktifkan" class="me-0 btn btn-insoft btn-success"><i class="bi bi-check-circle"></i></button>';
                     }
 
-                    $button .= '<button onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
-                    $button .= '<button onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
+                    $button .= '<button '.$disabled.' onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
+                    $button .= '<button '.$disabled.' onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
                     $button .= '</center>';
                     return $button;
                 })
@@ -75,7 +78,8 @@ class LokasiController extends Controller
     public function index()
     {
         $view = 'lokasi';
-        return view('frontend.lokasi.lokasi', compact('view'));
+        $isOwner = $this->isOwner();
+        return view('frontend.lokasi.lokasi', compact('view','isOwner'));
     }
 
     /**

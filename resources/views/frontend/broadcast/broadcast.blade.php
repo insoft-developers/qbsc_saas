@@ -10,10 +10,10 @@
 
                 <!-- Page Header -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="mb-0 fw-bold">Jam Shift</h4>
-                    @if($isOwner)
+                    <h4 class="mb-0 fw-bold">Data Broadcast</h4>
+                    @if(Auth::user()->level == 'owner')
                     <button type="button" class="btn btn-info btn-sm rounded-pill" onclick="tambah_data()">
-                        <i class="bi bi-plus-lg me-1"></i> Tambah Data
+                        <i class="bi bi-plus-lg me-1"></i> Tambah Pesan
                     </button>
                     @endif
                 </div>
@@ -28,13 +28,12 @@
                                         <th>ID</th>
                                         <th class="text-center" width="5%">No</th>
                                         <th class="text-center">Aksi</th>
-                                        <th>Nama Shift</th>
-                                        <th>Jam Masuk<br>Awal</th>
-                                        <th>Jam Masuk</th>
-                                        <th>Jam Masuk<br>Akhir</th>
-                                        <th>Jam Pulang<br>Awal</th>
-                                        <th>Jam Pulang</th>
-                                        <th>Jam Pulang<br>Akhir</th>
+                                        <th>Tanggal</th>
+                                        <th>Judul</th>
+                                        <th>Pesan</th>
+                                        <th>Gambar</th>
+                                        <th>Pengirim</th>
+                                        <th>Status</th>
                                         <th>Perusahaan</th>
                                         
                                     </tr>
@@ -54,9 +53,9 @@
     <!-- End Page Content -->
     <!-- ============================================================== -->
 
-    @include('frontend.setting.shift.modal')
+    @include('frontend.broadcast.modal')
 @endsection
 
 @push('scripts')
-    @include('frontend.setting.shift.shift_js')
+    @include('frontend.broadcast.broadcast_js')
 @endpush

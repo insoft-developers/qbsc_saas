@@ -127,7 +127,7 @@
             </li>
 
             <li class="side-nav-item">
-                <a href="{{ url('/broadcasting') }}" class="side-nav-link">
+                <a href="{{ url('/broadcast') }}" class="side-nav-link">
                     <i class="ri-broadcast-line"></i>
                     <span> Broadcasting </span>
 

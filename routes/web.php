@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Frontend\AbsenLocationController;
 use App\Http\Controllers\Frontend\AbsensiController;
+use App\Http\Controllers\Frontend\BroadcastController;
 use App\Http\Controllers\Frontend\DashboardController;
 use App\Http\Controllers\Frontend\DocOutController;
 use App\Http\Controllers\Frontend\EkspedisiController;
@@ -122,6 +123,13 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::get('profile', [ProfileController::class, 'index']);
     Route::post('profile_update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/change_password', [ProfileController::class, 'change']);
+    Route::post('/update_password', [ProfileController::class, 'update_password'])
+    ->name('user.password.update');
+
+    Route::resource('broadcast', BroadcastController::class);
+    Route::get('/broadcast_table', [BroadcastController::class, 'broadcast_table'])->name('broadcast.table');
+
 
     
 });

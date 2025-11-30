@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('broadcasts', function (Blueprint $table) {
             $table->id();
+            $table->string('judul');
+            $table->text('pesan');
+            $table->string('image')->nullable();
+            $table->integer('pengirim');
+            $table->integer('send_status')->default(0);
+            $table->integer('comid');
             $table->timestamps();
         });
     }

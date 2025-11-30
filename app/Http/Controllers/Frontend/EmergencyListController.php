@@ -21,6 +21,7 @@ class EmergencyListController extends Controller
                 ->addIndexColumn()
                 
                 ->addColumn('action', function ($row) {
+                    
                     $button = '';
                     $button .= '<center>';
                     $button .= '<button onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';

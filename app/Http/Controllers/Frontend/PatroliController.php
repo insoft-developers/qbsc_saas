@@ -16,6 +16,7 @@ use Yajra\DataTables\Facades\DataTables;
 class PatroliController extends Controller
 {
     use CommonTrait;
+
     public function patroli_table(Request $request)
     {
         if ($request->ajax()) {
@@ -96,10 +97,11 @@ class PatroliController extends Controller
                 })
 
                 ->addColumn('action', function ($row) {
+                    $disabled = $this->isOwner() ? '': 'disabled'; 
                     $button = '';
                     $button .= '<center>';
                     // $button .= '<button onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
-                    $button .= '<button onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
+                    $button .= '<button '.$disabled.' onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
                     $button .= '</center>';
                     return $button;
                 })
