@@ -236,15 +236,21 @@
                                 <span>Profil</span>
                             </a>
 
+                            <a href="{{ url('change_password') }}" class="dropdown-item">
+                                <i class="ri-lock-unlock-line fs-16 align-middle me-1"></i>
+                                <span>Ganti Password</span>
+                            </a>
+
                             <!-- item-->
                             <a href="{{ url('perusahaan') }}" class="dropdown-item">
-                                <i class="ri-settings-4-line fs-16 align-middle me-1"></i>
+                                <i class="ri-building-4-line fs-16 align-middle me-1"></i>
                                 <span>Perusahaan</span>
                             </a>
 
                             <!-- item-->
                             <a href="pages-faq.html" class="dropdown-item">
-                                <i class="ri-customer-service-2-line fs-16 align-middle me-1"></i>
+                                <i class="ri-exchange-dollar-line
+ fs-16 align-middle me-1"></i>
                                 <span>Paket Saya</span>
                             </a>
 

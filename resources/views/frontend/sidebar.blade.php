@@ -127,6 +127,14 @@
             </li>
 
             <li class="side-nav-item">
+                <a href="{{ url('/broadcasting') }}" class="side-nav-link">
+                    <i class="ri-broadcast-line"></i>
+                    <span> Broadcasting </span>
+
+                </a>
+            </li>
+
+            <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarLayouts" aria-expanded="false"
                     aria-controls="sidebarLayouts" class="side-nav-link">
                     <i class="ri-article-line"></i>
@@ -175,7 +183,7 @@
             </li>
             <li class="side-nav-item">
                 <a href="{{ url('/emergency') }}" class="side-nav-link">
-                    <i class="ri-dashboard-2-line"></i>
+                    <i class="ri-error-warning-line"></i>
                     <span> Kontak Darurat </span>
 
                 </a>
