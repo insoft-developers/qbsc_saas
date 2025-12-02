@@ -46,6 +46,9 @@
     <!-- Icons css -->
     <link href="{{ asset('template/frontend') }}/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     @include('frontend/css')
+
+    
+
 </head>
 
 <body>

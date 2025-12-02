@@ -134,9 +134,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::get('/paket_langganan', [PaketLanggananController::class, 'index']);
     Route::post('/create_payment', [DuitkuController::class, 'create_payment'])->name('create.payment');
+    Route::get('/duitku_return', [PaketLanggananController::class, 'index'])->name('duitku.return');
 });
 
-Route::post('/duitku_callback', [DuitkuController::class, 'duitku_callback'])->name('duitku.callback');
-Route::post('/duitku_return', [DuitkuController::class, 'duitku_return'])->name('duitku.return');
+
+
 
 require __DIR__ . '/auth.php';

@@ -4,8 +4,10 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\PatroliController;
 use App\Http\Controllers\API\ValidateLocationController;
 use App\Http\Controllers\API\AbsenController;
+use App\Http\Controllers\API\DuitkuCallbackController;
 use App\Http\Controllers\API\LaporanSituasiController;
 use App\Http\Controllers\API\TamuController;
+use App\Http\Controllers\Frontend\DuitkuController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 /*
@@ -45,6 +47,11 @@ Route::post('/laporan_situasi', [LaporanSituasiController::class, 'laporan_situa
 
 Route::post('/check_qr_tamu', [TamuController::class, 'checkQrTamu']);
 Route::post('/save_data_tamu', [TamuController::class, 'saveDataTamu']);
+
+
+
+
+Route::post('/duitku_callback', [DuitkuCallbackController::class, 'callback']);
 
 
 

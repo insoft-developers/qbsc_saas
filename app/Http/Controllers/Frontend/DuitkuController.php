@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\PaketLangganan;
+use App\Models\Pembelian;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -13,44 +15,42 @@ class DuitkuController extends Controller
 {
     public function create_payment(Request $request)
     {
+        $input = $request->all();
+
+        $paket = PaketLangganan::find($input['id']);
+        $user = User::find(Auth::user()->id);
+
         $cfg = config('services.duitku');
-        
-        $merchantCode = $cfg['merchnat']
-        $merchantKey = 'XXXXXXXCX17XXXX5XX5XXXXXX0X3XXAF'; // dari duitku
+
+        $merchantCode = $cfg['merchant_code'];
+        $merchantKey = $cfg['api_key'];
 
         $timestamp = round(microtime(true) * 1000); //in milisecond
-        $paymentAmount = 40000;
+        $paymentAmount = $paket->harga;
         $merchantOrderId = time() . ''; // dari merchant, unique
-        $productDetails = 'Test Pay with duitku';
-        $email = 'test@test.com'; // email pelanggan merchant
-        $phoneNumber = '08123456789'; // nomor tlp pelanggan merchant (opsional)
+        $productDetails = 'Pembelian ' . $paket->nama_paket;
+        $email = $user->email; // email pelanggan merchant
+        $phoneNumber = $user->whtasapp; // nomor tlp pelanggan merchant (opsional)
         $additionalParam = ''; // opsional
         $merchantUserInfo = ''; // opsional
-        $customerVaName = 'John Doe'; // menampilkan nama pelanggan pada tampilan konfirmasi bank
-        $callbackUrl = 'http://example.com/api-pop/backend/callback.php'; // url untuk callback
-        $returnUrl = 'http://example.com/api-pop/backend/redirect.php'; //'http://example.com/return'; // url untuk redirect
-        $expiryPeriod = 10; // untuk menentukan waktu kedaluarsa dalam menit
+        $customerVaName = $user->name;
+        $callbackUrl = $cfg['callback_url'];
+        $returnUrl = route('duitku.return'); 
+        $expiryPeriod = 10; 
         $signature = hash('sha256', $merchantCode . $timestamp . $merchantKey);
-        //$paymentMethod = 'VC'; //digunakan untuk direksional pembayaran
 
         // Detail pelanggan
-        $firstName = 'John';
-        $lastName = 'Doe';
+        $firstName = $user->name;
+        $lastName = '';
 
         // Detail Alamat
-        $alamat = 'Jl. Kembangan Raya';
-        $city = 'Jakarta';
-        $postalCode = '11530';
-        $countryCode = 'ID';
+        $alamat = $user->company->company_name ?? '';
 
         $address = [
             'firstName' => $firstName,
             'lastName' => $lastName,
             'address' => $alamat,
-            'city' => $city,
-            'postalCode' => $postalCode,
             'phone' => $phoneNumber,
-            'countryCode' => $countryCode,
         ];
 
         $customerDetail = [
@@ -60,32 +60,16 @@ class DuitkuController extends Controller
             'phoneNumber' => $phoneNumber,
             'billingAddress' => $address,
             'shippingAddress' => $address,
-            'merchantCustomerId' => $merchantCustomerId,
         ];
 
+        $periode = $paket->periode == 1 ? 'Bulanan' : 'Tahunan';
         $item1 = [
-            'name' => 'Test Item 1',
-            'price' => 10000,
+            'name' => $paket->nama_paket . $periode,
+            'price' => $paket->harga,
             'quantity' => 1,
         ];
 
-        $item2 = [
-            'name' => 'Test Item 2',
-            'price' => 30000,
-            'quantity' => 3,
-        ];
-
-        $itemDetails = [$item1, $item2];
-
-        /*Khusus untuk metode pembayaran Kartu Kredit
-    $creditCardDetail = array (
-        'saveCardToken' => 2
-        'acquirer' => '014',
-        'binWhitelist' => array (
-            '014',
-            '400000'
-        )
-    );*/
+        $itemDetails = [$item1];
 
         $params = [
             'paymentAmount' => $paymentAmount,
@@ -106,9 +90,8 @@ class DuitkuController extends Controller
         ];
 
         $params_string = json_encode($params);
-        //echo $params_string;
-        $url = 'https://api-sandbox.duitku.com/api/merchant/createinvoice'; // Sandbox
-        // $url = 'https://api-prod.duitku.com/api/merchant/createinvoice'; // Production
+
+        $url = $cfg['base_url'] . '/createinvoice'; // Sandbox
 
         //log transaksi untuk debug
         // file_put_contents('log_createInvoice.txt', "* log *\r\n", FILE_APPEND | LOCK_EX);
@@ -130,57 +113,19 @@ class DuitkuController extends Controller
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if ($httpCode == 200) {
+            Pembelian::create([
+                "invoice" => $merchantOrderId,
+                "paket_id" => $input['id'],
+                "userid" => Auth::user()->id,
+                "comid" => $user->company->id,
+                "amount" => $paket->harga,
+                "payment_status" => "PENDING"
+            ]);
             $result = json_decode($request, true);
-            //header('location: '. $result['paymentUrl']);
-            print_r($result, false);
-            // echo "paymentUrl :". $result['paymentUrl'] . "<br />";
-            // echo "reference :". $result['reference'] . "<br />";
-            // echo "statusCode :". $result['statusCode'] . "<br />";
-            // echo "statusMessage :". $result['statusMessage'] . "<br />";
+            return response()->json($result['paymentUrl']);
         } else {
             // echo $httpCode . " " . $request ;
             echo $request;
         }
     }
-
-    // public function createPaymentUrl($amount, $orderId, $productDetail, $customer)
-    // {
-    //     $cfg = config('services.duitku');
-
-    //     $signature = md5($cfg['merchant_code'] . $orderId . $amount . $cfg['api_key']);
-
-    //     $data = [
-    //         'merchantCode' => $cfg['merchant_code'],
-    //         'paymentAmount' => $amount,
-    //         'merchantOrderId' => $orderId,
-    //         'productDetails' => $productDetail,
-    //         'customerVaName' => $customer['name'],
-    //         'email' => $customer['email'],
-    //         'phoneNumber' => $customer['phone'],
-    //         'callbackUrl' => route('duitku.callback'),
-    //         'returnUrl' => route('duitku.return'),
-    //         'signature' => $signature,
-    //     ];
-
-    //     $response = Http::post($cfg['base_url'] . '/createInvoice', $data);
-
-    //     return $response->json();
-    // }
-
-    // public function create_payment(Request $request)
-    // {
-    //     $input = $request->all();
-    //     $paket = PaketLangganan::find($input['id']);
-    //     $user = User::find(Auth::user()->id);
-
-    //     $orderId = 'INV-' . time();
-
-    //     $result = $this->createPaymentUrl($paket->amount, $orderId, 'Pembelian ' . $paket->nama_paket, [
-    //         'name' => $user->name . ' - ' . $user->company->company_name ?? '',
-    //         'email' => $user->email,
-    //         'phone' => $user->whatsapp,
-    //     ]);
-
-    //     return response()->json($result);
-    // }
 }
