@@ -6,6 +6,7 @@ use App\Http\Controllers\Frontend\AbsensiController;
 use App\Http\Controllers\Frontend\BroadcastController;
 use App\Http\Controllers\Frontend\DashboardController;
 use App\Http\Controllers\Frontend\DocOutController;
+use App\Http\Controllers\Frontend\DuitkuController;
 use App\Http\Controllers\Frontend\EkspedisiController;
 use App\Http\Controllers\Frontend\EmergencyListController;
 use App\Http\Controllers\Frontend\JamShiftController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\Frontend\LaporanKandangController;
 use App\Http\Controllers\Frontend\LaporanSituasiController;
 use App\Http\Controllers\Frontend\LokasiController;
 use App\Http\Controllers\Frontend\MesinController;
+use App\Http\Controllers\Frontend\PaketLanggananController;
 use App\Http\Controllers\Frontend\PatroliController;
 use App\Http\Controllers\Frontend\PatroliKandangController;
 use App\Http\Controllers\Frontend\PerusahaanController;
@@ -130,8 +132,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resource('broadcast', BroadcastController::class);
     Route::get('/broadcast_table', [BroadcastController::class, 'broadcast_table'])->name('broadcast.table');
 
-
-    
+    Route::get('/paket_langganan', [PaketLanggananController::class, 'index']);
+    Route::post('/create_payment', [DuitkuController::class, 'create_payment'])->name('create.payment');
 });
+
+Route::post('/duitku_callback', [DuitkuController::class, 'duitku_callback'])->name('duitku.callback');
+Route::post('/duitku_return', [DuitkuController::class, 'duitku_return'])->name('duitku.return');
 
 require __DIR__ . '/auth.php';

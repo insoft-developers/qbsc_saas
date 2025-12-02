@@ -189,7 +189,7 @@
                 </a>
             </li>
             <li class="side-nav-item">
-                <a href="{{ url('/paket') }}" class="side-nav-link">
+                <a href="{{ url('/paket_langganan') }}" class="side-nav-link">
                     <i class="ri-money-dollar-circle-line"></i>
                     <span> Beli Paket </span>
 
