@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::group(['middleware' => ['auth', 'verified']], function () {
+Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
     Route::get('/', [DashboardController::class, 'index']);
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/tampilkan_absensi_satpam', [DashboardController::class, 'tampilkan_absensi_satpam'])->name('tampilkan.absensi.satpam');
@@ -132,9 +132,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resource('broadcast', BroadcastController::class);
     Route::get('/broadcast_table', [BroadcastController::class, 'broadcast_table'])->name('broadcast.table');
 
-    Route::get('/paket_langganan', [PaketLanggananController::class, 'index']);
-    Route::post('/create_payment', [DuitkuController::class, 'create_payment'])->name('create.payment');
-    Route::get('/duitku_return', [PaketLanggananController::class, 'index'])->name('duitku.return');
+    Route::get('/paket_langganan', [PaketLanggananController::class, 'index'])->withoutMiddleware('isPaket');
+;
+    Route::post('/create_payment', [DuitkuController::class, 'create_payment'])->name('create.payment')->withoutMiddleware('isPaket');
+    Route::get('/duitku_return', [PaketLanggananController::class, 'index'])->name('duitku.return')->withoutMiddleware('isPaket');
 });
 
 
