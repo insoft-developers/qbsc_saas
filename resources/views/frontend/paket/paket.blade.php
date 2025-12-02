@@ -10,6 +10,7 @@
                     </div>
                 @endif
 
+                
                 <div class="text-center mb-5">
                     <h2 class="fw-bold mb-1">Paket Berlangganan</h2>
                     <p class="text-muted fs-6">Pilih paket yang sesuai dengan kebutuhan bisnis Anda.</p>

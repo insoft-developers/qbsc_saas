@@ -47,7 +47,7 @@
     <link href="{{ asset('template/frontend') }}/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     @include('frontend/css')
 
-    
+
 
 </head>
 
@@ -218,7 +218,7 @@
                         <a class="nav-link dropdown-toggle arrow-none nav-user" data-bs-toggle="dropdown"
                             href="#" role="button" aria-haspopup="false" aria-expanded="false">
                             <span class="account-user-avatar">
-                                <img src="{{ $users->profile_image == null ? asset('images/default.png') : asset('storage/'.$users->profile_image) }}"
+                                <img src="{{ $users->profile_image == null ? asset('images/default.png') : asset('storage/' . $users->profile_image) }}"
                                     alt="user-image" width="32" height="32" class="rounded-circle">
                             </span>
                             <span class="d-lg-block d-none">
@@ -251,7 +251,7 @@
                             </a>
 
                             <!-- item-->
-                            <a href="pages-faq.html" class="dropdown-item">
+                            <a href="{{ url('riwayat') }}" class="dropdown-item">
                                 <i class="ri-exchange-dollar-line
  fs-16 align-middle me-1"></i>
                                 <span>Paket Saya</span>

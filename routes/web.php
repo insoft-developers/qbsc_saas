@@ -23,6 +23,7 @@ use App\Http\Controllers\Frontend\SatpamController;
 use App\Http\Controllers\Frontend\TamuController;
 use App\Http\Controllers\Frontend\UserController;
 use App\Http\Controllers\Frontend\ProfileController;
+use App\Http\Controllers\Frontend\RiwayatController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -136,6 +137,10 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
 ;
     Route::post('/create_payment', [DuitkuController::class, 'create_payment'])->name('create.payment')->withoutMiddleware('isPaket');
     Route::get('/duitku_return', [PaketLanggananController::class, 'index'])->name('duitku.return')->withoutMiddleware('isPaket');
+
+    Route::resource('riwayat', RiwayatController::class)->withoutMiddleware('isPaket');
+    Route::get('/riwayat_table', [RiwayatController::class, 'riwayat_table'])->name('riwayat.table')->withoutMiddleware('isPaket');
+    Route::get('/print_invoice/{invoice}', [RiwayatController::class, 'print'])->withoutMiddleware('isPaket');
 });
 
 
