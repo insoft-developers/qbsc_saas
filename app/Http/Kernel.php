@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'checkCom' => \App\Http\Middleware\CheckComType::class,
         'isPaket' => \App\Http\Middleware\PaketAktif::class,
+        'checkData' => \App\Http\Middleware\CheckData::class,
     ];
 }

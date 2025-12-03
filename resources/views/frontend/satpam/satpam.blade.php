@@ -8,13 +8,18 @@
         <div class="content">
             <div class="container-fluid">
 
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
                 <!-- Page Header -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="mb-0 fw-bold">Data Satpam</h4>
-                    @if($isOwner)
-                    <button type="button" class="btn btn-info btn-sm rounded-pill" onclick="tambah_data()">
-                        <i class="bi bi-plus-lg me-1"></i> Tambah Data
-                    </button>
+                    @if ($isOwner)
+                        <button type="button" class="btn btn-info btn-sm rounded-pill" onclick="tambah_data()">
+                            <i class="bi bi-plus-lg me-1"></i> Tambah Data
+                        </button>
                     @endif
                 </div>
 
@@ -33,7 +38,7 @@
                                         <th>Nama Satpam</th>
                                         <th>Whatsapp</th>
                                         <th>Company</th>
-                                        
+
                                     </tr>
                                 </thead>
                                 <tbody></tbody>

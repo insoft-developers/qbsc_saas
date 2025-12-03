@@ -1,6 +1,9 @@
 <script>
+
     tampilkan_absensi_satpam();
     tampilkan_patroli_satpam();
+
+    
 
     function tampilkan_absensi_satpam() {
         $("#table-dashboard-absensi tbody").html(
@@ -223,4 +226,6 @@
     function refresh_patroli() {
         tampilkan_patroli_satpam();
     }
+
+    
 </script>

@@ -46,8 +46,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
-    Route::get('/', [DashboardController::class, 'index']);
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->middleware('checkData');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('checkData');
     Route::post('/tampilkan_absensi_satpam', [DashboardController::class, 'tampilkan_absensi_satpam'])->name('tampilkan.absensi.satpam');
     Route::post('/tampilkan_patroli_satpam', [DashboardController::class, 'tampilkan_patroli_satpam'])->name('tampilkan.patroli.satpam');
 

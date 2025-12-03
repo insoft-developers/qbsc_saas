@@ -190,7 +190,9 @@
 
      </div>
      <!-- content -->
+     
  </div>
+ 
  @endsection
 
  @push('scripts')

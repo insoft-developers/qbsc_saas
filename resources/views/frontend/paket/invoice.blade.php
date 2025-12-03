@@ -1,175 +1,168 @@
- <!-- ============================================================== -->
- <!-- Start Page Content here -->
- <!-- ============================================================== -->
 @extends('frontend.master')
 
 @section('content')
- <div class="content-page">
-     <div class="content">
 
-         <!-- Start Content-->
-         <div class="container-fluid">
+<style>
+    .invoice-title {
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+    .table-invoice th {
+        background: #f8f9fa;
+        border-bottom: 2px solid #dee2e6 !important;
+    }
+    .summary-box p {
+        font-size: 14px;
+        margin-bottom: 6px;
+    }
+    .summary-box h3 {
+        font-weight: 700;
+    }
+    .invoice-footer {
+        border-top: 1px solid #e9ecef;
+        padding-top: 15px;
+        margin-top: 40px;
+        text-align: center;
+        font-size: 12px;
+        color: #6c757d;
+    }
 
-             <div class="row">
-                 <div class="col-12">
-                     <div class="card">
-                         <div class="card-body">
+    /* STAMPEL LUNAS */
+    .stamp-paid {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-15deg);
+        font-size: 90px;
+        font-weight: 900;
+        color: rgba(0, 128, 0, 0.25); /* hijau transparan */
+        border: 8px solid rgba(0, 128, 0, 0.25);
+        padding: 20px 40px;
+        border-radius: 10px;
+        text-transform: uppercase;
+        pointer-events: none;
+        z-index: 10;
+    }
+</style>
 
-                             <!-- Invoice Logo-->
-                             <div class="clearfix">
-                                 <div class="float-start mb-3">
-                                     <img src="assets/images/logo-dark.png" alt="dark logo" height="32">
-                                 </div>
-                                 <div class="float-end">
-                                     <h4 class="m-0 d-print-none">Invoice</h4>
-                                 </div>
-                             </div>
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
 
-                             <!-- Invoice Detail-->
-                             <div class="row">
-                                 <div class="col-sm-6">
-                                     <div class="float-end mt-3">
-                                         <p><b>Hello, Thomson</b></p>
-                                         <p class="text-muted fs-13">Please find below a cost-breakdown for the recent
-                                             work completed. Please make payment at your earliest convenience, and do
-                                             not hesitate to contact me with any questions.</p>
-                                     </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
 
-                                 </div><!-- end col -->
-                                 <div class="col-sm-4 offset-sm-2">
-                                     <div class="mt-3 float-sm-end">
-                                         <p class="fs-13"><strong>Order Date: </strong> &nbsp;&nbsp;&nbsp; Jan 17, 2023
-                                         </p>
-                                         <p class="fs-13"><strong>Order Status: </strong> <span
-                                                 class="badge bg-success float-end">Paid</span></p>
-                                         <p class="fs-13"><strong>Order ID: </strong> <span
-                                                 class="float-end">#123456</span></p>
-                                     </div>
-                                 </div><!-- end col -->
-                             </div>
-                             <!-- end row -->
+                    <div class="card position-relative">
+                        <div class="card-body">
 
-                             <div class="row mt-4">
-                                 <div class="col-6">
-                                     <h6 class="fs-14">Billing Address</h6>
-                                     <address>
-                                         Lynne K. Higby<br>
-                                         795 Folsom Ave, Suite 600<br>
-                                         San Francisco, CA 94107<br>
-                                         <abbr title="Phone">P:</abbr> (123) 456-7890
-                                     </address>
-                                 </div> <!-- end col-->
+                            {{-- STAMPEL LUNAS --}}
+                            @if($data->payment_status == 'PAID')
+                                <div class="stamp-paid">LUNAS</div>
+                            @endif
 
-                                 <div class="col-6">
-                                     <h6 class="fs-14">Shipping Address</h6>
-                                     <address>
-                                         Amy Dickson<br>
-                                         795 Folsom Ave, Suite 600<br>
-                                         San Francisco, CA 94107<br>
-                                         <abbr title="Phone">P:</abbr> (123) 456-7890
-                                     </address>
-                                 </div> <!-- end col-->
-                             </div>
-                             <!-- end row -->
+                            <!-- Header -->
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <img src="{{ asset('images/logotrans.png') }}" alt="" height="50">
+                                    <h3 class="invoice-title mt-2">INVOICE</h3>
+                                </div>
+                                <div class="text-end">
+                                    <h5 class="mb-1">Insoft Developers</h5>
+                                    <p class="mb-0 text-muted">Jl. Tengku Bergalit Dusun II Desa Bandar Labuhan<br>
+                                        Tanjung Morawa, Deli Serdang<br>Sumatera Utara
+                                    </p>
+                                    <p class="mb-0 text-muted">Phone: 0821-6517-4835</p>
+                                </div>
+                            </div>
 
-                             <div class="row">
-                                 <div class="col-12">
-                                     <div class="table-responsive">
-                                         <table
-                                             class="table table-sm table-centered table-hover table-borderless mb-0 mt-3">
-                                             <thead class="border-top border-bottom bg-light-subtle border-light">
-                                                 <tr>
-                                                     <th>#</th>
-                                                     <th>Item</th>
-                                                     <th>Quantity</th>
-                                                     <th>Unit Cost</th>
-                                                     <th class="text-end">Total</th>
-                                                 </tr>
-                                             </thead>
-                                             <tbody>
-                                                 <tr>
-                                                     <td class="">1</td>
-                                                     <td>
-                                                         <b>Laptop</b> <br />
-                                                         Brand Model VGN-TXN27N/B
-                                                         11.1" Notebook PC
-                                                     </td>
-                                                     <td>1</td>
-                                                     <td>$1799.00</td>
-                                                     <td class="text-end">$1799.00</td>
-                                                 </tr>
-                                                 <tr>
-                                                     <td>2</td>
-                                                     <td>
-                                                         <b>Warranty</b> <br />
-                                                         Two Year Extended Warranty -
-                                                         Parts and Labor
-                                                     </td>
-                                                     <td class="">3</td>
-                                                     <td>$499.00</td>
-                                                     <td class="text-end">$1497.00</td>
-                                                 </tr>
-                                                 <tr>
-                                                     <td>3</td>
-                                                     <td>
-                                                         <b>LED</b> <br />
-                                                         80cm (32) HD Ready LED TV
-                                                     </td>
-                                                     <td class="">2</td>
-                                                     <td>$412.00</td>
-                                                     <td class="text-end">$824.00</td>
-                                                 </tr>
+                            <hr>
 
-                                             </tbody>
-                                         </table>
-                                     </div> <!-- end table-responsive-->
-                                 </div> <!-- end col -->
-                             </div>
-                             <!-- end row -->
+                            <!-- Invoice Info -->
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <h6 class="fw-bold mb-1">Billing To:</h6>
+                                    <p class="mb-0">{{ $data->company->company_name ?? 'Customer Name' }}</p>
+                                    <p class="mb-0">{{ $data->company->company_address ?? 'Customer Address' }}</p>
+                                    <p class="mb-0">{{ $data->company->company_phone ?? '(000) 000-0000' }}</p>
+                                </div>
+                                <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                                    <p class="mb-1"><strong>Invoice No:</strong> {{ $data->invoice ?? '#INV-001' }}</p>
+                                    <p class="mb-1"><strong>Date:</strong> {{ date('d-m-Y', strtotime($data->created_at)) }}</p>
+                                    <p class="mb-1">
+                                        <strong>Status:</strong>
+                                        @if($data->payment_status == 'PAID')
+                                            <span class="badge bg-success">PAID</span>
+                                        @else 
+                                            <span class="badge bg-danger">{{ $data->payment_status }}</span>
+                                        @endif
+                                    </p>
+                                </div>
+                            </div>
 
-                             <div class="row">
-                                 <div class="col-sm-6">
-                                     <div class="clearfix pt-3">
-                                         <h6 class="text-muted fs-14">Notes:</h6>
-                                         <small>
-                                             All accounts are to be paid within 7 days from receipt of
-                                             invoice. To be paid by cheque or credit card or direct payment
-                                             online. If account is not paid within 7 days the credits details
-                                             supplied as confirmation of work undertaken will be charged the
-                                             agreed quoted fee noted above.
-                                         </small>
-                                     </div>
-                                 </div> <!-- end col -->
-                                 <div class="col-sm-6">
-                                     <div class="float-end mt-3 mt-sm-0">
-                                         <p><b>Sub-total:</b> <span class="float-end">$4120.00</span></p>
-                                         <p><b>VAT (12.5):</b> <span class="float-end">$515.00</span></p>
-                                         <h3>$4635.00 USD</h3>
-                                     </div>
-                                     <div class="clearfix"></div>
-                                 </div> <!-- end col -->
-                             </div>
-                             <!-- end row-->
+                            <!-- Table Items -->
+                            <div class="table-responsive mt-4">
+                                <table class="table table-bordered table-invoice">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:50px;">#</th>
+                                            <th>Description</th>
+                                            <th class="text-center" style="width:120px;">Qty</th>
+                                            <th class="text-end" style="width:150px;">Unit Price</th>
+                                            <th class="text-end" style="width:160px;">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>QBSC - {{ $data->paket->nama_paket ?? '' }} 
+                                                {{ $data->paket->periode === 1 ? '(Bulanan)' : '(Tahunan)' }}
+                                            </td>
+                                            <td class="text-center">1</td>
+                                            <td class="text-end">Rp. {{ number_format($data->amount) }}</td>
+                                            <td class="text-end">Rp. {{ number_format($data->amount) }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
 
-                             <div class="d-print-none mt-4">
-                                 <div class="text-end">
-                                     <a href="javascript:window.print()" class="btn btn-soft-primary"><i
-                                             class="mdi mdi-printer-outline lh-sm"></i> Print</a>
-                                     <a href="javascript: void(0);" class="btn btn-soft-danger">Submit</a>
-                                 </div>
-                             </div>
-                             <!-- end buttons -->
+                            <!-- Summary -->
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <h6 class="fw-bold">Notes:</h6>
+                                    <p class="text-muted">
+                                        Terima kasih telah menggunakan layanan kami.<br>
+                                        Jika ada pertanyaan mengenai invoice ini, silakan hubungi kami kapan saja.
+                                    </p>
+                                </div>
 
-                         </div> <!-- end card-body-->
-                     </div> <!-- end card -->
-                 </div> <!-- end col-->
-             </div>
-             <!-- end row -->
+                                <div class="col-md-6">
+                                    <div class="summary-box float-md-end">
+                                        <p><strong>Subtotal:</strong> <span class="float-end">Rp. {{ number_format($data->amount) }}</span></p>
+                                        <p><strong>Tax :</strong> <span class="float-end">Rp. 0</span></p>
+                                        <h3 class="mt-3">Total: Rp. {{ number_format($data->amount) }}</h3>
+                                    </div>
+                                </div>
+                            </div>
 
-         </div> <!-- container -->
+                            <div class="d-print-none text-end mt-4">
+                                <a href="javascript:window.print()" class="btn btn-primary">
+                                    <i class="mdi mdi-printer"></i> Print Invoice
+                                </a>
+                            </div>
 
-     </div> <!-- content -->
-      @include('frontend.footer')
- </div>
+                            
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    @include('frontend.footer')
+</div>
 
 @endsection

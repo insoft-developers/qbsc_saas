@@ -35,7 +35,7 @@
                               </div>
                               <div class="mb-2">
                                   <label for="is_peternakan" class="form-label">Jenis Perusahaan</label>
-                                  <input readonly type="text" id="is_peternakan" name="is_peternakan" class="form-control">
+                                  <input readonly type="text" id="is_peternakan" class="form-control">
                               </div>
                               
                           </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Company;
+use App\Models\Satpam;
 use App\Models\User;
 use Carbon\Carbon;
 use Closure;
@@ -39,6 +40,7 @@ class PaketAktif
             return redirect()->route('duitku.return')->with('error', 'Paket anda sudah expired.');
         }
 
+        
         
         
         return $next($request);

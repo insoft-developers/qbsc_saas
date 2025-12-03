@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\JamShift;
+use App\Models\PaketLangganan;
 use App\Models\Pembelian;
+use App\Models\User;
 use App\Traits\CommonTrait;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -54,8 +56,12 @@ class RiwayatController extends Controller
                     return $row->payment_date == null ? '-' : date('d-m-Y H:i', strtotime($row->payment_date));
                 })
 
+                ->addColumn('payment_status', function($row){
+                    return $row->payment_status === 'PAID' ? '<span class="badge bg-success">PAID</span>' : '<span class="badge bg-danger">'.$row->payment_status.'</span>';
+                })
+
                 
-                ->rawColumns(['action'])
+                ->rawColumns(['action','payment_status'])
                 ->make(true);
 
             // bi bi-trash3
@@ -121,6 +127,12 @@ class RiwayatController extends Controller
 
     public function print($invoice) {
         $view = 'invoice';
-        return view('frontend.paket.invoice', compact('view'));
+        $data = Pembelian::where('invoice', $invoice)->first();
+        if($data && $data->comid === $this->comid()) {
+            return view('frontend.paket.invoice', compact('view','data'));
+        } else {
+            abort(404, 'Halaman tidak ditemukan.');
+        }
+        
     }
 }
