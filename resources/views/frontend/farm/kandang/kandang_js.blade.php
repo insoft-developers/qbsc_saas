@@ -49,6 +49,10 @@
                 name: 'pic'
             },
             {
+                data: 'is_active',
+                name: 'is_active'
+            },
+            {
                 data: 'comid',
                 name: 'comid'
             },
@@ -134,6 +138,7 @@
                 $("#fan_amount").val(data.fan_amount);
                 $("#is_empty").val(data.is_empty);
                 $("#pic").val(data.pic);
+                $("#is_active").val(data.is_active);
             }
         })
     }

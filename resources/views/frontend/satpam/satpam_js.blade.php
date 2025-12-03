@@ -3,9 +3,10 @@
         processing: true,
         serverSide: true,
         ajax: '{{ route('satpam.table') }}',
-        order: [[0, 'desc']],
-        columns: [
-            {
+        order: [
+            [0, 'desc']
+        ],
+        columns: [{
                 data: 'id',
                 name: 'id',
                 orderable: true,
@@ -150,8 +151,13 @@
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(response) {
-                        Swal.fire('Berhasil!', response.message, 'success');
-                        reloadTable();
+                        if (response.success) {
+                            Swal.fire('Berhasil!', response.message, 'success');
+                            reloadTable();
+                        } else {
+                            Swal.fire('Warning!', response.message, 'error');
+                        }
+
                     },
                     error: function(xhr) {
                         Swal.fire('Gagal!', xhr.responseJSON.message || 'Terjadi kesalahan.',
@@ -176,7 +182,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "{{ url('satpam') }}"+"/"+ id,
+                    url: "{{ url('satpam') }}" + "/" + id,
                     type: 'DELETE',
                     data: {
                         _token: '{{ csrf_token() }}'

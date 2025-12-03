@@ -86,6 +86,17 @@ class UserController extends Controller
             'is_active' => 'required',
         ]);
 
+        $paket = $this->what_paket($this->comid());
+        $max = $paket['jumlah_user_admin'];
+
+        $jumlah_user = User::where('company_id', $this->comid())->where('is_active', 1)->count();
+        if ($jumlah_user >= $max) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Jumlah User sudah melebihi quota paket anda, silahkan upgrade paket anda untuk menambah jumlah user !!',
+            ]);
+        }
+
         // Simpan foto ke storage
         $path = null;
 

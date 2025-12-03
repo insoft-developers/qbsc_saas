@@ -7,7 +7,11 @@
     <div class="content-page">
         <div class="content">
             <div class="container-fluid">
-
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
                 <!-- Page Header -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="mb-0 fw-bold">Data Kandang</h4>
@@ -32,6 +36,7 @@
                                         <th>Jumlah Kipas</th>
                                         <th>Kondisi</th>
                                         <th>PIC</th>
+                                        <th>Status</th>
                                         <th>Perusahaan</th>
                                         
                                     </tr>

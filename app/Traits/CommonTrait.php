@@ -2,7 +2,9 @@
 
 namespace App\Traits;
 
+use App\Models\Company;
 use App\Models\JamShift;
+use App\Models\PaketLangganan;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -88,5 +90,11 @@ trait CommonTrait
         }
 
         return null;
+    }
+
+    public function what_paket($comid) {
+        $com = Company::find($comid);
+        $paket = PaketLangganan::find($com->paket_id);
+        return $paket;   
     }
 }

@@ -43,19 +43,19 @@ class SatpamController extends Controller
                     return $row->company->company_name ?? '';
                 })
                 ->addColumn('action', function ($row) {
-                    $disabled = $this->isOwner() ? '': 'disabled'; 
+                    $disabled = $this->isOwner() ? '' : 'disabled';
                     $button = '';
                     $button .= '<center>';
-                    
+
                     if ($row->is_active == 1) {
-                        $button .= '<button '.$disabled.' onclick="activate(' . $row->id . ', 0)" title="Non Aktifkan" class="me-0 btn btn-insoft btn-danger"><i class="bi bi-x-lg"></i></button>';
+                        $button .= '<button ' . $disabled . ' onclick="activate(' . $row->id . ', 0)" title="Non Aktifkan" class="me-0 btn btn-insoft btn-danger"><i class="bi bi-x-lg"></i></button>';
                     } else {
-                        $button .= '<button '.$disabled.' onclick="activate(' . $row->id . ', 1)" title="Aktifkan" class="me-0 btn btn-insoft btn-success"><i class="bi bi-check-circle"></i></button>';
+                        $button .= '<button ' . $disabled . ' onclick="activate(' . $row->id . ', 1)" title="Aktifkan" class="me-0 btn btn-insoft btn-success"><i class="bi bi-check-circle"></i></button>';
                     }
 
-                    $button .= '<button '.$disabled.' onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
+                    $button .= '<button ' . $disabled . ' onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
 
-                    $button .= '<button '.$disabled.' onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
+                    $button .= '<button ' . $disabled . ' onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
                     $button .= '</center>';
                     return $button;
                 })
@@ -92,8 +92,20 @@ class SatpamController extends Controller
             'whatsapp' => 'required|string|max:20|unique:satpams,whatsapp',
             'password' => 'required|string|min:6',
         ]);
+
+        $paket = $this->what_paket($this->comid());
+        $max = $paket['jumlah_satpam'];
+
+        $jumlah_satpam = Satpam::where('comid', $this->comid())->where('is_active', 1)->count();
+        if ($jumlah_satpam >= $max) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Jumlah satpam sudah melebihi quota paket anda, silahkan upgrade paket anda untuk menambah jumlah satpam !!',
+            ]);
+        }
+
         $face_url = config('services.face_api.url');
-        $response = Http::attach('image', file_get_contents($request->file('foto')), 'face.jpg')->post($face_url.'/encode');
+        $response = Http::attach('image', file_get_contents($request->file('foto')), 'face.jpg')->post($face_url . '/encode');
 
         if (!$response->successful()) {
             return response()->json(
@@ -174,7 +186,7 @@ class SatpamController extends Controller
                 // kirim ke API face recognition
                 $response = Http::timeout(10)
                     ->attach('image', file_get_contents($request->file('foto')), 'face.jpg')
-                    ->post($face_url.'/encode');
+                    ->post($face_url . '/encode');
 
                 if ($response->successful()) {
                     $satpam->face_embedding = json_encode($response->json('embedding'));
@@ -253,6 +265,19 @@ class SatpamController extends Controller
         ]);
 
         $satpam = Satpam::findOrFail($request->id);
+
+        if ($satpam->is_active !== 1) {
+            $paket = $this->what_paket($this->comid());
+            $max = $paket['jumlah_satpam'];
+
+            $jumlah_satpam = Satpam::where('comid', $this->comid())->where('is_active', 1)->count();
+            if ($jumlah_satpam >= $max) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Jumlah satpam sudah melebihi quota paket anda, silahkan upgrade paket anda untuk menambah jumlah satpam !!',
+                ]);
+            }
+        }
 
         // toggle aktif/nonaktif
         $satpam->is_active = $satpam->is_active ? 0 : 1;

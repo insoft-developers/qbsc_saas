@@ -31,13 +31,16 @@ class KandangController extends Controller
                 ->addColumn('is_empty', function ($row) {
                     return $row->is_empty === 1 ? '<center><span class="badge bg-danger rounded-pill">Kosong</span></center>' : '<center><span class="badge bg-success rounded-pill">Berisi</span></center>';
                 })
+                ->addColumn('is_active', function ($row) {
+                    return $row->is_active === 1 ? '<center><span class="badge bg-success rounded-pill">Aktif</span></center>' : '<center><span class="badge bg-danger rounded-pill">Tidak</span></center>';
+                })
                 ->addColumn('comid', function ($row) {
                     return $row->company->company_name ?? '';
                 })
                 ->addColumn('pic', function ($row) {
                     return $row->pics->name ?? '';
                 })
-                ->rawColumns(['action','is_empty'])
+                ->rawColumns(['action','is_empty','is_active'])
                 ->make(true);
 
             // bi bi-trash3

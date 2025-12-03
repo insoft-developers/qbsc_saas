@@ -142,9 +142,9 @@
         countIndex = 0;
         $("#container-jam").html('');
         if (jam_awal.length > 0) {
-            
-           
-           
+
+
+
             for (var i = 0; i < jam_awal.length; i++) {
                 countIndex++;
                 var html = '';
@@ -178,10 +178,10 @@
         </div>`;
 
                 $("#container-jam").append(html);
-                
+
             }
 
-             
+
         } else {
             tambahJam();
         }
@@ -207,8 +207,14 @@
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(response) {
-                        Swal.fire('Berhasil!', response.message, 'success');
-                        reloadTable();
+                        if (response.success) {
+                            Swal.fire('Berhasil!', response.message, 'success');
+                            reloadTable();
+                        } else {
+                            Swal.fire('Warning!', response.message, 'error');
+
+                        }
+
                     },
                     error: function(xhr) {
                         Swal.fire('Gagal!', xhr.responseJSON.message || 'Terjadi kesalahan.',

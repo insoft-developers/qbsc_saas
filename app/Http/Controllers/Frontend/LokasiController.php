@@ -103,6 +103,17 @@ class LokasiController extends Controller
             'jam_akhir.*' => 'required'  
         ]);
 
+        $paket = $this->what_paket($this->comid());
+        $max = $paket['jumlah_lokasi'];
+
+        $jumlah_lokasi = Lokasi::where('comid', $this->comid())->where('is_active', 1)->count();
+        if ($jumlah_lokasi >= $max) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Jumlah Lokasi sudah melebihi quota paket anda, silahkan upgrade paket anda untuk menambah jumlah lokasi !!',
+            ]);
+        }
+
         // Simpan ke database
         try {
 
@@ -219,6 +230,18 @@ class LokasiController extends Controller
         ]);
 
         $data = Lokasi::findOrFail($request->id);
+        if ($data->is_active !== 1) {
+            $paket = $this->what_paket($this->comid());
+            $max = $paket['jumlah_lokasi'];
+
+            $jumlah_lokasi = Lokasi::where('comid', $this->comid())->where('is_active', 1)->count();
+            if ($jumlah_lokasi >= $max) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Jumlah lokasi sudah melebihi quota paket anda, silahkan upgrade paket anda untuk menambah jumlah lokasi !!',
+                ]);
+            }
+        }
 
         // toggle aktif/nonaktif
         $data->is_active = $data->is_active ? 0 : 1;
