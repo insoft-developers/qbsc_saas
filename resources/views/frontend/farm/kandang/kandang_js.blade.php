@@ -138,7 +138,7 @@
                 $("#fan_amount").val(data.fan_amount);
                 $("#is_empty").val(data.is_empty);
                 $("#pic").val(data.pic);
-                $("#is_active").val(data.is_active);
+                
             }
         })
     }
@@ -185,6 +185,43 @@
 
     function resetForm() {
        $('#form-tambah')[0].reset();
+    }
 
+    function activate(id, active) {
+        Swal.fire({
+            title: active == 1 ? 'Yakin ingin mengaktifkan?' : 'Yakin ingin menonaktifkan?',
+            text: active == 1 ? "Data ini akan diaktifkan" : "Data ini akan dinonaktifkan",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: active == 1 ? "Ya Aktifkan" : "Ya, Non Aktifkan",
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{ route('kandang.activate') }}",
+                    type: 'POST',
+                    data: {
+                        id: id,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire('Berhasil!', response.message, 'success');
+                            reloadTable();
+                        } else {
+                            Swal.fire('Warning!', response.message, 'error');
+
+                        }
+
+                    },
+                    error: function(xhr) {
+                        Swal.fire('Gagal!', xhr.responseJSON.message || 'Terjadi kesalahan.',
+                            'error');
+                    }
+                });
+            }
+        });
     }
 </script>

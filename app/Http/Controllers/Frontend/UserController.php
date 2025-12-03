@@ -40,6 +40,11 @@ class UserController extends Controller
                     $button = '';
                     $button .= '<center>';
                     if (Auth::user()->level == 'owner') {
+                        if ($row->is_active == 1) {
+                            $button .= '<button onclick="activate(' . $row->id . ', 0)" title="Non Aktifkan" class="me-0 btn btn-insoft btn-danger"><i class="bi bi-x-lg"></i></button>';
+                        } else {
+                            $button .= '<button onclick="activate(' . $row->id . ', 1)" title="Aktifkan" class="me-0 btn btn-insoft btn-success"><i class="bi bi-check-circle"></i></button>';
+                        }
                         $button .= '<button onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
                         $button .= '<button onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
                     } else {
@@ -83,7 +88,6 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'whatsapp' => 'required|string|max:20|unique:users,whatsapp',
             'password' => 'required|string|min:6',
-            'is_active' => 'required',
         ]);
 
         $paket = $this->what_paket($this->comid());
@@ -110,7 +114,7 @@ class UserController extends Controller
             'email' => $request->email,
             'email_verified_at' => Carbon::now(),
             'password' => bcrypt($request->password),
-            'is_active' => $request->is_active,
+            'is_active' => 1,
             'company_id' => $this->comid(),
             'whatsapp' => $request->whatsapp,
             'level' => 'user',
@@ -152,7 +156,6 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email,' . $id,
             'whatsapp' => 'required|string|max:20|unique:users,whatsapp,' . $id,
             'password' => 'nullable|string|min:6',
-            'is_active' => 'required',
         ]);
 
         $path = $user->profile_image;
@@ -173,7 +176,6 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'whatsapp' => $request->whatsapp,
-            'is_active' => $request->is_active,
             'profile_image' => $path,
             'password' => $request->filled('password') ? bcrypt($request->password) : $user->password,
         ]);
@@ -190,5 +192,37 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         return User::destroy($id);
+    }
+
+    public function activate(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:users,id',
+        ]);
+
+        $data = User::findOrFail($request->id);
+        if ($data->is_active !== 1) {
+            $paket = $this->what_paket($this->comid());
+            $max = $paket['jumlah_user_admin'];
+
+            $jumlah_user_admin = User::where('company_id', $this->comid())->where('is_active', 1)->count();
+            if ($jumlah_user_admin >= $max) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Jumlah user admin sudah melebihi quota paket anda, silahkan upgrade paket anda untuk menambah jumlah user !!',
+                ]);
+            }
+        }
+
+        // toggle aktif/nonaktif
+        $data->is_active = $data->is_active ? 0 : 1;
+        $data->save();
+
+        $message = $data->is_active ? 'Data berhasil diaktifkan.' : 'Data berhasil dinonaktifkan.';
+
+        return response()->json([
+            'success' => true,
+            'message' => $message,
+        ]);
     }
 }

@@ -75,16 +75,17 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
 
     Route::resource('user', UserController::class);
     Route::get('/user_table', [UserController::class, 'user_table'])->name('user.table');
+    Route::post('/user_activate', [UserController::class, 'activate'])->name('user.activate');
 
     Route::resource('kandang', KandangController::class)->middleware('checkCom');
-    Route::get('/kandang_table', [KandangController::class, 'kandang_table'])->name('kandang.table')->middleware('checkCom');;
+    Route::get('/kandang_table', [KandangController::class, 'kandang_table'])->name('kandang.table')->middleware('checkCom');
+    Route::post('/kandang_activate', [KandangController::class, 'activate'])->name('kandang.activate');
 
-
-    Route::resource('mesin', MesinController::class)->middleware('checkCom');;
-    Route::get('/mesin_table', [MesinController::class, 'mesin_table'])->name('mesin.table')->middleware('checkCom');;
+    Route::resource('mesin', MesinController::class)->middleware('checkCom');
+    Route::get('/mesin_table', [MesinController::class, 'mesin_table'])->name('mesin.table')->middleware('checkCom');
 
     Route::resource('ekspedisi', EkspedisiController::class)->middleware('checkCom');
-    Route::get('/ekspedisi_table', [EkspedisiController::class, 'ekspedisi_table'])->name('ekspedisi.table')->middleware('checkCom');;
+    Route::get('/ekspedisi_table', [EkspedisiController::class, 'ekspedisi_table'])->name('ekspedisi.table')->middleware('checkCom');
 
     Route::resource('patroli_kandang', PatroliKandangController::class)->middleware('checkCom');
     Route::get('/kandang_suhu_table', [PatroliKandangController::class, 'kandang_suhu_table'])->name('kandang.suhu.table')->middleware('checkCom');

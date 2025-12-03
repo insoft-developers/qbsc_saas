@@ -39,15 +39,7 @@
                                 </select>
                               </div>
                               <div class="mb-2">
-                                  <label for="is_active" class="form-label">Status</label>
-                                  <select id="is_active" name="is_active" class="form-control">
-                                    <option value="">Pilih</option>
-                                    <option value="1">Aktif</option>
-                                    <option value="0">Tidak</option>
-                                </select>
-                              </div>
-                              <div class="mb-2">
-                                  <label for="pic" class="form-label">PIC</label>
+                                  <label for="pic" class="form-label">Penanggung Jawab</label>
                                   <select id="pic" name="pic" class="form-control">
                                     <option value="">Pilih</option>
                                     @foreach($users as $user)
