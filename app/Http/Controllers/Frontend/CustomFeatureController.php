@@ -202,7 +202,7 @@ class CustomFeatureController extends Controller
      */
     public function edit(string $id)
     {
-        return Broadcast::find($id);
+        return CustomFeature::find($id);
     }
 
     /**
@@ -211,38 +211,28 @@ class CustomFeatureController extends Controller
     public function update(Request $request, $id)
     {
         $input = $request->all();
-        
-        $data = Broadcast::findOrFail($id);
-
         $validated = $request->validate([
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'judul' => 'required|string|max:100',
-            'pesan' => 'required',
+            'feature' => 'required|string|max:100',
+            'description' => 'required',
         ]);
 
+        $data = CustomFeature::find($id);
+
+        // Simpan foto ke storage
         $path = $data->image;
 
-        // Jika ada foto baru diupload
         if ($request->hasFile('image')) {
-            // Hapus foto lama jika ada
-            if ($data->image && Storage::disk('public')->exists($data->image)) {
-                Storage::disk('public')->delete($data->image);
-            }
-
-            // Upload foto baru
-            $path = $request->file('image')->store('broadcast', 'public');
+            $path = $request->file('image')->store('custom_feature', 'public');
         }
 
+        // Simpan ke database
         $input['image'] = $path;
-        $input['pengirim'] = Auth::user()->id;
-        $input['comid'] = $this->comid();
-
         $data->update($input);
-        // Update data user
-        
+
         return response()->json([
             'success' => true,
-            'message' => 'Data berhasil diperbarui.',
+            'message' => 'Data berhasil disimpan.',
         ]);
     }
 
@@ -251,7 +241,7 @@ class CustomFeatureController extends Controller
      */
     public function destroy(string $id)
     {
-        return Broadcast::destroy($id);
+        return CustomFeature::destroy($id);
     }
 
     public function payment(Request $request)

@@ -142,15 +142,15 @@
         save_method = "edit";
         $('input[name=_method]').val('PATCH');
         $.ajax({
-            url: "{{ url('/broadcast') }}" + "/" + id + "/edit",
+            url: "{{ url('/custom_feature') }}" + "/" + id + "/edit",
             type: "GET",
             dataType: "JSON",
             success: function(data) {
                 $('#modal-tambah').modal("show");
                 $('.modal-title').text("Edit Pesan");
                 $('#id').val(data.id);
-                $("#judul").val(data.judul);
-                $("#pesan").val(data.pesan);
+                $("#feature").val(data.feature);
+                $("#description").val(data.description);
                 $("#image").val(null);
 
             }
@@ -173,7 +173,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "{{ url('broadcast') }}" + "/" + id,
+                    url: "{{ url('custom_feature') }}" + "/" + id,
                     type: 'DELETE',
                     data: {
                         _token: '{{ csrf_token() }}'
