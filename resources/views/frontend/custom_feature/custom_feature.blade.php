@@ -10,10 +10,10 @@
 
                 <!-- Page Header -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="mb-0 fw-bold">Data Broadcast</h4>
+                    <h4 class="mb-0 fw-bold">Request Custom Feature</h4>
                    
                     <button type="button" class="btn btn-info btn-sm rounded-pill" onclick="tambah_data()">
-                        <i class="bi bi-plus-lg me-1"></i> Tambah Pesan
+                        <i class="bi bi-plus-lg me-1"></i> Tambah Request Feature
                     </button>
                    
                 </div>
@@ -28,14 +28,19 @@
                                         <th>ID</th>
                                         <th class="text-center" width="5%">No</th>
                                         <th class="text-center">Aksi</th>
-                                        <th>Tanggal</th>
-                                        <th>Judul</th>
-                                        <th>Pesan</th>
-                                        <th>Gambar</th>
-                                        <th>Pengirim</th>
+                                        <th>Tgl Request</th>
+                                        <th>Tgl Selesai</th>
+                                        <th>Order ID</th>
+                                        <th>Fitur</th>
+                                        <th>Deskripsi</th>
                                         <th>Status</th>
+                                        <th>Gambar</th>
+                                        <th>Diajukan Oleh</th>
+                                        <th>Harga</th>
+                                        <th>Respon Admin</th>
+                                        <th>Status Pembayaran</th>
+                                        <th>Ket. Pembayaran</th>
                                         <th>Perusahaan</th>
-                                        
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -53,9 +58,9 @@
     <!-- End Page Content -->
     <!-- ============================================================== -->
 
-    @include('frontend.broadcast.modal')
+    @include('frontend.custom_feature.modal')
 @endsection
 
 @push('scripts')
-    @include('frontend.broadcast.broadcast_js')
+    @include('frontend.custom_feature.custom_feature_js')
 @endpush

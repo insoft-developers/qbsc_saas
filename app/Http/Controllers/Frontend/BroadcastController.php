@@ -100,6 +100,14 @@ class BroadcastController extends Controller
             'pesan' => 'required',
         ]);
 
+        $paket = $this->what_paket($this->comid());
+        if($paket['is_broadcast'] !== 1) {
+            return response()->json([
+                "success" => false,
+                "message" => "Silahkan upgrade paket anda untuk bisa membuat broadcast pesan.!!"
+            ]);
+        }
+
         // Simpan foto ke storage
         $path = null;
 

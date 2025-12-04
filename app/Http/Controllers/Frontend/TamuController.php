@@ -165,6 +165,14 @@ class TamuController extends Controller
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
+        $paket = $this->what_paket($this->comid());
+        if($paket['is_scan_tamu'] !== 1) {
+            return response()->json([
+                "sucess" => false,
+                "message" => 'Paket anda saat ini hanya mengizinkan anda untuk menambah data tamu via aplikasi satpam secara manual, Silahkan upgrade paket anda untuk bisa membuat qr tamu dan scan di aplikasi satpam..!!'
+            ]);
+        }
+
         // Simpan foto ke storage
         $path = null;
 

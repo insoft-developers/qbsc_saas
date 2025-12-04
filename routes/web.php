@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Frontend\AbsenLocationController;
 use App\Http\Controllers\Frontend\AbsensiController;
 use App\Http\Controllers\Frontend\BroadcastController;
+use App\Http\Controllers\Frontend\CustomFeatureController;
 use App\Http\Controllers\Frontend\DashboardController;
 use App\Http\Controllers\Frontend\DocOutController;
 use App\Http\Controllers\Frontend\DuitkuController;
@@ -142,6 +143,10 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
     Route::resource('riwayat', RiwayatController::class)->withoutMiddleware('isPaket');
     Route::get('/riwayat_table', [RiwayatController::class, 'riwayat_table'])->name('riwayat.table')->withoutMiddleware('isPaket');
     Route::get('/print_invoice/{invoice}', [RiwayatController::class, 'print'])->withoutMiddleware('isPaket');
+
+    Route::resource('custom_feature', CustomFeatureController::class);
+    Route::get('/custom_feature_table', [CustomFeatureController::class, 'custom_feature_table'])->name('custom.feature.table');
+    Route::post('/create_feature_payment', [CustomFeatureController::class, 'payment'])->name('create.feature.payment');
 });
 
 

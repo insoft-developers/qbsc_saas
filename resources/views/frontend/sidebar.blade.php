@@ -209,6 +209,13 @@
                     </ul>
                 </div>
             </li>
+            <li class="side-nav-item">
+                <a href="{{ url('/custom_feature') }}" class="side-nav-link">
+                    <i class="ri-git-pull-request-line"></i>
+                    <span> Request Custom Feature </span>
+
+                </a>
+            </li>
 
         </ul>
         <div style="margin-top: 200px;"></div>
