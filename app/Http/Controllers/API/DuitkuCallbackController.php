@@ -5,8 +5,12 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\CustomFeature;
+use App\Models\Kandang;
+use App\Models\Lokasi;
 use App\Models\PaketLangganan;
 use App\Models\Pembelian;
+use App\Models\Satpam;
+use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -67,10 +71,14 @@ class DuitkuCallbackController extends Controller
                         }
 
                         $company = Company::find($pembelian->comid);
+                        $active_id = $company->paket_id;
                         $company->paket_id = $pembelian->paket_id;
                         $company->expired_date = $expired_date;
                         $company->is_active = 1;
                         $company->save();
+
+                        $this->setting_feature($active_id, $pembelian->paket_id, $pembelian->comid) ;
+
                     }
                 }
             } else {
@@ -80,6 +88,55 @@ class DuitkuCallbackController extends Controller
         } else {
             // file_put_contents('callback.txt', "* Bad Parameter *\r\n\r\n", FILE_APPEND | LOCK_EX);
             throw new Exception('Bad Parameter');
+        }
+    }
+
+    protected function setting_feature($active_id, $new_id, $comid) 
+    {
+        if($active_id === $new_id) {
+
+        } else {
+            $paket_lama = PaketLangganan::find($active_id);
+            $paket_baru = PaketLangganan::find($new_id);
+
+            $jumlah_satpam_lama = $paket_lama->jumlah_satpam;
+            $jumlah_satpam_baru = $paket_baru->jumlah_satpam;
+
+            $jumlah_lokasi_lama = $paket_lama->jumlah_lokasi;
+            $jumlah_lokasi_baru = $paket_baru->jumlah_lokasi;
+
+            $jumlah_user_lama = $paket_lama->jumlah_user_admin;
+            $jumlah_user_baru = $paket_baru->jumlah_user_admin;
+
+            $jumlah_farm_lama = $paket_lama->jumlah_farm;
+            $jumlah_farm_baru = $paket_baru->jumlah_farm;
+            
+
+            if($jumlah_satpam_baru < $jumlah_satpam_lama) {
+                Satpam::where('comid', $comid)->update([
+                    "is_active" => 0
+                ]);
+            }
+            
+            if($jumlah_lokasi_baru < $jumlah_lokasi_lama) {
+                Lokasi::where('comid', $comid)->update([
+                    "is_active" => 0
+                ]);
+            }
+
+            if($jumlah_user_baru < $jumlah_user_lama) {
+                User::where('company_id', $comid)
+                ->where('level', 'user')
+                ->update([
+                    "is_active" => 0
+                ]);
+            }
+
+            if($jumlah_farm_baru < $jumlah_farm_lama) {
+                Kandang::where('comid', $comid)
+                ->update(['is_active'=> 0]);
+            }
+
         }
     }
 }
