@@ -188,6 +188,13 @@
 
                 </a>
             </li>
+            <li class="side-nav-item">
+                <a href="{{ url('/notifikasi') }}" class="side-nav-link">
+                    <i class="ri-notification-line"></i>
+                    <span> Notifikasi </span>
+
+                </a>
+            </li>
            
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidbarMaps" aria-expanded="false"
@@ -213,6 +220,13 @@
                 <a href="{{ url('/custom_feature') }}" class="side-nav-link">
                     <i class="ri-git-pull-request-line"></i>
                     <span> Request Custom Feature </span>
+
+                </a>
+            </li>
+            <li class="side-nav-item">
+                <a href="{{ url('/asset_page') }}" class="side-nav-link">
+                    <i class="ri-newspaper-line"></i>
+                    <span> Asset </span>
 
                 </a>
             </li>

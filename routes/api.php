@@ -6,6 +6,7 @@ use App\Http\Controllers\API\ValidateLocationController;
 use App\Http\Controllers\API\AbsenController;
 use App\Http\Controllers\API\DuitkuCallbackController;
 use App\Http\Controllers\API\LaporanSituasiController;
+use App\Http\Controllers\API\NotifikasiController;
 use App\Http\Controllers\API\TamuController;
 use App\Http\Controllers\Frontend\DuitkuController;
 use Illuminate\Http\Request;

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Frontend\AbsenLocationController;
 use App\Http\Controllers\Frontend\AbsensiController;
+use App\Http\Controllers\Frontend\AssetController;
 use App\Http\Controllers\Frontend\BroadcastController;
 use App\Http\Controllers\Frontend\CustomFeatureController;
 use App\Http\Controllers\Frontend\DashboardController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\Frontend\LaporanKandangController;
 use App\Http\Controllers\Frontend\LaporanSituasiController;
 use App\Http\Controllers\Frontend\LokasiController;
 use App\Http\Controllers\Frontend\MesinController;
+use App\Http\Controllers\Frontend\NotifikasiController;
 use App\Http\Controllers\Frontend\PaketLanggananController;
 use App\Http\Controllers\Frontend\PatroliController;
 use App\Http\Controllers\Frontend\PatroliKandangController;
@@ -147,6 +149,16 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
     Route::resource('custom_feature', CustomFeatureController::class);
     Route::get('/custom_feature_table', [CustomFeatureController::class, 'custom_feature_table'])->name('custom.feature.table');
     Route::post('/create_feature_payment', [CustomFeatureController::class, 'payment'])->name('create.feature.payment');
+
+    Route::resource('notifikasi', NotifikasiController::class);
+    Route::get('/notifikasi_table', [NotifikasiController::class, 'notifikasi_table'])->name('notifikasi.table');
+
+    Route::resource('asset_page', AssetController::class);
+    Route::get('/asset_page_table', [AssetController::class, 'asset_page_table'])->name('asset.page.table');
+    
+
+
+
 });
 
 
