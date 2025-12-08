@@ -90,7 +90,9 @@
 
                     <!-- Page Title -->
                     @php
-                        $company = \App\Models\Company::find(Auth::user()->company_id);
+                        $dcomid = Auth::user()->company_id;
+                        $company = \App\Models\Company::find($dcomid);
+
                     @endphp
                     <h4 class="page-title d-none d-sm-block">{{ $company->company_name ?? 'Insoft Developers' }}</h4>
                 </div>
@@ -109,11 +111,11 @@
                         </div>
                     </li>
 
-                    <li class="dropdown notification-list">
+                    <li class="dropdown notification-list notif-list">
                         <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#"
                             role="button" aria-haspopup="false" aria-expanded="false">
                             <i class="ri-notification-3-line fs-22"></i>
-                            <span class="noti-icon-badge badge text-bg-pink">0</span>
+                            <span class="noti-icon-badge badge text-bg-pink"><span id="notif_count"></span></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg py-0">
                             <div class="p-2 border-top-0 border-start-0 border-end-0 border-dashed border">
@@ -129,16 +131,8 @@
                                 </div>
                             </div>
 
-                            <div style="max-height: 300px;" data-simplebar>
+                            <div style="max-height: 600px;" data-simplebar id="notif-list-container">
                                 <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <div class="notify-icon bg-primary-subtle">
-                                        <i class="mdi mdi-account text-primary"></i>
-                                    </div>
-                                    <p class="notify-details">Selamat Datang di QBSC System
-                                        <small class="noti-time">1 min ago</small>
-                                    </p>
-                                </a>
                             </div>
 
                             <!-- All-->
@@ -406,10 +400,10 @@
         <div class="offcanvas-footer border-top p-3 text-center">
             <div class="row">
                 <div class="col-6">
-                    <button type="button" class="btn btn-light w-100" id="reset-layout">Reset</button>
+                    {{-- <button type="button" class="btn btn-light w-100" id="reset-layout">Reset</button> --}}
                 </div>
                 <div class="col-6">
-                    <a href="#" role="button" class="btn btn-primary w-100">Buy Now</a>
+                    {{-- <a href="#" role="button" class="btn btn-primary w-100">Buy Now</a> --}}
                 </div>
             </div>
         </div>
@@ -496,6 +490,72 @@
             const [tahun, bulan, hari] = tanggal.split("-");
             return `${hari}-${bulan}-${tahun} ${waktu}`;
         }
+
+        function formatTgl(tgl) {
+            const d = new Date(tgl);
+
+            const hari = String(d.getDate()).padStart(2, '0');
+            const bulan = String(d.getMonth() + 1).padStart(2, '0'); // bulan mulai 0
+            const tahun = d.getFullYear();
+
+            const jam = String(d.getHours()).padStart(2, '0');
+            const menit = String(d.getMinutes()).padStart(2, '0');
+
+            return `${hari}-${bulan}-${tahun} ${jam}:${menit}`;
+        }
+
+        setInterval(() => {
+            check_notif();
+        }, 10000);
+
+        function check_notif() {
+            $.ajax({
+                url: "{{ route('check.notif') }}",
+                type: "GET",
+                dataType: "JSON",
+                success: function(data) {
+                    console.log(data);
+                    $("#notif_count").text(data.count);
+                }
+
+            });
+        }
+
+        $(".notif-list").click(function() {
+            $.ajax({
+                url: "{{ route('notif.list') }}",
+                type: "GET",
+                dataType: "JSON",
+                success: function(data) {
+                    var html = '';
+                    for (var i = 0; i < data.length; i++) {
+                        const is_read = data[i].is_read;
+                        const comid = "{{ $dcomid }}";
+
+                        const list = is_read.split(','); // ubah string jadi array
+                        const isExist = list.includes(comid); // cek apakah ada
+
+                        var warna = 'whitesmoke';
+                        if(isExist) {
+                             warna = 'white';
+                        }
+
+
+                        html += `<a href="{{ url('/notifikasi') }}/${data[i].id}" class="dropdown-item notify-item" style="background:${warna};border-bottom: 1px solid rgb(213, 209, 209);">
+                                    <div class="notify-icon bg-primary-subtle">
+
+                                       <i class="mdi mdi-account text-primary"></i>
+                                    </div>
+                                    <p class="notify-details">${data[i].judul}
+                                        <small class="noti-time">${ formatTgl(data[i].created_at) }</small>
+                                    </p>
+                                </a>`;
+                    }
+
+                    $("#notif-list-container").html(html);
+                }
+            })
+        });
     </script>
     @stack('scripts')
 

@@ -152,9 +152,13 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
 
     Route::resource('notifikasi', NotifikasiController::class);
     Route::get('/notifikasi_table', [NotifikasiController::class, 'notifikasi_table'])->name('notifikasi.table');
+    Route::get('/check_notif', [NotifikasiController::class, 'check'])->name('check.notif');
+    Route::get('/notif_list', [NotifikasiController::class, 'list'])->name('notif.list');
 
     Route::resource('asset_page', AssetController::class);
     Route::get('/asset_page_table', [AssetController::class, 'asset_page_table'])->name('asset.page.table');
+
+    
     
 
 

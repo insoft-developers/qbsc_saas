@@ -8,6 +8,7 @@ use App\Models\Notifikasi;
 use App\Traits\CommonTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 
@@ -32,9 +33,9 @@ class NotifikasiController extends Controller
                     $isRead = explode(',', $row->is_read);
                     if (count($isRead) > 0) {
                         if (in_array(Auth::user()->id, $isRead)) {
-                           return '<span class="badge bg-success">Read</span>';
+                            return '<span class="badge bg-success">Read</span>';
                         } else {
-                           return '';
+                            return '';
                         }
                     } else {
                         return '';
@@ -45,7 +46,7 @@ class NotifikasiController extends Controller
                     $disabled = $this->isOwner() ? '' : 'disabled';
                     $button = '';
                     $button .= '<center>';
-                    $button .= '<a href="'.url('notifikasi/'.$row->id).'"><button  onclick="viewData(' . $row->id . ')" title="LIhat Selengkapnya" class="me-0 btn btn-insoft btn-info"><i class="bi bi-file"></i></button></a>';
+                    $button .= '<a href="' . url('notifikasi/' . $row->id) . '"><button  onclick="viewData(' . $row->id . ')" title="LIhat Selengkapnya" class="me-0 btn btn-insoft btn-info"><i class="bi bi-file"></i></button></a>';
                     $button .= '</center>';
                     return $button;
                 })
@@ -113,14 +114,30 @@ class NotifikasiController extends Controller
     public function show(string $id)
     {
         $data = Notifikasi::find($id);
+        $comid = $this->comid();
 
-        if($data->comid == -1 || $data->comid == $this->comid()) {
+        if ($data->comid == -1 || $data->comid == $comid) {
             $view = 'notifikasi-detail';
-            return view('frontend.notifikasi.notifikasi_detail', compact('data','view'));
+            
+            // pecah string menjadi array angka
+            $list = array_map('trim', explode(',', $data->is_read));
+
+            // cek apakah $comid sudah ada di array
+            if (!in_array($comid, $list)) {
+                // tambahkan
+                $list[] = $comid;
+
+                // gabungkan kembali ke string
+                $is_read = implode(',', $list);
+
+                $data->is_read = $is_read;
+                $data->save();
+            }
+
+            return view('frontend.notifikasi.notifikasi_detail', compact('data', 'view'));
         } else {
             abort(404, 'Halaman tidak ditemukan');
         }
-
     }
 
     /**
@@ -168,5 +185,37 @@ class NotifikasiController extends Controller
     public function destroy(string $id)
     {
         return JamShift::destroy($id);
+    }
+
+    public function check()
+    {
+        $comid = $this->comid();
+
+        $count = Cache::remember("notif_count_$comid", 5, function () use ($comid) {
+            return Notifikasi::where(function ($q) use ($comid) {
+                $q->where('comid', $comid)->orWhere('comid', -1);
+            })
+                ->where(function ($q) use ($comid) {
+                    $q->whereNull('is_read')->orWhere(function ($sub) use ($comid) {
+                        $sub->where('is_read', 'NOT LIKE', "$comid,%")
+                            ->where('is_read', 'NOT LIKE', "%,$comid,%")
+                            ->where('is_read', 'NOT LIKE', "%,$comid")
+                            ->where('is_read', '!=', "$comid");
+                    });
+                })
+                ->count();
+        });
+
+        return response()->json(['count' => $count]);
+    }
+
+    public function list()
+    {
+        $data = Notifikasi::where('comid', $this->comid())
+            ->orWhere('comid', -1)
+            ->orderBy('id', 'desc')
+            ->limit(6)
+            ->get();
+        return $data;
     }
 }
