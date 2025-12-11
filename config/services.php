@@ -40,4 +40,9 @@ return [
         'base_url' => env('DUITKU_BASE_URL'),
         'callback_url' => env('DUITKU_CALLBACK_URL'),
     ],
+    
+    'fcm' => [
+        'project_id' => env('FCM_PROJECT_ID'),
+    ],
+
 ];

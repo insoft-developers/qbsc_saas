@@ -192,7 +192,9 @@ class PatroliController extends Controller
             "comid" => 'required'
         ]);
 
-        $data = Kandang::where('comid', $request->comid)->get();
+        $data = Kandang::where('comid', $request->comid)
+        ->where('is_active', 1)
+        ->get();
         return response()->json([
             "success" => true,
             "data" => $data

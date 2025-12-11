@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Broadcast;
 use App\Models\User;
+use App\Services\FcmService;
 use App\Traits\CommonTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -119,7 +120,14 @@ class BroadcastController extends Controller
         $input['image'] = $path;
         $input['pengirim'] = Auth::user()->id;
         $input['comid'] = $this->comid();
-        Broadcast::create($input);
+        $broadcast = Broadcast::create($input);
+        if($broadcast) {
+            $topic = "qbsc_satpam_".$this->comid();
+            $title = $input['judul'];
+            $body = $input['pesan'];
+            $this->send($topic, $title, $body);
+        }
+
 
         return response()->json([
             'success' => true,
@@ -190,5 +198,14 @@ class BroadcastController extends Controller
     public function destroy(string $id)
     {
         return Broadcast::destroy($id);
+    }
+
+
+    protected function send($topic, $title, $body)
+    {
+        $fcm = new FcmService; 
+        return $fcm->sendToTopic($topic, $title, $body, [
+            "comid" => $topic
+        ]);
     }
 }

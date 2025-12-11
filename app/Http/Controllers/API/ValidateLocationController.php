@@ -69,7 +69,9 @@ class ValidateLocationController extends Controller
             'comid' => 'required',
         ]);
 
-        $data = Lokasi::where('comid', $request->comid)->get();
+        $data = Lokasi::where('comid', $request->comid)
+        ->where('is_active', 1)
+        ->get();
         return response()->json([
             'success' => true,
             'data' => $data,

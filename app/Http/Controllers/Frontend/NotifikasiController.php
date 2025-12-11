@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\JamShift;
 use App\Models\Notifikasi;
+
 use App\Traits\CommonTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -218,4 +219,6 @@ class NotifikasiController extends Controller
             ->get();
         return $data;
     }
+
+    
 }

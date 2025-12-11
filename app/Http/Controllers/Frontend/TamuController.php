@@ -120,7 +120,12 @@ class TamuController extends Controller
                     }
                 })
                 ->addColumn('created_by', function ($row) {
-                    return $row->user->name ?? '';
+                    if($row->created_by == -1) {
+                        return 'Satpam';
+                    } else {
+                         return $row->user->name ?? '';
+                    }
+                   
                 })
                 ->addColumn('comid', function ($row) {
                     return $row->company->company_name ?? '';
