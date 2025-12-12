@@ -7,6 +7,7 @@ use App\Http\Controllers\API\AbsenController;
 use App\Http\Controllers\API\DaruratController;
 use App\Http\Controllers\API\DuitkuCallbackController;
 use App\Http\Controllers\API\LaporanSituasiController;
+use App\Http\Controllers\API\NotifController;
 use App\Http\Controllers\API\NotifikasiController;
 use App\Http\Controllers\API\TamuController;
 use App\Http\Controllers\Frontend\DuitkuController;
@@ -57,6 +58,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/update_status_tamu', [TamuController::class, 'updateStatusTamu']);
 
     Route::post('/darurat', [DaruratController::class, 'index']);
+    Route::post('/get_notif_list', [NotifController::class, 'index']);
+
+    Route::post('/get_profile_data', [AuthController::class, 'profile']);
+    Route::post('/update_satpam_profile', [AuthController::class, 'updateSatpamProfile']);
 });
 
 Route::post('/duitku_callback', [DuitkuCallbackController::class, 'callback']);
