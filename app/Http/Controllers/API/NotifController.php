@@ -17,6 +17,7 @@ class NotifController extends Controller
             $row['id'] = $key->id;
             $row['judul']= $key->judul;
             $row['pesan'] = substr($key->pesan, 0, 100).'...';
+            $row['full_pesan'] = $key->pesan;
             $row['pengirim'] = $key->user->name ?? '';
             $row['waktu'] = date('d F Y - H:i', strtotime($key->created_at));
             $row['image'] = $key->image;

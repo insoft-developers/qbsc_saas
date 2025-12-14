@@ -62,6 +62,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/get_profile_data', [AuthController::class, 'profile']);
     Route::post('/update_satpam_profile', [AuthController::class, 'updateSatpamProfile']);
+    Route::post('/ubah_password_satpam', [AuthController::class, 'ubah_password']);
 });
 
 Route::post('/duitku_callback', [DuitkuCallbackController::class, 'callback']);

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -21,7 +22,7 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $satpam = Satpam::where('whatsapp', $request->username)->first();
+        $satpam = Satpam::with('company')->where('whatsapp', $request->username)->first();
 
         if ($satpam->is_active !== 1) {
             return response()->json(
@@ -105,60 +106,16 @@ class AuthController extends Controller
     }
 
 
-    public function updateSatpamProfile(Request $request) {
-        
-        
+    public function updateSatpamProfile(Request $request) 
+    {
+            
         $satpam = Satpam::findOrFail($request->satpam_id);
 
         $validated = $request->validate([
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'name' => 'required|string|max:100',
             'whatsapp' => ['required', 'string', 'max:20', Rule::unique('satpams', 'whatsapp')->ignore($satpam->id)],
 
         ]);
-
-        $face_url = config('services.face_api.url');
-        // update foto jika ada upload
-        if ($request->hasFile('foto')) {
-            // hapus foto lama
-            if ($satpam->face_photo_path && Storage::disk('public')->exists($satpam->face_photo_path)) {
-                Storage::disk('public')->delete($satpam->face_photo_path);
-            }
-
-            // simpan foto baru
-            $path = $request->file('foto')->store('satpam', 'public');
-            $satpam->face_photo_path = $path;
-
-            try {
-                // kirim ke API face recognition
-                $response = Http::timeout(10)
-                    ->attach('image', file_get_contents($request->file('foto')), 'face.jpg')
-                    ->post($face_url . '/encode');
-
-                if ($response->successful()) {
-                    $satpam->face_embedding = json_encode($response->json('embedding'));
-                } else {
-                    return response()->json(
-                        [
-                            'success' => false,
-                            'message' => 'Gagal membaca wajah dari server AI.',
-                        ],
-                        400,
-                    );
-                }
-            } catch (\Exception $e) {
-                return response()->json(
-                    [
-                        'success' => false,
-                        'message' => 'Server AI tidak merespon.',
-                        'error' => $e->getMessage(),
-                    ],
-                    500,
-                );
-            }
-        }
-
-        // Update data lain
         $satpam->name = $validated['name'];
         $satpam->whatsapp = $validated['whatsapp'];
         $satpam->save();
@@ -166,6 +123,32 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Data Satpam berhasil diperbarui.',
+        ]);
+    }
+
+
+    public function ubah_password(Request $request) {
+        $request->validate([
+            'old_password' => 'required|string',
+            'new_password'     => 'required|string|min:6|confirmed',
+        ]);
+
+        $satpam = Satpam::find($request->satpam_id);
+
+        // cek password lama
+        if (!Hash::check($request->old_password, $satpam->password)) {
+            throw ValidationException::withMessages([
+                'old_password' => ['Password lama tidak sesuai'],
+            ]);
+        }
+
+        // update password
+        $satpam->password = Hash::make($request->new_password);
+        $satpam->save();
+
+        return response()->json([
+            'success'  => true,
+            'message' => 'Password berhasil diubah',
         ]);
     }
 }
