@@ -42,6 +42,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/activate/{token}', [RegisteredUserController::class, 'activate'])->name('activate');
 Route::get('/copy_link_tamu/{uuid}', [TamuController::class, 'copy_link_tamu']);
+Route::post('whatsapp_payment', [PaketLanggananController::class, 'whatsapp_payment'])->name('whatsapp.payment');
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

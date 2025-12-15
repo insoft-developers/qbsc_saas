@@ -153,6 +153,96 @@
             font-weight: 600;
             text-decoration: underline;
         }
+
+        .wa-container {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Bubble chat */
+        .wa-bubble {
+            background: #ffffff;
+            color: #333;
+            padding: 10px 14px;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            font-size: 13px;
+            line-height: 1.3;
+            animation: bubbleIn 0.6s ease forwards;
+        }
+
+        .wa-bubble strong {
+            display: block;
+            font-weight: 700;
+            color: #25D366;
+        }
+
+        /* WhatsApp Button */
+        .wa-float {
+            width: 58px;
+            height: 58px;
+            background: #25D366;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .wa-float:hover {
+            transform: scale(1.12);
+            background: #1ebe5d;
+        }
+
+        /* Online status dot */
+        .wa-status {
+            position: absolute;
+            bottom: 6px;
+            right: 6px;
+            width: 12px;
+            height: 12px;
+            background: #00ff6a;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Animations */
+        @keyframes bubbleIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 255, 106, 0.6);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(0, 255, 106, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 255, 106, 0);
+            }
+        }
     </style>
 </head>
 
@@ -230,6 +320,19 @@
             Sudah punya akun? <a href="{{ route('login') }}">Login di sini</a>
         </div>
     </div>
+
+    <div class="wa-container">
+            <div class="wa-bubble">
+                <strong>Butuh bantuan?</strong>
+                <span>Chat Admin QBSC</span>
+            </div>
+
+            <a href="https://wa.me/6282165174835?text=Halo%20Admin%20QBSC,%20saya%20butuh%20bantuan" target="_blank"
+                class="wa-float" aria-label="Chat WhatsApp">
+                <i class="mdi mdi-whatsapp"></i>
+                <span class="wa-status"></span>
+            </a>
+        </div>
 
     <script src="{{ asset('template/frontend/assets/js/vendor.min.js') }}"></script>
     <script src="{{ asset('template/frontend/assets/js/app.min.js') }}"></script>

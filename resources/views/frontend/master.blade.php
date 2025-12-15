@@ -409,6 +409,19 @@
         </div>
     </div>
 
+    <div class="wa-container">
+        <div class="wa-bubble">
+            <strong>Butuh bantuan?</strong>
+            <span>Chat Admin QBSC</span>
+        </div>
+
+        <a href="https://wa.me/6282165174835?text=Halo%20Admin%20QBSC,%20saya%20butuh%20bantuan" target="_blank"
+            class="wa-float" aria-label="Chat WhatsApp">
+            <i class="mdi mdi-whatsapp"></i>
+            <span class="wa-status"></span>
+        </a>
+    </div>
+
     <!-- Vendor js -->
     <script src="{{ asset('template/frontend') }}/assets/js/vendor.min.js"></script>
 
@@ -465,6 +478,10 @@
     <script src="{{ asset('template/frontend') }}/assets/js/app.min.js"></script>
 
     <script>
+        function formatRupiah(angka) {
+            return 'Rp ' + new Intl.NumberFormat('id-ID').format(angka);
+        }
+
         function loading(id) {
             $("#" + id).text("Processing.....");
             $("#" + id).attr("disabled", true);
@@ -536,8 +553,8 @@
                         const isExist = list.includes(comid); // cek apakah ada
 
                         var warna = 'whitesmoke';
-                        if(isExist) {
-                             warna = 'white';
+                        if (isExist) {
+                            warna = 'white';
                         }
 
 
