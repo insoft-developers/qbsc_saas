@@ -309,7 +309,7 @@
             <div class="form-check text-start mb-3 mt-2">
                 <input type="checkbox" class="form-check-input" id="checkbox-signup" required>
                 <label class="form-check-label" for="checkbox-signup">
-                    Saya setuju dengan <a href="#" class="text-light">Syarat & Ketentuan</a>
+                    Saya setuju dengan <a href="https://qbsc.cloud/term_condition" class="text-light">Syarat & Ketentuan</a>
                 </label>
             </div>
 
