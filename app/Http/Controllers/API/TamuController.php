@@ -77,7 +77,7 @@ class TamuController extends Controller
         //     $path = $request->file('foto')->store('tamu', 'public');
         // }
 
-        if ($request->hasFile('photo')) {
+        if ($request->hasFile('foto')) {
             $file = $request->file('foto');
 
             // Gunakan Intervention Image
