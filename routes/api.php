@@ -10,6 +10,8 @@ use App\Http\Controllers\API\LaporanSituasiController;
 use App\Http\Controllers\API\NotifController;
 use App\Http\Controllers\API\NotifikasiController;
 use App\Http\Controllers\API\TamuController;
+use App\Http\Controllers\BOS\BosAbsensiController;
+use App\Http\Controllers\BOS\BosAuthController;
 use App\Http\Controllers\Frontend\DuitkuController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +26,18 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+
+
+Route::prefix('bos')
+    ->middleware('auth:sanctum')
+    ->group(function () {
+        Route::post('/login', [BosAuthController::class, 'login'])->withoutMiddleware('auth:sanctum');      
+        Route::post('/absensi', [BosAbsensiController::class, 'index'] );
+    });
+
+
+
 
 Route::get('/shift_testing', [ValidateLocationController::class, 'testing']);
 
