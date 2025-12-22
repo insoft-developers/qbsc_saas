@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Bos;
+namespace App\Http\Controllers\BOS;
 
 use App\Http\Controllers\Controller;
 use App\Models\Lokasi;
