@@ -26,7 +26,7 @@ class BosAbsensiController extends Controller
         return response()->json([
             "success" => true,
             "data" => $data,
-            "page" => (int)$limit,
+            "page" => (int)$page,
             "total" => $total
         ]);
 
