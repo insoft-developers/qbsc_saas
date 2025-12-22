@@ -34,6 +34,7 @@ Route::prefix('bos')
     ->group(function () {
         Route::post('/login', [BosAuthController::class, 'login'])->withoutMiddleware('auth:sanctum');      
         Route::post('/absensi', [BosAbsensiController::class, 'index'] );
+        Route::post('/satpam', [BosAbsensiController::class, 'satpam']);
     });
 
 
