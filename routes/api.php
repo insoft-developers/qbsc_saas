@@ -12,7 +12,7 @@ use App\Http\Controllers\API\NotifikasiController;
 use App\Http\Controllers\API\TamuController;
 use App\Http\Controllers\BOS\BosAbsensiController;
 use App\Http\Controllers\BOS\BosAuthController;
-use App\Http\Controllers\Bos\BosPatroliController;
+use App\Http\Controllers\BOS\BosPatroliController;
 use App\Http\Controllers\Frontend\DuitkuController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
