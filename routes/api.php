@@ -12,6 +12,7 @@ use App\Http\Controllers\API\NotifikasiController;
 use App\Http\Controllers\API\TamuController;
 use App\Http\Controllers\BOS\BosAbsensiController;
 use App\Http\Controllers\BOS\BosAuthController;
+use App\Http\Controllers\Bos\BosPatroliController;
 use App\Http\Controllers\Frontend\DuitkuController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +36,8 @@ Route::prefix('bos')
         Route::post('/login', [BosAuthController::class, 'login'])->withoutMiddleware('auth:sanctum');      
         Route::post('/absensi', [BosAbsensiController::class, 'index'] );
         Route::post('/satpam', [BosAbsensiController::class, 'satpam']);
+        Route::post('/patroli', [BosPatroliController::class, 'index']);
+        Route::post('/lokasi', [BosPatroliController::class, 'lokasi']);
     });
 
 
