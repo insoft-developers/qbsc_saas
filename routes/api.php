@@ -12,6 +12,7 @@ use App\Http\Controllers\API\NotifikasiController;
 use App\Http\Controllers\API\TamuController;
 use App\Http\Controllers\BOS\BosAbsensiController;
 use App\Http\Controllers\BOS\BosAuthController;
+use App\Http\Controllers\BOS\BosDocController;
 use App\Http\Controllers\BOS\BosKandangController;
 use App\Http\Controllers\BOS\BosPatroliController;
 use App\Http\Controllers\Frontend\DuitkuController;
@@ -44,6 +45,8 @@ Route::prefix('bos')
         Route::post('/kandang_alarm', [BosKandangController::class, 'alarm']);
         Route::post('/kandang_lampu', [BosKandangController::class, 'lampu']);
         Route::post('/kandang', [BosKandangController::class, 'kandang']);
+        Route::post('/doc', [BosDocController::class, 'index']);
+        Route::post('/ekspedisi', [BosDocController::class, 'ekspedisi']);
     });
 
 
