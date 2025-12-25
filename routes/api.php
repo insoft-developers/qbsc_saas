@@ -12,9 +12,12 @@ use App\Http\Controllers\API\NotifikasiController;
 use App\Http\Controllers\API\TamuController;
 use App\Http\Controllers\BOS\BosAbsensiController;
 use App\Http\Controllers\BOS\BosAuthController;
+use App\Http\Controllers\BOS\BosBroadcastController;
 use App\Http\Controllers\BOS\BosDocController;
+use App\Http\Controllers\BOS\BosHomeController;
 use App\Http\Controllers\BOS\BosKandangController;
 use App\Http\Controllers\BOS\BosPatroliController;
+use App\Http\Controllers\BOS\BosSituasiController;
 use App\Http\Controllers\Frontend\DuitkuController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +50,11 @@ Route::prefix('bos')
         Route::post('/kandang', [BosKandangController::class, 'kandang']);
         Route::post('/doc', [BosDocController::class, 'index']);
         Route::post('/ekspedisi', [BosDocController::class, 'ekspedisi']);
+        Route::post('/broadcast', [BosBroadcastController::class, 'index']);
+        Route::post('/broadcast_add', [BosBroadcastController::class, 'add']);
+        Route::post('/broadcast_delete', [BosBroadcastController::class, 'delete']);
+        Route::post('/situasi', [BosSituasiController::class, 'index']);
+        Route::post('/slider', [BosHomeController::class, 'slider']);
     });
 
 
