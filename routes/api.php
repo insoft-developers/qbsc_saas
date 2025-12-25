@@ -18,6 +18,7 @@ use App\Http\Controllers\BOS\BosHomeController;
 use App\Http\Controllers\BOS\BosKandangController;
 use App\Http\Controllers\BOS\BosPatroliController;
 use App\Http\Controllers\BOS\BosSituasiController;
+use App\Http\Controllers\BOS\BosTamuController;
 use App\Http\Controllers\Frontend\DuitkuController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -55,6 +56,8 @@ Route::prefix('bos')
         Route::post('/broadcast_delete', [BosBroadcastController::class, 'delete']);
         Route::post('/situasi', [BosSituasiController::class, 'index']);
         Route::post('/slider', [BosHomeController::class, 'slider']);
+        Route::post('/tamu', [BosTamuController::class, 'index']);
+        Route::post('/user', [BosTamuController::class, 'user']);
     });
 
 
