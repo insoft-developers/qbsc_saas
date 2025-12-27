@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminNotifikasiController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\PatroliController;
 use App\Http\Controllers\API\ValidateLocationController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\BOS\BosBroadcastController;
 use App\Http\Controllers\BOS\BosDocController;
 use App\Http\Controllers\BOS\BosHomeController;
 use App\Http\Controllers\BOS\BosKandangController;
+use App\Http\Controllers\BOS\BosNotifikasiController;
 use App\Http\Controllers\BOS\BosPatroliController;
 use App\Http\Controllers\BOS\BosSituasiController;
 use App\Http\Controllers\BOS\BosTamuController;
@@ -34,6 +36,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::prefix('admin')
+    ->group(function () {
+        Route::get('/notifikasi', [AdminNotifikasiController::class, 'notifikasi']);
+    });
 
 
 Route::prefix('bos')
@@ -58,6 +64,15 @@ Route::prefix('bos')
         Route::post('/slider', [BosHomeController::class, 'slider']);
         Route::post('/tamu', [BosTamuController::class, 'index']);
         Route::post('/user', [BosTamuController::class, 'user']);
+        Route::post('/tamu_add', [BosTamuController::class, 'add']);
+        Route::post('/tamu_delete', [BosTamuController::class, 'delete']);
+        Route::get('/kandang_resume/{comid}', [BosKandangController::class, 'resume'])->withoutMiddleware('auth:sanctum');
+        Route::post('/tampilkan_laporan_kandang', [BosKandangController::class, 'tampilkan_laporan'])->name('apibos.tampilkan.laporan.kandang')->withoutMiddleware('auth:sanctum');
+
+        Route::post('/notifikasi', [BosNotifikasiController::class, 'index']);
+        Route::post('/profile', [BosAuthController::class, 'profile']);
+        Route::post('/profile_update', [BosAuthController::class, 'profile_update']);
+        Route::post('/user_password_change', [BosAuthController::class, 'password_change']);
     });
 
 
