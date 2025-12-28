@@ -30,6 +30,14 @@
                                   <label for="password" class="form-label">Password</label>
                                   <input type="password" id="password" name="password" class="form-control">
                               </div>
+                              <div class="mb-2" id="user-area-container">
+                                <label for="is_area" class="form-label">User Area</label>
+                                 <select id="is_area" name="is_area" class="form-control">
+                                    <option value="">Pilih</option> 
+                                    <option value="0">Tidak</option> 
+                                    <option value="1">Ya</option> 
+                                 </select>
+                              </div>
                               <div class="mb-2">
                                   <label for="profile_image" class="form-label">Foto Profil</label>
                                   <input type="file" id="profile_image" name="profile_image" accept=".jpg,.jpeg,.png" class="form-control">

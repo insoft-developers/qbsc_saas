@@ -33,6 +33,10 @@
                 name: 'name'
             },
             {
+                data: 'is_area',
+                name: 'is_area'
+            },
+            {
                 data: 'email',
                 name: 'email'
             },
@@ -130,6 +134,7 @@
                 $("#whatsapp").val(data.whatsapp);
                 $("#password").val(null);
                 $("#profile_image").val(null);
+                $("#is_area").val(data.is_area);
                 
             }
         })

@@ -8,6 +8,12 @@
          <div class="container-fluid">
 
              <div class="row">
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
                  <div class="col-xl-4">
                      <div class="card overflow-hidden border-top-0">
                          <div class="progress progress-sm rounded-0 bg-light" role="progressbar" aria-valuenow="88"

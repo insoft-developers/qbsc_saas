@@ -30,6 +30,7 @@
                                         <th class="text-center">Aksi</th>
                                         <th>Foto</th>
                                         <th>Nama</th>
+                                        <th>User Area</th>
                                         <th>Email</th>
                                         <th>Whatsapp</th>
                                         <th>Level</th>

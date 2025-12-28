@@ -29,7 +29,8 @@ class User extends Authenticatable
         'activation_token',
         'is_active',
         'email_verified_at',
-        'profile_image'
+        'profile_image',
+        'is_area'
 
     ];
 

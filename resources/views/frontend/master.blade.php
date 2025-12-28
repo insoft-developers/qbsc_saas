@@ -204,6 +204,13 @@
                                 <span>Paket Saya</span>
                             </a>
 
+                            @if(Auth::user()->level == 'owner')
+                            <a href="{{ url('generate_key_id') }}" class="dropdown-item">
+                                <i class="ri-shield-keyhole-line
+ fs-16 align-middle me-1"></i>
+                                <span>Generate Key ID</span>
+                            </a>
+                            @endif
 
                             <!-- item-->
                             <form method="POST" action="{{ route('logout') }}">

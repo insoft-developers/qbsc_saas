@@ -18,11 +18,15 @@ class UserController extends Controller
     {
         if ($request->ajax()) {
             $comid = $this->comid();
-            $data = User::where('company_id', $comid)->whereNot('level', 'owner')->with('company:id,company_name');
+            $data = User::where('company_id', $comid)->with('company:id,company_name');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('is_active', function ($row) {
                     return $row->is_active === 1 ? '<center><span class="badge bg-success rounded-pill">Aktif</span></center>' : '<center><span class="badge bg-danger rounded-pill">Tidak</span></center>';
+                })
+
+                ->addColumn('is_area', function ($row) {
+                    return $row->is_area === 1 ? '<center><span class="badge bg-success rounded-pill">Ya</span></center>' : '<center><span class="badge bg-danger rounded-pill">Tidak</span></center>';
                 })
                 ->addColumn('company_id', function ($row) {
                     return $row->company->company_name ?? '-';
@@ -46,7 +50,19 @@ class UserController extends Controller
                             $button .= '<button onclick="activate(' . $row->id . ', 1)" title="Aktifkan" class="me-0 btn btn-insoft btn-success"><i class="bi bi-check-circle"></i></button>';
                         }
                         $button .= '<button onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
-                        $button .= '<button onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
+                        if($row->level == 'owner') {
+                            $button .= '<button disabled title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
+                        } else {
+                            $button .= '<button onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
+                        }
+
+                        if($row->is_area == 1) {
+                            $button .= '<button style="margin-left:2px;" onclick="areaData(' . $row->id . ')" title="Setting User Area" class="me-0 btn btn-insoft btn-info"><i class="bi bi-people"></i></button>';
+                        } else {
+                            $button .= '<button disabled style="margin-left:2px;" title="Setting User Area" class="me-0 btn btn-insoft btn-info"><i class="bi bi-people"></i></button>';
+                        }
+                        
+                        
                     } else {
                         $button .= '<button disabled title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
                         $button .= '<button disabled title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
@@ -55,7 +71,7 @@ class UserController extends Controller
                     $button .= '</center>';
                     return $button;
                 })
-                ->rawColumns(['action', 'is_active', 'profile_image'])
+                ->rawColumns(['action', 'is_active', 'profile_image','is_area'])
                 ->make(true);
         }
     }
@@ -101,6 +117,15 @@ class UserController extends Controller
             ]);
         }
 
+        $user_area = $paket['is_user_area'];
+
+        if($user_area !== 1 && $request->is_area == 1 ) {
+            return response()->json([
+                "success" => false,
+                "message" => "Silahkan upgrade paket anda untuk membuat user area"
+            ]);
+        }
+        
         // Simpan foto ke storage
         $path = null;
 
@@ -119,6 +144,7 @@ class UserController extends Controller
             'whatsapp' => $request->whatsapp,
             'level' => 'user',
             'profile_image' => $path,
+            'is_area' => $request->is_area
         ]);
 
         return response()->json([
@@ -158,6 +184,17 @@ class UserController extends Controller
             'password' => 'nullable|string|min:6',
         ]);
 
+
+        $paket = $this->what_paket($this->comid());
+        $user_area = $paket['is_user_area'];
+
+        if($user_area !== 1 && $request->is_area == 1 ) {
+            return response()->json([
+                "success" => false,
+                "message" => "Silahkan upgrade paket anda untuk membuat user area"
+            ]);
+        }
+
         $path = $user->profile_image;
 
         // Jika ada foto baru diupload
@@ -178,6 +215,7 @@ class UserController extends Controller
             'whatsapp' => $request->whatsapp,
             'profile_image' => $path,
             'password' => $request->filled('password') ? bcrypt($request->password) : $user->password,
+            'is_area' => $request->is_area
         ]);
 
         return response()->json([

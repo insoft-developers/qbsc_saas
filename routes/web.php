@@ -11,6 +11,7 @@ use App\Http\Controllers\Frontend\DocOutController;
 use App\Http\Controllers\Frontend\DuitkuController;
 use App\Http\Controllers\Frontend\EkspedisiController;
 use App\Http\Controllers\Frontend\EmergencyListController;
+use App\Http\Controllers\Frontend\GenerateKeyController;
 use App\Http\Controllers\Frontend\JamShiftController;
 use App\Http\Controllers\Frontend\KandangController;
 use App\Http\Controllers\Frontend\LaporanKandangController;
@@ -159,11 +160,8 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
     Route::resource('asset_page', AssetController::class);
     Route::get('/asset_page_table', [AssetController::class, 'asset_page_table'])->name('asset.page.table');
 
-    
-    
-
-
-
+    Route::resource('generate_key_id', GenerateKeyController::class);
+    Route::post('generate_key_post', [GenerateKeyController::class, 'generate'])->name('generate.key');
 });
 
 
