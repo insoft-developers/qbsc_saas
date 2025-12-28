@@ -14,6 +14,7 @@ use App\Http\Controllers\API\TamuController;
 use App\Http\Controllers\BOS\BosAbsensiController;
 use App\Http\Controllers\BOS\BosAuthController;
 use App\Http\Controllers\BOS\BosBroadcastController;
+use App\Http\Controllers\BOS\BosDashboardController;
 use App\Http\Controllers\BOS\BosDocController;
 use App\Http\Controllers\BOS\BosHomeController;
 use App\Http\Controllers\BOS\BosKandangController;
@@ -73,6 +74,7 @@ Route::prefix('bos')
         Route::post('/profile', [BosAuthController::class, 'profile']);
         Route::post('/profile_update', [BosAuthController::class, 'profile_update']);
         Route::post('/user_password_change', [BosAuthController::class, 'password_change']);
+        Route::post('/card_satpam', [BosDashboardController::class, 'satpam']);
     });
 
 
