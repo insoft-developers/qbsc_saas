@@ -305,4 +305,31 @@ class UserController extends Controller
             ]);
         }
     }
+
+
+    public function tampilkan_area_table(Request $request) {
+        $userid = $request->userid;
+        $data = UserArea::with('user:id,name', 'company:id,company_name', 'user_monitoring:id,name', 'company_monitoring:id,company_name')->where('userid', $userid)->get();
+        return response()->json([
+            "success" => true,
+            "data" => $data
+        ]);
+    }
+
+    public function area_activate(Request $request) {
+
+        UserArea::where('id', $request->id)->update([
+            "is_active" => $request->is_active
+        ]);
+        
+        return response()->json([
+            "success" => true,
+            "data" => "Status berhasil diupdate"
+        ]);
+
+    }
+
+    public function hapus_user_area(Request $request) {
+        return UserArea::destroy($request->id);
+    }
 }

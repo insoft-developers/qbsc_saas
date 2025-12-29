@@ -60,7 +60,7 @@
 
   <div id="modal-area" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel"
       aria-hidden="true">
-      <div class="modal-dialog modal-lg">
+      <div class="modal-dialog modal-xl">
           <div class="modal-content">
               <form id="form-area" method="POST">
                  @csrf
@@ -91,7 +91,7 @@
                       </div>
                       <div class="row">
                           <div class="col-12">
-                              <table class="table table-bordered table-striped">
+                              <table id="table-area" class="table table-bordered table-striped">
                                 <thead>  
                                 <tr>
                                       <th>#</th>
@@ -99,8 +99,9 @@
                                       <th>Perusahaan</th>
                                       <th>Perusahaan Dipantau</th>
                                       <th>Owner</th>
-                                      <th>Status</th>
+                                      <th>Aktif</th>
                                       <th>Tanggal</th>
+                                      <th>Aksi</th>
                                   </tr>
                                 </thead>
                                 <tbody></tbody>
