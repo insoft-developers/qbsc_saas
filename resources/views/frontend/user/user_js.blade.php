@@ -135,12 +135,12 @@
                 $("#password").val(null);
                 $("#profile_image").val(null);
                 $("#is_area").val(data.is_area);
-                
+
             }
         })
     }
 
-    
+
 
 
     function deleteData(id) {
@@ -181,7 +181,7 @@
     }
 
     function resetForm() {
-       $('#form-tambah')[0].reset();
+        $('#form-tambah')[0].reset();
     }
 
 
@@ -221,5 +221,52 @@
                 });
             }
         });
+    }
+
+
+    function areaData(el, id) {
+        $("#modal-area").modal('show');
+        var nama = $(el).data('name');
+        $("#modal-area .modal-title").text('Setting User Area - ' + nama);
+        $("#user_id_area").val(id);
+        $("#user_key_id").val('');
+    }
+
+
+    $("#form-area").submit(function(e) {
+        e.preventDefault();
+        var userid = $("#user_id_area").val();
+        var userkeyid = $("#user_key_id").val();
+         loading("btn-tambah-area");
+        $.ajax({
+            url: "{{ route('tambah.user.area') }}",
+            type: "POST",
+            dataType: "JSON",
+            data: $(this).serialize(),
+            success: function(response) {
+                if (response.success) {
+                    Swal.fire('Berhasil!', response.message, 'success');
+                    $("#user_key_id").val('');
+                } else {
+                    Swal.fire('Warning!', response.message, 'error');
+
+                }
+
+            },
+            error: function(xhr) {
+                Swal.fire('Gagal!', xhr.responseJSON.message || 'Terjadi kesalahan.',
+                    'error');
+            },
+            complete: function() {
+                $('#btn-tambah-area').prop('disabled', false).text('Tambahkan');
+            }
+
+        });
+
+    });
+
+
+    function tampilkan_table_area() {
+        
     }
 </script>

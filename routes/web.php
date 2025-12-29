@@ -81,6 +81,7 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
     Route::resource('user', UserController::class);
     Route::get('/user_table', [UserController::class, 'user_table'])->name('user.table');
     Route::post('/user_activate', [UserController::class, 'activate'])->name('user.activate');
+    Route::post('/tambah_user_area', [UserController::class, 'tambah_user_area'])->name('tambah.user.area');
 
     Route::resource('kandang', KandangController::class)->middleware('checkCom');
     Route::get('/kandang_table', [KandangController::class, 'kandang_table'])->name('kandang.table')->middleware('checkCom');
