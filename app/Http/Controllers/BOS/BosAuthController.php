@@ -4,6 +4,7 @@ namespace App\Http\Controllers\BOS;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserArea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -147,5 +148,31 @@ class BosAuthController extends Controller
             'success'  => true,
             'message' => 'Password berhasil diubah',
         ]);
+    }
+
+
+    public function user_area(Request $request) {
+        $request->validate([
+            'userid' => 'required',
+        ]);
+
+        $user = User::find($request->userid);
+
+        if($user->is_area == 1) {
+
+            $data = UserArea::with('company_monitoring:id,company_name')->where('userid', $request->userid)->where('is_active', 1)->get();
+
+            return response()->json([
+                "success" => true,
+                "is_area" => 1,
+                "data" => $data
+            ]);
+        } else {
+            return response()->json([
+                "success" => false,
+                "is_area" => 0,
+                "data" => []
+            ]);
+        }
     }
 }

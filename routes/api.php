@@ -75,6 +75,7 @@ Route::prefix('bos')
         Route::post('/profile_update', [BosAuthController::class, 'profile_update']);
         Route::post('/user_password_change', [BosAuthController::class, 'password_change']);
         Route::post('/card_satpam', [BosDashboardController::class, 'satpam']);
+        Route::post('/check_user_area', [BosAuthController::class, 'user_area']);
     });
 
 

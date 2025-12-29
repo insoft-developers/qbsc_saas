@@ -270,22 +270,30 @@ class UserController extends Controller
             'user_key_id' => 'required',
         ]);
 
+        $cek = UserArea::where('user_key_id', $request->user_key_id)->where('userid', $request->user_id_area)->count();
+        if ($cek > 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data ini sudah pernah ditambahkan',
+            ]);
+        }
+
         try {
             $company = Company::where('user_key_id', $request->user_key_id)->first();
             if ($company) {
                 $owner_query = User::where('company_id', $company->id)->where('level', 'owner')->first();
-                if($owner_query) {
-                    $owner_id = $owner_query->id; 
+                if ($owner_query) {
+                    $owner_id = $owner_query->id;
                 } else {
                     $owner_id = -1;
                 }
                 UserArea::create([
-                    "userid" => $request->user_id_area,
-                    "comid" => $this->comid(),
-                    "monitoring_userid" => $owner_id,
-                    "monitoring_comid" => $company->id,
-                    "user_key_id" => $request->user_key_id,
-                    "is_active" => 1
+                    'userid' => $request->user_id_area,
+                    'comid' => $this->comid(),
+                    'monitoring_userid' => $owner_id,
+                    'monitoring_comid' => $company->id,
+                    'user_key_id' => $request->user_key_id,
+                    'is_active' => 1,
                 ]);
 
                 return response()->json([
@@ -306,30 +314,30 @@ class UserController extends Controller
         }
     }
 
-
-    public function tampilkan_area_table(Request $request) {
+    public function tampilkan_area_table(Request $request)
+    {
         $userid = $request->userid;
         $data = UserArea::with('user:id,name', 'company:id,company_name', 'user_monitoring:id,name', 'company_monitoring:id,company_name')->where('userid', $userid)->get();
         return response()->json([
-            "success" => true,
-            "data" => $data
+            'success' => true,
+            'data' => $data,
         ]);
     }
 
-    public function area_activate(Request $request) {
-
+    public function area_activate(Request $request)
+    {
         UserArea::where('id', $request->id)->update([
-            "is_active" => $request->is_active
-        ]);
-        
-        return response()->json([
-            "success" => true,
-            "data" => "Status berhasil diupdate"
+            'is_active' => $request->is_active,
         ]);
 
+        return response()->json([
+            'success' => true,
+            'data' => 'Status berhasil diupdate',
+        ]);
     }
 
-    public function hapus_user_area(Request $request) {
+    public function hapus_user_area(Request $request)
+    {
         return UserArea::destroy($request->id);
     }
 }

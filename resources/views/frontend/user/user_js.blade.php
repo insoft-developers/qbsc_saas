@@ -305,7 +305,7 @@
                             `<button onclick="hapus_area(${data.data[i].id}, ${data.data[i].userid})" title="Hapus Data" type="button" class="btn btn-insoft btn-danger btn-sm"><i class="bi bi-trash3"></i></button>`;
 
                         var button_copy =
-                            `<button onclick="copy_key(this)" data-key="${data.data[i].user_key_id}" title="Copy Key" type="button" class="btn btn-insoft btn-info btn-sm"><i class="bi bi-clipboard "></i></button>`;
+                            `<button id="btn-copy-key" data-key="${data.data[i].user_key_id}" title="Copy Key" type="button" class="btn btn-insoft btn-info btn-sm copyLink"><i class="bi bi-clipboard "></i></button>`;
 
 
 
@@ -393,16 +393,21 @@
     }
 
 
-    function copy_key(el) {
-        const key = $(el).data('key');
+    $(document).on('click', '.copyLink', function() {
+        let key = $(this).data('key');
 
-        navigator.clipboard.writeText(key)
-            .then(() => {
-                alert("Key berhasil disalin");
-            })
-            .catch(err => {
-                console.error(err);
-                alert("Gagal menyalin key");
-            });
-    }
+        let temp = $('<input>');
+        $('#modal-area').append(temp);
+        temp.val(key).select();
+        document.execCommand("copy");
+        temp.remove();
+
+        Swal.fire({
+            icon: 'success',
+            title: 'user key berhasil disalin!',
+            text: key,
+            timer: 1500,
+            showConfirmButton: false
+        });
+    });
 </script>
