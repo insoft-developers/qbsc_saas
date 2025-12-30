@@ -243,6 +243,41 @@
                 box-shadow: 0 0 0 0 rgba(0, 255, 106, 0);
             }
         }
+
+        .btn-register-google {
+            margin-top: 10px;
+            background: white !important;
+            color: black !important;
+            padding: 0px !important;
+        }
+
+        .image-register-google {
+            position: relative;
+            padding: 0px !important;
+            width: 30px !important;
+            top: 10px;
+            left: -11px;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin-top:10px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .divider span {
+            padding: 0 10px;
+            font-size: 14px;
+            color: white;
+        }
     </style>
 </head>
 
@@ -261,7 +296,8 @@
             @csrf
 
             <label class="form-label">Nama Perusahaan</label>
-            <input type="text" name="company_name" class="form-control" placeholder="Cth: PT. Insoft Developers" required>
+            <input type="text" name="company_name" class="form-control" placeholder="Cth: PT. Insoft Developers"
+                required>
             @error('company_name')
                 <small class="text-danger">{{ $message }}</small>
             @enderror
@@ -283,7 +319,8 @@
             @enderror
 
             <label class="form-label">Email</label>
-            <input type="email" name="email" class="form-control" placeholder="Cth: andi.santoso@gmail.com" required>
+            <input type="email" name="email" class="form-control" placeholder="Cth: andi.santoso@gmail.com"
+                required>
             @error('email')
                 <small class="text-danger">{{ $message }}</small>
             @enderror
@@ -301,7 +338,8 @@
             @enderror
 
             <label class="form-label">Konfirmasi Password</label>
-            <input type="password" name="password_confirmation" class="form-control" placeholder="Ulangi password" required>
+            <input type="password" name="password_confirmation" class="form-control" placeholder="Ulangi password"
+                required>
             @error('password_confirmation')
                 <small class="text-danger">{{ $message }}</small>
             @enderror
@@ -309,30 +347,39 @@
             <div class="form-check text-start mb-3 mt-2">
                 <input type="checkbox" class="form-check-input" id="checkbox-signup" required>
                 <label class="form-check-label" for="checkbox-signup">
-                    Saya setuju dengan <a href="https://qbsc.cloud/term_condition" class="text-light">Syarat & Ketentuan</a>
+                    Saya setuju dengan <a href="https://qbsc.cloud/term_condition" class="text-light">Syarat &
+                        Ketentuan</a>
                 </label>
             </div>
 
             <button type="submit" class="btn btn-primary">Daftar Sekarang</button>
+
         </form>
 
         <div class="auth-footer mt-3">
             Sudah punya akun? <a href="{{ route('login') }}">Login di sini</a>
         </div>
+        <div class="divider">
+            <span>Atau</span>
+        </div>
+
+        <a href="{{ route('google.login') }}"><button type="button" class="btn btn-primary btn-register-google"><img class="img-fluid image-register-google"
+                src="{{ asset('images/google_icon.png') }}">Login Dengan
+            Google</button></a>
     </div>
 
     <div class="wa-container">
-            <div class="wa-bubble">
-                <strong>Butuh bantuan?</strong>
-                <span>Chat Admin QBSC</span>
-            </div>
-
-            <a href="https://wa.me/6282165174835?text=Halo%20Admin%20QBSC,%20saya%20butuh%20bantuan" target="_blank"
-                class="wa-float" aria-label="Chat WhatsApp">
-                <i class="mdi mdi-whatsapp"></i>
-                <span class="wa-status"></span>
-            </a>
+        <div class="wa-bubble">
+            <strong>Butuh bantuan?</strong>
+            <span>Chat Admin QBSC</span>
         </div>
+
+        <a href="https://wa.me/6282165174835?text=Halo%20Admin%20QBSC,%20saya%20butuh%20bantuan" target="_blank"
+            class="wa-float" aria-label="Chat WhatsApp">
+            <i class="mdi mdi-whatsapp"></i>
+            <span class="wa-status"></span>
+        </a>
+    </div>
 
     <script src="{{ asset('template/frontend/assets/js/vendor.min.js') }}"></script>
     <script src="{{ asset('template/frontend/assets/js/app.min.js') }}"></script>

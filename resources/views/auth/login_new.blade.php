@@ -252,6 +252,41 @@
                 box-shadow: 0 0 0 0 rgba(0, 255, 106, 0);
             }
         }
+
+        .btn-register-google {
+            margin-top: 10px;
+            background: white !important;
+            color: black !important;
+            padding: 0px !important;
+        }
+
+        .image-register-google {
+            position: relative;
+            padding: 0px !important;
+            width: 30px !important;
+            top: 10px;
+            left: -11px;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .divider span {
+            padding: 0 10px;
+            font-size: 14px;
+            color: white;
+        }
     </style>
 </head>
 
@@ -287,11 +322,20 @@
 
 
                 <button style="margin-top: 20px;" type="submit" class="btn btn-primary">Login</button>
+
             </form>
 
             <div class="auth-footer mt-3">
                 Belum punya akun? <a href="{{ route('register') }}">Daftar di sini</a>
             </div>
+            <div class="divider">
+                <span>Atau</span>
+            </div>
+
+
+            <a href="{{ route('google.login') }}"><button type="button" class="btn btn-primary btn-register-google"><img class="img-fluid image-register-google"
+                    src="{{ asset('images/google_icon.png') }}">Daftar Dengan
+                Google</button></a>
         </div>
         <!-- WhatsApp Floating Premium -->
         <div class="wa-container">

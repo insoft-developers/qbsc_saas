@@ -15,7 +15,7 @@
                               <input type="hidden" id="id" name="id">
                               <div class="mb-2">
                                   <label for="company_name" class="form-label">Nama Perusahaan</label>
-                                  <input readonly type="text" id="company_name" name="company_name" class="form-control">
+                                  <input type="text" id="company_name" name="company_name" class="form-control">
                               </div>
                               <div class="mb-2">
                                   <label for="company_address" class="form-label">Alamat Perusahaan</label>

@@ -30,7 +30,8 @@ class User extends Authenticatable
         'is_active',
         'email_verified_at',
         'profile_image',
-        'is_area'
+        'is_area',
+        'gogole_id'
 
     ];
 

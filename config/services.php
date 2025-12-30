@@ -40,9 +40,14 @@ return [
         'base_url' => env('DUITKU_BASE_URL'),
         'callback_url' => env('DUITKU_CALLBACK_URL'),
     ],
-    
+
     'fcm' => [
         'project_id' => env('FCM_PROJECT_ID'),
     ],
 
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI'),
+    ],
 ];
