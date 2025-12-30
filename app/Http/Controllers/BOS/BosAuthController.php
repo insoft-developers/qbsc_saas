@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\BOS;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
+use App\Models\PaketLangganan;
 use App\Models\User;
 use App\Models\UserArea;
 use Illuminate\Http\Request;
@@ -157,8 +159,11 @@ class BosAuthController extends Controller
         ]);
 
         $user = User::find($request->userid);
+        $com = Company::find($user->company_id);
+        $paket = PaketLangganan::find($com->paket_id);
 
-        if($user->is_area == 1) {
+
+        if($user->is_area == 1 && $paket->is_user_area == 1) {
 
             $data = UserArea::with('company_monitoring:id,company_name')->where('userid', $request->userid)->where('is_active', 1)->get();
 

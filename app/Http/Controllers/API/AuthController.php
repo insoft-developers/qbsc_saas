@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Company;
+use App\Models\PaketLangganan;
 use App\Models\Satpam;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -88,9 +89,14 @@ class AuthController extends Controller
             ]);
         }
 
+        $paket = PaketLangganan::find($com->paket_id);
         return response()->json([
             'success' => true,
             'message' => 'Paket aktif!',
+            'is_mobile_app' => $paket->is_mobile_app,
+            'is_user_area' =>  $paket->is_user_area,
+            'expired_date' => $com->expired_date,
+            'data' => $paket
         ]);
     }
 
