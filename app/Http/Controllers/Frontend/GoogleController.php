@@ -29,7 +29,7 @@ class GoogleController extends Controller
         if (!$user) {
             $company = Company::create([
                 'company_name' => uniqid() . '- Company',
-                'is_peternakan' => 1,
+                'is_peternakan' => 99,
             ]);
 
             $company_id = $company->id;

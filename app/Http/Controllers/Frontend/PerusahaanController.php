@@ -20,29 +20,29 @@ class PerusahaanController extends Controller
             $data = Company::where('id', Auth::user()->company_id);
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('company_address',function($data){
-                    return '<div style="white-space:normal;width:200px;">'.$data->company_address.'</div>';
+                ->addColumn('company_address', function ($data) {
+                    return '<div style="white-space:normal;width:200px;">' . $data->company_address . '</div>';
                 })
-                ->addColumn('is_peternakan', function($data){
-                    return $data->is_peternakan == 1 ? 'Peternakan':'Perusahaan Lain';
+                ->addColumn('is_peternakan', function ($data) {
+                    return $data->is_peternakan == 1 ? 'Peternakan' : 'Perusahaan Lain';
                 })
                 ->addColumn('action', function ($row) {
-                    $disabled = $this->isOwner() ? '': 'disabled'; 
+                    $disabled = $this->isOwner() ? '' : 'disabled';
                     $button = '';
                     $button .= '<center>';
-        
-                    $button .= '<button '.$disabled.' onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
+
+                    $button .= '<button ' . $disabled . ' onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
 
                     $button .= '</center>';
                     return $button;
                 })
-                ->rawColumns(['action','company_address'])
+                ->rawColumns(['action', 'company_address'])
                 ->make(true);
 
             // bi bi-trash3
         }
     }
-    
+
     /**
      * Display a listing of the resource.
      */
@@ -55,10 +55,7 @@ class PerusahaanController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -81,7 +78,7 @@ class PerusahaanController extends Controller
      */
     public function edit(string $id)
     {
-        $data =Company::find($id);
+        $data = Company::find($id);
         return $data;
     }
 
@@ -93,7 +90,6 @@ class PerusahaanController extends Controller
         $input = $request->all();
         $validated = $request->validate([
             'company_name' => 'required',
-           
         ]);
 
         $data = Company::find($id);
@@ -112,5 +108,30 @@ class PerusahaanController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function check(Request $request)
+    {
+        $com = Company::find($this->comid());
+
+        if ($com->is_peternakan === 99) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Belum Pilih Jenis Perusahaan',
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sudah Pilih Jenis Perusahaan',
+            ]);
+        }
+    }
+
+    public function update_jenis(Request $request) {
+        Company::where('id', $this->comid())->update([
+            "is_peternakan" => $request->jenis_perusahaan
+        ]);
+
+        return response()->json(true);
     }
 }

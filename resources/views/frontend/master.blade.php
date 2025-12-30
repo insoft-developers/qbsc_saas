@@ -204,12 +204,12 @@
                                 <span>Paket Saya</span>
                             </a>
 
-                            @if(Auth::user()->level == 'owner')
-                            <a href="{{ url('generate_key_id') }}" class="dropdown-item">
-                                <i class="ri-shield-keyhole-line
+                            @if (Auth::user()->level == 'owner')
+                                <a href="{{ url('generate_key_id') }}" class="dropdown-item">
+                                    <i class="ri-shield-keyhole-line
  fs-16 align-middle me-1"></i>
-                                <span>Generate Key ID</span>
-                            </a>
+                                    <span>Generate Key ID</span>
+                                </a>
                             @endif
 
                             <!-- item-->
@@ -406,6 +406,11 @@
                 </div>
             </div>
         </div>
+
+
+       
+
+
         <div class="offcanvas-footer border-top p-3 text-center">
             <div class="row">
                 <div class="col-6">
@@ -430,6 +435,43 @@
             <span class="wa-status"></span>
         </a>
     </div>
+
+     <!-- Standard modal content -->
+        <div id="modal-peternakan" class="modal fade" tabindex="-1" role="dialog"
+            aria-labelledby="standard-modalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="form-peternakan" method="POST">
+                        {{ csrf_field() }}
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="standard-modalLabel">Pilih Jenis Perusahaan Anda</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-2">
+                                        <label for="name" class="form-label">Jenis Perusahaan</label>
+                                        <select id="jenis_perusahaan" name="jenis_perusahaan" class="form-control">
+                                            <option value="1">Perusahaan Peternakan</option>
+                                            <option value="2">Perusahaan Lainnya</option>
+                                        </select>
+
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                            <button id="btn-save-data" type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
 
     <!-- Vendor js -->
     <script src="{{ asset('template/frontend') }}/assets/js/vendor.min.js"></script>
@@ -487,6 +529,39 @@
     <script src="{{ asset('template/frontend') }}/assets/js/app.min.js"></script>
 
     <script>
+        check_perusahaan();
+        function check_perusahaan() {
+            $.ajax({
+                url: "{{ route('check.jenis.perusahaan') }}",
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(data) {
+                    if(data.success) {
+                        $("#modal-peternakan").modal("show");
+                    }
+                }
+            })
+        }
+
+
+        $("#form-peternakan").submit(function(e){
+            e.preventDefault();
+            var jenis_perusahaan = $("#jenis_perusahaan").val();
+            $.ajax({
+                url:"{{ route('update.jenis.perusahaan') }}",
+                type:"POST",
+                dataType:"JSON",
+                data: $(this).serialize(),
+                success: function(data) {
+                      location.reload(true);
+
+                }
+            });
+        })
+
         function formatRupiah(angka) {
             return 'Rp ' + new Intl.NumberFormat('id-ID').format(angka);
         }

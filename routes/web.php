@@ -167,7 +167,10 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
 
     Route::resource('generate_key_id', GenerateKeyController::class);
     Route::post('generate_key_post', [GenerateKeyController::class, 'generate'])->name('generate.key');
-});
+
+    Route::post('/check_jenis_perusahaan', [PerusahaanController::class, 'check'])->name('check.jenis.perusahaan')->withoutMiddleware('isPaket');
+    Route::post('/update_jenis_perusahaan', [PerusahaanController::class, 'update_jenis'])->name('update.jenis.perusahaan')->withoutMiddleware('isPaket');
+}); 
 
 
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.login');
