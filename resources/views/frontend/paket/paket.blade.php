@@ -508,6 +508,42 @@
             </div>
         </div>
 
+        <div id="modal-pembayaran" class="modal fade" tabindex="-1" role="dialog"
+            aria-labelledby="standard-modalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="standard-modalLabel">Pilih Bayar Melalui Apa</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-2">
+                                        <input type="hidden" id="id_pembayaran">
+                                        <label for="jenis_pembayaran" class="form-label">Metode Pembayaran</label>
+                                        <select id="jenis_pembayaran" name="jenis_pembayaran" class="form-control">
+                                            <option value="">Pilih Metode Pembayaran</option>
+                                            <option value="1">Bank|VA|E-Wallet|Dll</option>
+                                            <option value="2">Transfer Manual</option>
+                                        </select>
+
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                            <button id="btn-payment" type="button" class="btn btn-primary">Bayar</button>
+                        </div>
+                    
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
         @include('frontend.footer')
     </div>
 
