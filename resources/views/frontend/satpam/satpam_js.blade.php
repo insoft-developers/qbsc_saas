@@ -29,13 +29,17 @@
                 data: 'foto',
                 name: 'foto'
             },
-            {
-                data: 'badge_id',
-                name: 'badge_id'
-            },
+            // {
+            //     data: 'badge_id',
+            //     name: 'badge_id'
+            // },
             {
                 data: 'name',
                 name: 'name'
+            },
+            {
+                data: 'is_danru',
+                name: 'is_danru'
             },
             {
                 data: 'whatsapp',
@@ -126,6 +130,7 @@
                 $("#foto").val(null);
                 $("#password").val("");
                 $("#whatsapp").val(data.whatsapp);
+                $("#is_danru").val(data.is_danru);
 
             }
         })

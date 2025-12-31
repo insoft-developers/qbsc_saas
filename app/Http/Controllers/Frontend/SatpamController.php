@@ -42,6 +42,13 @@ class SatpamController extends Controller
                 ->addColumn('company', function ($row) {
                     return $row->company->company_name ?? '';
                 })
+                ->addColumn('is_danru', function($row){
+                    if($row->is_danru == 1) {
+                        return '<span class="badge bg-success">Danru</span>';
+                    } else {
+                        return '<span class="badge bg-danger">Anggota</span>';
+                    }
+                })
                 ->addColumn('action', function ($row) {
                     $disabled = $this->isOwner() ? '' : 'disabled';
                     $button = '';
@@ -59,7 +66,7 @@ class SatpamController extends Controller
                     $button .= '</center>';
                     return $button;
                 })
-                ->rawColumns(['action', 'foto'])
+                ->rawColumns(['action', 'foto','is_danru'])
                 ->make(true);
 
             // bi bi-trash3
@@ -91,6 +98,7 @@ class SatpamController extends Controller
             'name' => 'required|string|max:100',
             'whatsapp' => 'required|string|max:20|unique:satpams,whatsapp',
             'password' => 'required|string|min:6',
+            'is_danru' => 'required'
         ]);
 
         $paket = $this->what_paket($this->comid());
@@ -131,6 +139,7 @@ class SatpamController extends Controller
             'face_photo_path' => $path,
             'comid' => $this->comid(),
             'face_embedding' => json_encode($embedding),
+            'is_danru' => $request->is_danru
         ]);
 
         return response()->json([
@@ -168,6 +177,7 @@ class SatpamController extends Controller
             'name' => 'required|string|max:100',
             'whatsapp' => ['required', 'string', 'max:20', Rule::unique('satpams', 'whatsapp')->ignore($satpam->id)],
             'password' => 'nullable|string|min:6',
+            'is_danru' => 'required'
         ]);
 
         $face_url = config('services.face_api.url');
@@ -218,6 +228,7 @@ class SatpamController extends Controller
         if (!empty($validated['password'])) {
             $satpam->password = bcrypt($validated['password']);
         }
+        $satpam->is_danru = $request->is_danru;
 
         $satpam->save();
 

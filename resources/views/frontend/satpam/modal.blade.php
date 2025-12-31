@@ -27,6 +27,15 @@
                                   <input type="text" id="name" name="name" class="form-control">
                               </div>
                               <div class="mb-2">
+                                  <label for="is_danru" class="form-label">Jabatan</label>
+                                  <select id="is_danru" name="is_danru" class="form-control">
+                                    <option value="">Pilih</option>
+                                    <option value="0">Anggota</option>
+                                    <option value="1">Danru</option>
+
+                                </select>
+                              </div>
+                              <div class="mb-2">
                                   <label for="whatsapp" class="form-label">Nomor Whatsapp</label>
                                   <input type="text" id="whatsapp" name="whatsapp" class="form-control">
                               </div>

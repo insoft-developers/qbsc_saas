@@ -34,8 +34,9 @@
                                         <th class="text-center" width="5%">No</th>
                                         <th class="text-center">Aksi</th>
                                         <th width="10%">Foto</th>
-                                        <th>Badge ID</th>
+                                        {{-- <th>Badge ID</th> --}}
                                         <th>Nama Satpam</th>
+                                        <th>Jabatan</th>
                                         <th>Whatsapp</th>
                                         <th>Company</th>
 
