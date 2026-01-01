@@ -429,7 +429,7 @@
             <span>Chat Admin QBSC</span>
         </div>
 
-        <a href="https://wa.me/6282165174835?text=Halo%20Admin%20QBSC,%20saya%20butuh%20bantuan" target="_blank"
+        <a href="https://wa.me/6282379096235?text=Halo%20Admin%20QBSC,%20saya%20butuh%20bantuan" target="_blank"
             class="wa-float" aria-label="Chat WhatsApp">
             <i class="mdi mdi-whatsapp"></i>
             <span class="wa-status"></span>
