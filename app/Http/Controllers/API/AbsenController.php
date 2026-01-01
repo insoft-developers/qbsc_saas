@@ -125,6 +125,19 @@ class AbsenController extends Controller
         ]);
     }
 
+
+    public function laporan_absensi(Request $request) {
+        
+        $limit = (int) $request->query('limit', 20);
+
+        $query = Absensi::with(['satpam:id,name', 'company:id,company_name'])->where('satpam_id', $request->satpam_id);
+        $data = $query->orderBy('jam_masuk', 'desc')->paginate($limit);
+
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ]);
+    }
     
 }
 

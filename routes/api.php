@@ -89,6 +89,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/check_paket', [AuthController::class, 'checkPaket']);
     Route::post('/absen_active', [AbsenController::class, 'absenActive']);
     Route::post('/get_data_shift', [AbsenController::class, 'getDataShift']);
+    Route::post('/laporan_absensi', [AbsenController::class, 'laporan_absensi']);
 
     Route::post('/location_data', [ValidateLocationController::class, 'locationData']);
     Route::post('/get_data_location', [ValidateLocationController::class, 'getDataLocation']);
@@ -119,6 +120,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/get_profile_data', [AuthController::class, 'profile']);
     Route::post('/update_satpam_profile', [AuthController::class, 'updateSatpamProfile']);
     Route::post('/ubah_password_satpam', [AuthController::class, 'ubah_password']);
+    
 });
 
 Route::post('/duitku_callback', [DuitkuCallbackController::class, 'callback']);
