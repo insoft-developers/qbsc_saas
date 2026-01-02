@@ -126,6 +126,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/laporan_anggota_patroli', [BosPatroliController::class, 'index']);
     Route::post('/api_satpam', [BosAbsensiController::class, 'satpam']);
     Route::post('/api_lokasi', [BosPatroliController::class, 'lokasi']);
+    Route::post('/running_text', [AuthController::class, 'runningText']);
     
 });
 

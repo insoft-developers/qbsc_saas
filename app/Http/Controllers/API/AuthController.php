@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\PaketLangganan;
+use App\Models\QbscSetting;
+use App\Models\RunningText;
 use App\Models\Satpam;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -94,33 +96,30 @@ class AuthController extends Controller
             'success' => true,
             'message' => 'Paket aktif!',
             'is_mobile_app' => $paket->is_mobile_app,
-            'is_user_area' =>  $paket->is_user_area,
+            'is_user_area' => $paket->is_user_area,
             'expired_date' => $com->expired_date,
-            'data' => $paket
+            'data' => $paket,
         ]);
     }
 
-    public function profile(Request $request) {
+    public function profile(Request $request)
+    {
         $input = $request->all();
 
         $data = Satpam::find($input['satpam_id']);
         return response()->json([
-            "success" => true,
-            "data" => $data
+            'success' => true,
+            'data' => $data,
         ]);
-
     }
 
-
-    public function updateSatpamProfile(Request $request) 
+    public function updateSatpamProfile(Request $request)
     {
-            
         $satpam = Satpam::findOrFail($request->satpam_id);
 
         $validated = $request->validate([
             'name' => 'required|string|max:100',
             'whatsapp' => ['required', 'string', 'max:20', Rule::unique('satpams', 'whatsapp')->ignore($satpam->id)],
-
         ]);
         $satpam->name = $validated['name'];
         $satpam->whatsapp = $validated['whatsapp'];
@@ -132,11 +131,11 @@ class AuthController extends Controller
         ]);
     }
 
-
-    public function ubah_password(Request $request) {
+    public function ubah_password(Request $request)
+    {
         $request->validate([
             'old_password' => 'required|string',
-            'new_password'     => 'required|string|min:6|confirmed',
+            'new_password' => 'required|string|min:6|confirmed',
         ]);
 
         $satpam = Satpam::find($request->satpam_id);
@@ -153,8 +152,30 @@ class AuthController extends Controller
         $satpam->save();
 
         return response()->json([
-            'success'  => true,
+            'success' => true,
             'message' => 'Password berhasil diubah',
         ]);
+    }
+
+    public function runningText(Request $request)
+    {
+        $input = $request->all();
+
+        $rt = RunningText::where('comid', $input['comid'])->first();
+        $setting = QbscSetting::find(1);
+
+        if ($rt) {
+            return response()->json([
+                'success' => true,
+                'data' => $rt->text,
+                'whatsapp' => $setting->whatsapp
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'data' => [],
+                'whatsapp' => $setting->whatsapp
+            ]);
+        }
     }
 }
