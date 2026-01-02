@@ -7,6 +7,7 @@ use App\Http\Controllers\API\ValidateLocationController;
 use App\Http\Controllers\API\AbsenController;
 use App\Http\Controllers\API\DaruratController;
 use App\Http\Controllers\API\DuitkuCallbackController;
+use App\Http\Controllers\API\LaporanAnggotaController;
 use App\Http\Controllers\API\LaporanSituasiController;
 use App\Http\Controllers\API\NotifController;
 use App\Http\Controllers\API\NotifikasiController;
@@ -120,6 +121,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/get_profile_data', [AuthController::class, 'profile']);
     Route::post('/update_satpam_profile', [AuthController::class, 'updateSatpamProfile']);
     Route::post('/ubah_password_satpam', [AuthController::class, 'ubah_password']);
+    Route::post('/laporan_anggota_absensi', [LaporanAnggotaController::class, 'absensi']);
+    
+    Route::post('/laporan_anggota_patroli', [BosPatroliController::class, 'index']);
+    Route::post('/api_satpam', [BosAbsensiController::class, 'satpam']);
+    Route::post('/api_lokasi', [BosPatroliController::class, 'lokasi']);
     
 });
 
