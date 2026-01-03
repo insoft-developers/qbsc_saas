@@ -62,4 +62,34 @@
             }
         })
     }
+
+    function paket_free(id) {
+        $("#paket-gratis-id").val(id);
+        $("#modal-gratis").modal("show");
+    }
+
+    $("#btn-coba-gratis").click(function() {
+        var id = $("#paket-gratis-id").val();
+        $.ajax({
+            url: "{{ route('paket.gratis') }}",
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                "id": id,
+                "_token": '{{ csrf_token() }}'
+            },
+            success: function(data) {
+                if (data.success) {
+                    window.location = "{{ url('riwayat') }}";
+                } else {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Paket Gratis Gagal',
+                        text: 'Paket Gratis sudah pernah digunakan!'
+                    });
+                }
+
+            }
+        })
+    });
 </script>

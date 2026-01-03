@@ -10,7 +10,7 @@
                     </div>
                 @endif
 
-                
+
                 <div class="text-center mb-5">
                     <h2 class="fw-bold mb-1">Paket Berlangganan</h2>
                     <p class="text-muted fs-6">Pilih paket yang sesuai dengan kebutuhan bisnis Anda.</p>
@@ -20,6 +20,27 @@
 
                     @if ($com->is_peternakan == 1)
                         {{-- Professional Pack --}}
+
+                        @if($com->has_trial != 1)
+                        <div class="col-xl-12 col-lg-12 col-md-12 mb-4">
+                            <div class="card pricing-card h-100 shadow-sm border-0 rounded-4">
+                                <div class="card-body p-4 d-flex flex-column">
+
+
+                                    <h2 class="fw-bold mb-0">GRATIS <span class="fs-6 fw-medium">/ 14 Hari - Paket Farm
+                                            Ultimate</span></h2>
+                                    <p class="text-muted">Paket Ideal untuk kebutuhan Lengkap Kontrol Keamanan Anda.</p>
+
+
+                                    <button onclick="paket_free(14)"
+                                        class="btn btn-info w-100 fw-semibold rounded-3 mt-auto btn-color">
+                                        Coba Gratis Paket Farm Ultimate Sekarang
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+
                         <div class="col-xl-4 col-lg-5 col-md-6 mb-4">
                             <div class="card pricing-card h-100 shadow-sm border-0 rounded-4">
                                 <div class="card-body p-4 d-flex flex-column">
@@ -267,6 +288,27 @@
                         </div>
                     @elseif($com->is_peternakan == 2)
                         {{-- Professional Pack --}}
+
+                        @if($com->has_trial != 1)
+                        <div class="col-xl-12 col-lg-12 col-md-12 mb-4">
+                            <div class="card pricing-card h-100 shadow-sm border-0 rounded-4">
+                                <div class="card-body p-4 d-flex flex-column">
+
+
+                                    <h2 class="fw-bold mb-0">GRATIS <span class="fs-6 fw-medium">/ 14 Hari - Paket Ultimate</span></h2>
+                                    <p class="text-muted">Paket Ideal untuk kebutuhan Lengkap Kontrol Keamanan Anda.</p>
+
+
+                                    <button onclick="paket_free(13)"
+                                        class="btn btn-info w-100 fw-semibold rounded-3 mt-auto btn-color">
+                                        Coba Gratis Paket Ultimate Sekarang
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+
+
                         <div class="col-xl-4 col-lg-5 col-md-6 mb-4">
                             <div class="card pricing-card h-100 shadow-sm border-0 rounded-4">
                                 <div class="card-body p-4 d-flex flex-column">
@@ -512,34 +554,116 @@
             aria-labelledby="standard-modalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="standard-modalLabel">Pilih Bayar Melalui Apa</h4>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="mb-2">
-                                        <input type="hidden" id="id_pembayaran">
-                                        <label for="jenis_pembayaran" class="form-label">Metode Pembayaran</label>
-                                        <select id="jenis_pembayaran" name="jenis_pembayaran" class="form-control">
-                                            <option value="">Pilih Metode Pembayaran</option>
-                                            <option value="1">Bank|VA|E-Wallet|Dll</option>
-                                            <option value="2">Transfer Manual</option>
-                                        </select>
 
-                                    </div>
-                                    
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="standard-modalLabel">Pilih Bayar Melalui Apa</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mb-2">
+                                    <input type="hidden" id="id_pembayaran">
+                                    <label for="jenis_pembayaran" class="form-label">Metode Pembayaran</label>
+                                    <select id="jenis_pembayaran" name="jenis_pembayaran" class="form-control">
+                                        <option value="">Pilih Metode Pembayaran</option>
+                                        <option value="1">Bank|VA|E-Wallet|Dll</option>
+                                        <option value="2">Transfer Manual</option>
+                                    </select>
+
                                 </div>
+
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
-                            <button id="btn-payment" type="button" class="btn btn-primary">Bayar</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                        <button id="btn-payment" type="button" class="btn btn-primary">Bayar</button>
+                    </div>
+
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+
+        <div id="modal-gratis" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="standard-modalLabel">Paket 14 Hari Gratis</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mb-2">
+                                    <input type="hidden" id="paket-gratis-id">
+                                    <h2 data-start="157" data-end="206">📄 <strong data-start="163"
+                                            data-end="206">Syarat &amp; Ketentuan Paket Gratis 14 Hari</strong></h2>
+                                    <ol data-start="208" data-end="1306">
+                                        <li data-start="208" data-end="314">
+                                            <p data-start="211" data-end="314">Paket Gratis 14 Hari hanya berlaku untuk
+                                                <strong data-start="252" data-end="269">pengguna baru</strong> yang belum
+                                                pernah berlangganan layanan QBSC.</p>
+                                        </li>
+                                        <li data-start="315" data-end="410">
+                                            <p data-start="318" data-end="410">Masa uji coba <strong data-start="332"
+                                                    data-end="381">berlaku selama 14 (empat belas) hari kalender</strong>
+                                                sejak tanggal aktivasi akun.</p>
+                                        </li>
+                                        <li data-start="411" data-end="512">
+                                            <p data-start="414" data-end="512">Selama masa gratis, pengguna dapat
+                                                menikmati <strong data-start="459" data-end="490">fitur sesuai paket
+                                                    Ultimate</strong> tanpa dipungut biaya.</p>
+                                        </li>
+                                        <li data-start="513" data-end="601">
+                                            <p data-start="516" data-end="601">Tidak diperlukan metode pembayaran atau
+                                                kartu kredit untuk mengaktifkan paket gratis.</p>
+                                        </li>
+                                        <li data-start="602" data-end="724">
+                                            <p data-start="605" data-end="724">Setelah masa uji coba berakhir, akun akan
+                                                <strong data-start="647" data-end="673">otomatis dinonaktifkan</strong>
+                                                apabila tidak melakukan upgrade ke paket berbayar.</p>
+                                        </li>
+                                        <li data-start="725" data-end="840">
+                                            <p data-start="728" data-end="840">Data pengguna selama masa uji coba akan
+                                                <strong data-start="768" data-end="787">tetap tersimpan</strong> dan dapat
+                                                diakses kembali setelah melakukan upgrade.</p>
+                                        </li>
+                                        <li data-start="841" data-end="947">
+                                            <p data-start="844" data-end="947">Satu perusahaan / satu nomor WhatsApp /
+                                                satu alamat email <strong data-start="902" data-end="946">hanya berhak
+                                                    atas satu kali paket gratis</strong>.</p>
+                                        </li>
+                                        <li data-start="948" data-end="1082">
+                                            <p data-start="951" data-end="1082">Penyalahgunaan, pendaftaran ganda, atau
+                                                indikasi kecurangan dapat menyebabkan <strong data-start="1029"
+                                                    data-end="1065">penghentian akses secara sepihak</strong> oleh pihak
+                                                QBSC.</p>
+                                        </li>
+                                        <li data-start="1083" data-end="1179">
+                                            <p data-start="1086" data-end="1179">QBSC berhak <strong data-start="1098"
+                                                    data-end="1142">mengubah atau menghentikan program promo</strong> tanpa
+                                                pemberitahuan terlebih dahulu.</p>
+                                        </li>
+                                        <li data-start="1180" data-end="1306">
+                                            <p data-start="1184" data-end="1306">Dengan mendaftar, pengguna dianggap
+                                                <strong data-start="1220" data-end="1263">telah membaca, memahami, dan
+                                                    menyetujui</strong> seluruh syarat dan ketentuan yang berlaku.</p>
+                                        </li>
+                                    </ol>
+                                </div>
+
+                            </div>
                         </div>
-                    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Tutup</button>
+                        <button id="btn-coba-gratis" type="button" class="btn btn-primary">Coba Sekarang</button>
+                    </div>
+
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->

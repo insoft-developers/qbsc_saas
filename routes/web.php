@@ -62,7 +62,6 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
     Route::resource('satpam', SatpamController::class);
     Route::get('/satpam_table', [SatpamController::class, 'satpam_table'])->name('satpam.table');
     Route::post('/activate', [SatpamController::class, 'activate'])->name('satpam.activate');
-
     Route::resource('lokasi', LokasiController::class);
     Route::get('lokasi_table', [LokasiController::class, 'lokasi_table'])->name('lokasi.table');
     Route::post('/lokasi_activate', [LokasiController::class, 'activate'])->name('lokasi.activate');
@@ -146,6 +145,7 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
     Route::get('/broadcast_table', [BroadcastController::class, 'broadcast_table'])->name('broadcast.table');
 
     Route::get('/paket_langganan', [PaketLanggananController::class, 'index'])->withoutMiddleware('isPaket');
+    Route::post('/paket_gratis', [PaketLanggananController::class, 'paket_gratis'])->name('paket.gratis')->withoutMiddleware('isPaket');
 ;
     Route::post('/create_payment', [DuitkuController::class, 'create_payment'])->name('create.payment')->withoutMiddleware('isPaket');
     Route::get('/duitku_return', [PaketLanggananController::class, 'index'])->name('duitku.return')->withoutMiddleware('isPaket');
