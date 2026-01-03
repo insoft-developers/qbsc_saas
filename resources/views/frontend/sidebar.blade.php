@@ -178,6 +178,9 @@
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="{{ url('perusahaan') }}">Perusahaan</a>
                         </li>
+                        <li class="side-nav-item">
+                            <a class="side-nav-link" href="{{ url('running_text') }}">Running Text</a>
+                        </li>
                     </ul>
                 </div>
             </li>
@@ -226,7 +229,7 @@
             <li class="side-nav-item">
                 <a href="{{ url('/asset_page') }}" class="side-nav-link">
                     <i class="ri-newspaper-line"></i>
-                    <span> Asset </span>
+                    <span> Download Aplikasi </span>
 
                 </a>
             </li>

@@ -14,32 +14,20 @@
                 @endif
                 <!-- Page Header -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="mb-0 fw-bold">Download Aplikasi</h4>
+                    <h4 class="mb-0 fw-bold">Pengaturan Running Text</h4>
                    
                 </div>
 
                 <!-- Data Table -->
                 <div class="card shadow-sm border-0">
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table id="list-table" class="table table-striped table-bordered w-100 align-middle nowrap">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th class="text-center" width="5%">No</th>
-                                        <th class="text-center">Aksi</th>
-                                        <th>Nama</th>
-                                        <th>Link Android</th>
-                                        <th>Link IOS</th>
-                                        <th>Keterangan</th>
-                                        
-                                        <th>Released Date</th>
-                                        
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+                        <div class="form-group">
+                            <label>Running Text</label>
+                            <textarea class="form-control" id="running_text_id">{{ $running_text }}</textarea>
+                            <small class="text-danger"><strong>Buat atau Ganti Text ini sesuai dengan kebutuhan anda. Text ini akan tampil sebagai text berjalan di aplikasi satpam</strong></small>
                         </div>
+                        <br>
+                        <button id="btn-running-text" class="btn btn-success btn-sm">Buat/Update Running Text</button>
                     </div>
                 </div>
 
@@ -54,5 +42,5 @@
 @endsection
 
 @push('scripts')
-    @include('frontend.asset_page.asset_page_js')
+    @include('frontend.setting.running_text.running_text_js')
 @endpush

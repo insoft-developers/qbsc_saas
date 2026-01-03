@@ -29,6 +29,7 @@ use App\Http\Controllers\Frontend\TamuController;
 use App\Http\Controllers\Frontend\UserController;
 use App\Http\Controllers\Frontend\ProfileController;
 use App\Http\Controllers\Frontend\RiwayatController;
+use App\Http\Controllers\Frontend\RunningTextController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -167,6 +168,9 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
 
     Route::resource('generate_key_id', GenerateKeyController::class);
     Route::post('generate_key_post', [GenerateKeyController::class, 'generate'])->name('generate.key');
+
+    Route::get('/running_text', [RunningTextController::class, 'index']);
+    Route::post('/running_text_update', [RunningTextController::class, 'update'])->name('running.text.update');
 
     Route::post('/check_jenis_perusahaan', [PerusahaanController::class, 'check'])->name('check.jenis.perusahaan')->withoutMiddleware('isPaket');
     Route::post('/update_jenis_perusahaan', [PerusahaanController::class, 'update_jenis'])->name('update.jenis.perusahaan')->withoutMiddleware('isPaket');
