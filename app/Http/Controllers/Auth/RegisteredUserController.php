@@ -40,8 +40,8 @@ class RegisteredUserController extends Controller
         $token = Str::random(64);
 
         $company = Company::create([
-            "company_name" => $request->company_name,
-            "is_peternakan" => $request->is_peternakan
+            "company_name" => uniqid() . '- Company',
+            "is_peternakan" => 99
         ]);
 
         $company_id = $company->id;
@@ -50,7 +50,7 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'whatsapp' => $request->whatsapp,
+            'whatsapp' => uniqid(),
             'password' => Hash::make($request->password),
             'activation_token' => $token,
             'is_active' => 0,

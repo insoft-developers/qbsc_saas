@@ -12,7 +12,23 @@
 
 
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset('images/satpam128.png') }}">
+    <link rel="icon" href="{{ url('/') }}/favicon.ico">
+
+    <link rel="icon" type="image/png" sizes="48x48"
+      href="{{ url('/') }}/favicon-48.png">
+
+    <link rel="icon" type="image/png" sizes="96x96"
+      href="{{ url('/') }}/favicon-96.png">
+
+    <link rel="icon" type="image/png" sizes="192x192"
+      href="{{ url('/') }}/favicon-192.png">
+
+    <link rel="apple-touch-icon" sizes="180x180"
+      href="{{ url('/') }}/favicon-180.png">
+      
+
+    <link rel="canonical" href="{{ request()->url() }}">
+    <meta name="keywords" content="aplikasi patroli satpam, aplikasi satpam, sistem patroli satpam, patroli satpam digital, aplikasi security guard, aplikasi satpam online, aplikasi absensi satpam, laporan monitoring satpam">
     <!-- Datatables css -->
     <link href="{{ asset('template/frontend') }}/assets/vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css"
         rel="stylesheet" type="text/css" />

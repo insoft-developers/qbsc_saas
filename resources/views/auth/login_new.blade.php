@@ -6,7 +6,19 @@
     <title>Login Akun | QBSC</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="shortcut icon" href="{{ asset('images/satpam128.png') }}">
+    <link rel="icon" href="{{ url('/') }}/favicon.ico">
+
+    <link rel="icon" type="image/png" sizes="48x48"
+      href="{{ url('/') }}/favicon-48.png">
+
+    <link rel="icon" type="image/png" sizes="96x96"
+      href="{{ url('/') }}/favicon-96.png">
+
+    <link rel="icon" type="image/png" sizes="192x192"
+      href="{{ url('/') }}/favicon-192.png">
+
+    <link rel="apple-touch-icon" sizes="180x180"
+      href="{{ url('/') }}/favicon-180.png">
 
     <link href="{{ asset('template/frontend/assets/css/app.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('template/frontend/assets/css/icons.min.css') }}" rel="stylesheet" type="text/css">
@@ -292,7 +304,7 @@
 
 <body>
     <div class="auth-card">
-        <img src="{{ asset('images/satpam-trans.png') }}" alt="Logo QBSC">
+        <img src="{{ asset('images/new_icon.webp') }}" alt="Logo QBSC">
 
         <h3>Login Akun</h3>
 

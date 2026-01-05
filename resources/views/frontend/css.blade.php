@@ -34,7 +34,7 @@
 
     .logo-lg img {
         width: 164px;
-        height: 77px;
+        height: 67px;
         margin-top: 10px;
         border-radius: 10px;
     }

@@ -22,20 +22,16 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
        return [
-            'company_name' => 'required|min:3|max:100',
             'name' => 'required|string|min:3|max:100',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
-            'whatsapp' => 'required|unique:users,whatsapp',
+            
         ];
     }
 
     public function messages(): array
     {
         return [
-            'company_name.required' => 'Nama Perusahaan wajib diisi.',
-            'company_name.min' => 'Nama Perusahaan tidak boleh kurang dari 3 karakter',
-            'company_name.max' => 'Nama Perusahaan tidak boleh lebih dari 100 karakter',
             'name.required' => 'Nama wajib diisi.',
             'name.min' => 'Nama tidak boleh kurang dari 3 karakter',
             'name.max' => 'Nama tidak boleh lebih dari 100 karakter',
@@ -43,8 +39,6 @@ class RegisterRequest extends FormRequest
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Format email tidak valid.',
             'email.unique' => 'Email sudah digunakan.',
-            'whatsapp.required' => 'Nomor Whatsapp wajib diisi.',
-            'whatsapp.unique' => 'Whatsapp sudah digunakan.',
             'password.required' => 'Password wajib diisi.',
             'password.min' => 'Password minimal 6 karakter.',
             'password.confirmed' => 'Konfirmasi password tidak cocok.',

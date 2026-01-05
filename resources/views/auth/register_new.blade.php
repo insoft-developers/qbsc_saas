@@ -6,7 +6,20 @@
     <title>Daftar Akun | QBSC</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="shortcut icon" href="{{ asset('images/satpam128.png') }}">
+    <link rel="icon" href="{{ url('/') }}/favicon.ico">
+
+    <link rel="icon" type="image/png" sizes="48x48"
+      href="{{ url('/') }}/favicon-48.png">
+
+    <link rel="icon" type="image/png" sizes="96x96"
+      href="{{ url('/') }}/favicon-96.png">
+
+    <link rel="icon" type="image/png" sizes="192x192"
+      href="{{ url('/') }}/favicon-192.png">
+
+    <link rel="apple-touch-icon" sizes="180x180"
+      href="{{ url('/') }}/favicon-180.png">
+      
 
     <link href="{{ asset('template/frontend/assets/css/app.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('template/frontend/assets/css/icons.min.css') }}" rel="stylesheet" type="text/css">
@@ -283,7 +296,7 @@
 
 <body>
     <div class="auth-card">
-        <img src="{{ asset('images/satpam-trans.png') }}" alt="Logo QBSC">
+        <img src="{{ asset('images/new_icon.webp') }}" alt="Logo QBSC">
 
         <h3>Daftar Akun</h3>
         <p class="text-muted">Lengkapi data berikut untuk mulai menggunakan QBSC.</p>
@@ -295,14 +308,14 @@
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
-            <label class="form-label">Nama Perusahaan</label>
+            {{-- <label class="form-label">Nama Perusahaan</label>
             <input type="text" name="company_name" class="form-control" placeholder="Cth: PT. Insoft Developers"
                 required>
             @error('company_name')
                 <small class="text-danger">{{ $message }}</small>
-            @enderror
+            @enderror --}}
 
-            <label class="form-label">Jenis Perusahaan</label>
+            {{-- <label class="form-label">Jenis Perusahaan</label>
             <select name="is_peternakan" class="form-control" required>
                 <option value="" selected disabled>Pilih Jenis Perusahaan</option>
                 <option value="1">Perusahaan Peternakan</option>
@@ -310,7 +323,7 @@
             </select>
             @error('is_peternakan')
                 <small class="text-danger">{{ $message }}</small>
-            @enderror
+            @enderror --}}
 
             <label class="form-label">Nama Lengkap</label>
             <input type="text" name="name" class="form-control" placeholder="Cth: Andi Santoso" required>
@@ -325,11 +338,11 @@
                 <small class="text-danger">{{ $message }}</small>
             @enderror
 
-            <label class="form-label">Nomor Whatsapp</label>
+            {{-- <label class="form-label">Nomor Whatsapp</label>
             <input type="text" name="whatsapp" class="form-control" placeholder="Cth: 082290904432" required>
             @error('whatsapp')
                 <small class="text-danger">{{ $message }}</small>
-            @enderror
+            @enderror --}}
 
             <label class="form-label">Password</label>
             <input type="password" name="password" class="form-control" placeholder="Minimal 8 karakter" required>

@@ -4,7 +4,7 @@
     <!-- Logo Light -->
     <a href="{{ url('/') }}" class="logo logo-light">
         <span class="logo-lg">
-            <img src="{{ asset('images/satpam500.png') }}" alt="logo">
+            <img src="{{ asset('images/new_icon.webp') }}" alt="logo">
         </span>
         <span class="logo-sm">
             <img src="{{ asset('images/satpam512.png') }}" alt="small logo">
@@ -14,7 +14,7 @@
     <!-- Logo Dark -->
     <a href="{{ url('/') }}" class="logo logo-dark">
         <span class="logo-lg">
-            <img src="{{ asset('images/satpam500.png') }}" alt="logo">
+            <img src="{{ asset('images/new_icon.webp') }}" alt="logo">
         </span>
         <span class="logo-sm">
             <img src="{{ asset('images/satpam512.png') }}" alt="small logo">
