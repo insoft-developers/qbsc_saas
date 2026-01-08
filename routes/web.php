@@ -30,6 +30,8 @@ use App\Http\Controllers\Frontend\UserController;
 use App\Http\Controllers\Frontend\ProfileController;
 use App\Http\Controllers\Frontend\RiwayatController;
 use App\Http\Controllers\Frontend\RunningTextController;
+use App\Http\Controllers\Reseller\ResellerAuthController;
+use App\Http\Controllers\Reseller\ResellerHomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -176,9 +178,35 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
     Route::post('/update_jenis_perusahaan', [PerusahaanController::class, 'update_jenis'])->name('update.jenis.perusahaan')->withoutMiddleware('isPaket');
 }); 
 
+Route::get('/r/register/{code}', function ($code) {
+    session(['referal_code' => $code]);
+    return redirect('/register');
+});
+
+
+
 
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.login');
 Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
+
+
+Route::prefix('reseller')->group(function () {
+
+    Route::get('/register', [ResellerAuthController::class, 'register']);
+    Route::post('/register_post', [ResellerAuthController::class, 'register_post'])->name('reseller.register');
+    Route::get('/login', [ResellerAuthController::class, 'showLogin'])->name('reseller.login');
+    Route::post('/login', [ResellerAuthController::class, 'login'])->name('reseller.login.post');
+    Route::get('/activate/{token}', [ResellerAuthController::class, 'activate'])->name('reseller.activate');
+    Route::middleware('auth:reseller')->group(function () {
+        Route::get('/', [ResellerHomeController::class, 'index']);
+        Route::get('/dashboard', [ResellerHomeController::class, 'index']);
+        Route::post('/logout', [ResellerAuthController::class, 'logout'])->name('reseller.logout');
+        
+    });
+
+});
+
+
 
 
 

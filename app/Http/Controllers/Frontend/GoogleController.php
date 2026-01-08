@@ -30,6 +30,7 @@ class GoogleController extends Controller
             $company = Company::create([
                 'company_name' => uniqid() . '- Company',
                 'is_peternakan' => 99,
+                'referal_code' => session('referral_code')
             ]);
 
             $company_id = $company->id;

@@ -43,6 +43,10 @@ return [
             'driver' => 'sanctum',
             'provider' => 'satpams',
         ],
+        'reseller' => [
+            'driver' => 'session',
+            'provider' => 'resellers',
+        ],
     ],
 
     /*
@@ -72,10 +76,12 @@ return [
             'model' => App\Models\Satpam::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'resellers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Reseller::class,
+        ],  
+
+      
     ],
 
     /*
