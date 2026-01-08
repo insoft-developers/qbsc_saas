@@ -18,7 +18,7 @@
 										<div class="">
 											<p class="text-muted fw-semibold fs-16 mb-1">LInk untuk dibagikan ke calon client agar masuk ke referal Anda.</p>
 											<p class="text-muted mb-4">
-												<input value="https://qbsc.cloud/r/register/{{ Auth::guard('reseller')->user()->referal_code }}" type="text" class="form-control" id="referal_url" readonly>
+												<input value="https://app.qbsc.cloud/r/register/{{ Auth::guard('reseller')->user()->referal_code }}" type="text" class="form-control" id="referal_url" readonly>
                                                 
                                                 <p><a onclick="copy_link()" href="javascript:void(0);">Copy Link</a></p>
 											</p>
