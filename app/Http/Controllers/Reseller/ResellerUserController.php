@@ -17,7 +17,7 @@ class ResellerUserController extends Controller
     public function user_table(Request $request)
     {
         if ($request->ajax()) {
-            $data = Company::where('referal_code', Auth::guard('reseller')->user()->referal_code);
+            $data = Company::where('referal_code', Auth::guard('reseller')->user()->referal_code)->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('comname', function ($row) {

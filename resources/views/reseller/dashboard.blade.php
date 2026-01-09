@@ -131,7 +131,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex flex-wrap flex-lg-nowrap justify-content-between align-items-end">
-                                    <h3 class="mb-0 d-flex">Rp. {{ number_format($poin) }}</h3>
+                                    <h3 class="mb-0 d-flex">Rp. {{ number_format($total_fee - $jwithdraw) }}</h3>
                                     <div class="d-flex align-items-end h-100">
                                         <div id="booked-revenue-chart" data-colors="#bb3939"></div>
                                     </div>

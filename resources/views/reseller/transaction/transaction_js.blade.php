@@ -2,7 +2,7 @@
 var table = $('#list-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{{ route('reseller.user.table') }}',
+        ajax: '{{ route('reseller.transaction.table') }}',
         order: [
             [0, 'desc']
         ],
@@ -25,45 +25,61 @@ var table = $('#list-table').DataTable({
                 searchable: false,
                 visible: false,
             },
-            {
-                data: 'profile_image',
-                name: 'profile_image'
-            },
+            
             {
                 data: 'comname',
                 name: 'comname'
             },
             {
-                data: 'owner_name',
-                name: 'owner_name'
+                data: 'invoice',
+                name: 'invoice'
             },
-            {
-                data: 'email',
-                name: 'email'
-            },
-            {
-                data: 'whatsapp',
-                name: 'whatsapp'
-            },
+            
             {
                 data: 'paket_id',
                 name: 'paket_id'
             },
             {
-                data: 'expired_date',
-                name: 'expired_date'
+                data: 'userid',
+                name: 'userid'
             },
             {
-                data: 'status_paket',
-                name: 'status_paket'
+                data: 'amount',
+                name: 'amount'
             },
 
             {
-                data: 'register_date',
-                name: 'register_date'
+                data: 'payment_status',
+                name: 'payment_status'
+            },
+            {
+                data: 'reference',
+                name: 'reference'
+            },
+
+            {
+                data: 'description',
+                name: 'description'
+            },
+            {
+                data: 'created_at',
+                name: 'created_at'
             },
 
         ]
     });
 
 </script>
+
+{{-- <th>ID</th>
+<th class="text-center" width="5%">No</th>
+<th class="text-center">Aksi</th>
+<th>Perusahaan</th>
+<th>Invoice</th>
+<th>Paket</th>
+<th>User</th>
+<th>Pembayaran</th>
+<th>Status</th>
+<th>Reference</th>
+<th>Keterangan</th>
+<th>Tanggal</th> --}}

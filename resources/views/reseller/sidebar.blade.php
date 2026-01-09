@@ -46,10 +46,10 @@
                             <a class="side-nav-link" href="{{ url('reseller/user') }}">User</a>
                         </li>
                         <li class="side-nav-item">
-                            <a class="side-nav-link" href="{{ url('tamu') }}">Transaksi</a>
+                            <a class="side-nav-link" href="{{ url('reseller/transaction') }}">Transaksi</a>
                         </li>
                         <li class="side-nav-item">
-                            <a class="side-nav-link" href="{{ url('tamu') }}">Withdraw</a>
+                            <a class="side-nav-link" href="{{ url('reseller/withdraw') }}">Withdraw</a>
                         </li>
                         
                     </ul>

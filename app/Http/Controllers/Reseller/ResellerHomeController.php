@@ -49,7 +49,8 @@ class ResellerHomeController extends Controller
         $reseller = Reseller::find(Auth::guard('reseller')->user()->id);
         $poin = $reseller->poin_reward ?? 0;
 
-        $withdraw = Withdraw::where('reseller_id', Auth::guard('reseller')->user()->id);
+        $withdraw = Withdraw::where('reseller_id', Auth::guard('reseller')->user()->id)
+            ->where('payment_status', 'PAID');
 
 
 

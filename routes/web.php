@@ -32,7 +32,9 @@ use App\Http\Controllers\Frontend\RiwayatController;
 use App\Http\Controllers\Frontend\RunningTextController;
 use App\Http\Controllers\Reseller\ResellerAuthController;
 use App\Http\Controllers\Reseller\ResellerHomeController;
+use App\Http\Controllers\Reseller\ResellerTransactionController;
 use App\Http\Controllers\Reseller\ResellerUserController;
+use App\Http\Controllers\Reseller\ResellerWithdrawController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -205,6 +207,12 @@ Route::prefix('reseller')->group(function () {
 
         Route::resource('user', ResellerUserController::class);
         Route::get('/user_table', [ResellerUserController::class, 'user_table'])->name('reseller.user.table');
+
+        Route::get('/transaction', [ResellerTransactionController::class, 'index']);
+        Route::get('/transaction_table', [ResellerTransactionController::class, 'table'])->name('reseller.transaction.table');
+
+        Route::resource('/withdraw', ResellerWithdrawController::class);
+        Route::get('/withdraw_table', [ResellerWithdrawController::class, 'table'])->name('reseller.withdraw.table');
         
     });
 
