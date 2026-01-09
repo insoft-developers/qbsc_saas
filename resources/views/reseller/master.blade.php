@@ -557,7 +557,7 @@
 
         
     </script>
-    @stack('scripts')
+    @stack('reseller_scripts')
 
 </body>
 

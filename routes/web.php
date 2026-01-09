@@ -32,6 +32,7 @@ use App\Http\Controllers\Frontend\RiwayatController;
 use App\Http\Controllers\Frontend\RunningTextController;
 use App\Http\Controllers\Reseller\ResellerAuthController;
 use App\Http\Controllers\Reseller\ResellerHomeController;
+use App\Http\Controllers\Reseller\ResellerUserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -201,6 +202,9 @@ Route::prefix('reseller')->group(function () {
         Route::get('/', [ResellerHomeController::class, 'index']);
         Route::get('/dashboard', [ResellerHomeController::class, 'index']);
         Route::post('/logout', [ResellerAuthController::class, 'logout'])->name('reseller.logout');
+
+        Route::resource('user', ResellerUserController::class);
+        Route::get('/user_table', [ResellerUserController::class, 'user_table'])->name('reseller.user.table');
         
     });
 

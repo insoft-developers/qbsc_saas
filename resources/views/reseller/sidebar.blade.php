@@ -43,7 +43,7 @@
                 <div class="collapse" id="sidebarLayouts">
                     <ul class="side-nav-second-level">
                         <li class="side-nav-item">
-                            <a class="side-nav-link" href="{{ url('laporan_situasi') }}">User</a>
+                            <a class="side-nav-link" href="{{ url('reseller/user') }}">User</a>
                         </li>
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="{{ url('tamu') }}">Transaksi</a>
