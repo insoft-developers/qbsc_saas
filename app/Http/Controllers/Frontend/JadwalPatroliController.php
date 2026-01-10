@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\JadwalPatroli;
 use App\Traits\CommonTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 
 class JadwalPatroliController extends Controller
@@ -28,10 +29,19 @@ class JadwalPatroliController extends Controller
                     
                     $button = '';
                     $button .= '<center>';
-                    $button .= '<button onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
-                    $button .= '<button onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
+                    if(Auth::user()->level == 'owner') {
+                        $button .= '<button onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
+                        $button .= '<button onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
 
-                    $button .= '<a href="'.url('/jadwal_patroli_detail/'.$row->id).'"><button style="margin-left:2px;" onclick="patroliDetail(this,' . $row->id . ')" title="Setting Jadwal Patroli" data-name="' . $row->name . '" class="me-0 btn btn-insoft btn-info"><i class="bi bi-gear"></i></button></a>';
+                       
+                    } else {
+                        $button .= '<button disabled title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
+                        $button .= '<button disabled onclick="deleteData(' . $row->id . ')" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
+                    }
+
+                     $button .= '<a href="'.url('/jadwal_patroli_detail/'.$row->id).'"><button style="margin-left:2px;" title="Setting Jadwal Patroli" data-name="' . $row->name . '" class="me-0 btn btn-insoft btn-info"><i class="bi bi-gear"></i></button></a>';
+                   
+                    
                     $button .= '</center>';
                     return $button;
                 })

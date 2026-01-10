@@ -11,7 +11,7 @@
             }
         },
         order: [
-            [0, 'desc']
+            [5, 'desc']
         ],
         columns: [{
                 data: 'id',
@@ -31,14 +31,16 @@
                 orderable: false,
                 searchable: false
             },
-            {
-                data: 'patroli_id',
-                name: 'patroli_id'
-            },
+            
             {
                 data: 'location_id',
                 name: 'location_id'
             },
+            {
+                data: 'patroli_id',
+                name: 'patroli_id'
+            },
+            
             {
                 data: 'urutan',
                 name: 'urutan'
@@ -117,16 +119,18 @@
         save_method = "edit";
         $('input[name=_method]').val('PATCH');
         $.ajax({
-            url: "{{ url('/jadwal_patroli') }}" + "/" + id + "/edit",
+            url: "{{ url('/jadwal_patroli_detail') }}" + "/" + id + "/edit",
             type: "GET",
             dataType: "JSON",
             success: function(data) {
                 $('#modal-tambah').modal("show");
-                $('.modal-title').text("Edit Jadwal Patroli");
+                $('.modal-title').text("Edit Pengaturan Patroli");
                 $('#id').val(data.id);
-                $("#name").val(data.name);
-                $("#is_active").val(data.is_active);
-                $("#description").val(data.description);
+                $("#patroli_id").val(data.patroli_id);
+                $("#location_id").val(data.location_id);
+                $("#jam_awal").val(data.jam_awal);
+                $("#jam_akhir").val(data.jam_akhir);
+                $("#urutan").val(data.urutan);
 
             }
         })
@@ -148,7 +152,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "{{ url('jadwal_patroli') }}" + "/" + id,
+                    url: "{{ url('jadwal_patroli_detail') }}" + "/" + id,
                     type: 'DELETE',
                     data: {
                         _token: '{{ csrf_token() }}'

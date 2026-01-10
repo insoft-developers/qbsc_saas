@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\DocChick;
 use App\Models\Ekspedisi;
+use App\Models\JadwalPatroli;
+use App\Models\JadwalPatroliDetail;
 use App\Models\Kandang;
 use App\Models\KandangAlarm;
 use App\Models\KandangKipas;
@@ -101,8 +103,8 @@ class PatroliController extends Controller
         }
     }
 
-
-    public function patroliKandangToServer(Request $request) {
+    public function patroliKandangToServer(Request $request)
+    {
         $request->validate([
             'uuid' => 'required|uuid',
             'tanggal' => 'required|date',
@@ -155,22 +157,22 @@ class PatroliController extends Controller
             }
 
             $patroli = PatroliKandang::create([
-                "uuid" => $request->uuid,
-                "tanggal" => $request->tanggal,
-                "jam"=> $request->jam,
-                "kandang_id" => $request->kandang_id,
-                "satpam_id" => $request->satpam_id,
-                "std_temp" => $request->std_temp,
-                "temperature" => $request->temperature,
-                "fan_amount" => $request->fan_amount,
-                "kipas" => $request->kipas,
-                "is_alarm_on" => $request->is_alarm_on,
-                "is_lamp_on" => $request->is_lamp_on,
-                "note" => $request->note,
-                "foto" => $photoPath,
-                "latitude" => $request->latitude,
-                "longitude" => $request->longitude,
-                "comid" => $request->comid
+                'uuid' => $request->uuid,
+                'tanggal' => $request->tanggal,
+                'jam' => $request->jam,
+                'kandang_id' => $request->kandang_id,
+                'satpam_id' => $request->satpam_id,
+                'std_temp' => $request->std_temp,
+                'temperature' => $request->temperature,
+                'fan_amount' => $request->fan_amount,
+                'kipas' => $request->kipas,
+                'is_alarm_on' => $request->is_alarm_on,
+                'is_lamp_on' => $request->is_lamp_on,
+                'note' => $request->note,
+                'foto' => $photoPath,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+                'comid' => $request->comid,
             ]);
 
             return response()->json([
@@ -187,47 +189,47 @@ class PatroliController extends Controller
         }
     }
 
-    public function getDataKandang(Request $request) {
+    public function getDataKandang(Request $request)
+    {
         $request->validate([
-            "comid" => 'required'
+            'comid' => 'required',
         ]);
 
-        $data = Kandang::where('comid', $request->comid)
-        ->where('is_active', 1)
-        ->get();
+        $data = Kandang::where('comid', $request->comid)->where('is_active', 1)->get();
         return response()->json([
-            "success" => true,
-            "data" => $data
+            'success' => true,
+            'data' => $data,
         ]);
     }
 
-
-    public function getDataEkspedisi(Request $request) {
+    public function getDataEkspedisi(Request $request)
+    {
         $request->validate([
-            "comid" => 'required'
+            'comid' => 'required',
         ]);
 
         $data = Ekspedisi::where('comid', $request->comid)->get();
         return response()->json([
-            "success" => true,
-            "data" => $data
+            'success' => true,
+            'data' => $data,
         ]);
     }
 
-
-    public function getDataMesin(Request $request) {
+    public function getDataMesin(Request $request)
+    {
         $request->validate([
-            "comid" => 'required'
+            'comid' => 'required',
         ]);
 
         $data = Mesin::where('comid', $request->comid)->get();
         return response()->json([
-            "success" => true,
-            "data" => $data
+            'success' => true,
+            'data' => $data,
         ]);
     }
 
-    public function syncSuhuKandang(Request $request) {
+    public function syncSuhuKandang(Request $request)
+    {
         $request->validate([
             'uuid' => 'required|uuid',
             'tanggal' => 'required|date',
@@ -276,18 +278,18 @@ class PatroliController extends Controller
             }
 
             $patroli = KandangSuhu::create([
-                "uuid" => $request->uuid,
-                "tanggal" => $request->tanggal,
-                "jam"=> $request->jam,
-                "kandang_id" => $request->kandang_id,
-                "satpam_id" => $request->satpam_id,
-                "std_temp" => $request->std_temp,
-                "temperature" => $request->temperature,
-                "note" => $request->note,
-                "foto" => $photoPath,
-                "latitude" => $request->latitude,
-                "longitude" => $request->longitude,
-                "comid" => $request->comid
+                'uuid' => $request->uuid,
+                'tanggal' => $request->tanggal,
+                'jam' => $request->jam,
+                'kandang_id' => $request->kandang_id,
+                'satpam_id' => $request->satpam_id,
+                'std_temp' => $request->std_temp,
+                'temperature' => $request->temperature,
+                'note' => $request->note,
+                'foto' => $photoPath,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+                'comid' => $request->comid,
             ]);
 
             return response()->json([
@@ -304,8 +306,8 @@ class PatroliController extends Controller
         }
     }
 
-
-    public function syncKipasKandang(Request $request) {
+    public function syncKipasKandang(Request $request)
+    {
         $request->validate([
             'uuid' => 'required|uuid',
             'tanggal' => 'required|date',
@@ -353,17 +355,17 @@ class PatroliController extends Controller
             }
 
             $patroli = KandangKipas::create([
-                "uuid" => $request->uuid,
-                "tanggal" => $request->tanggal,
-                "jam"=> $request->jam,
-                "kandang_id" => $request->kandang_id,
-                "satpam_id" => $request->satpam_id,
-                "kipas" => $request->kipas,
-                "note" => $request->note,
-                "foto" => $photoPath,
-                "latitude" => $request->latitude,
-                "longitude" => $request->longitude,
-                "comid" => $request->comid
+                'uuid' => $request->uuid,
+                'tanggal' => $request->tanggal,
+                'jam' => $request->jam,
+                'kandang_id' => $request->kandang_id,
+                'satpam_id' => $request->satpam_id,
+                'kipas' => $request->kipas,
+                'note' => $request->note,
+                'foto' => $photoPath,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+                'comid' => $request->comid,
             ]);
 
             return response()->json([
@@ -380,8 +382,8 @@ class PatroliController extends Controller
         }
     }
 
-
-    public function syncAlarmKandang(Request $request) {
+    public function syncAlarmKandang(Request $request)
+    {
         $request->validate([
             'uuid' => 'required|uuid',
             'tanggal' => 'required|date',
@@ -429,17 +431,17 @@ class PatroliController extends Controller
             }
 
             $patroli = KandangAlarm::create([
-                "uuid" => $request->uuid,
-                "tanggal" => $request->tanggal,
-                "jam"=> $request->jam,
-                "kandang_id" => $request->kandang_id,
-                "satpam_id" => $request->satpam_id,
-                "is_alarm_on" => $request->is_alarm_on ? 1 : 0,
-                "note" => $request->note,
-                "foto" => $photoPath,
-                "latitude" => $request->latitude,
-                "longitude" => $request->longitude,
-                "comid" => $request->comid
+                'uuid' => $request->uuid,
+                'tanggal' => $request->tanggal,
+                'jam' => $request->jam,
+                'kandang_id' => $request->kandang_id,
+                'satpam_id' => $request->satpam_id,
+                'is_alarm_on' => $request->is_alarm_on ? 1 : 0,
+                'note' => $request->note,
+                'foto' => $photoPath,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+                'comid' => $request->comid,
             ]);
 
             return response()->json([
@@ -456,8 +458,8 @@ class PatroliController extends Controller
         }
     }
 
-
-    public function syncLampuKandang(Request $request) {
+    public function syncLampuKandang(Request $request)
+    {
         $request->validate([
             'uuid' => 'required|uuid',
             'tanggal' => 'required|date',
@@ -505,17 +507,17 @@ class PatroliController extends Controller
             }
 
             $patroli = KandangLampu::create([
-                "uuid" => $request->uuid,
-                "tanggal" => $request->tanggal,
-                "jam"=> $request->jam,
-                "kandang_id" => $request->kandang_id,
-                "satpam_id" => $request->satpam_id,
-                "is_lamp_on" => $request->is_lamp_on ? 1 : 0,
-                "note" => $request->note,
-                "foto" => $photoPath,
-                "latitude" => $request->latitude,
-                "longitude" => $request->longitude,
-                "comid" => $request->comid
+                'uuid' => $request->uuid,
+                'tanggal' => $request->tanggal,
+                'jam' => $request->jam,
+                'kandang_id' => $request->kandang_id,
+                'satpam_id' => $request->satpam_id,
+                'is_lamp_on' => $request->is_lamp_on ? 1 : 0,
+                'note' => $request->note,
+                'foto' => $photoPath,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+                'comid' => $request->comid,
             ]);
 
             return response()->json([
@@ -532,7 +534,8 @@ class PatroliController extends Controller
         }
     }
 
-    public function syncDocReport(Request $request) {
+    public function syncDocReport(Request $request)
+    {
         $input = $request->all();
         $request->validate([
             'uuid' => 'required|uuid',
@@ -595,6 +598,35 @@ class PatroliController extends Controller
                 'success' => false,
                 'message' => $th->getMessage(),
                 'error' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function jadwalPatroli(Request $request)
+    {
+        $request->validate([
+            'comid' => 'required',
+        ]);
+
+        try {
+            $active = JadwalPatroli::where('comid', $request->comid)->where('is_active', 1)->first();
+            if ($active) {
+
+                $data = JadwalPatroliDetail::where('patroli_id', $active->id)->get();
+                return response()->json([
+                    'success' => true,
+                    'data' => $data,
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tidak ada jadwal patroli aktif',
+                ]);
+            }
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
             ]);
         }
     }

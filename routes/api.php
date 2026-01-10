@@ -105,6 +105,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/sync_kipas_kandang', [PatroliController::class, 'syncKipasKandang']);
     Route::post('/sync_alarm_kandang', [PatroliController::class, 'syncAlarmKandang']);
     Route::post('/sync_lampu_kandang', [PatroliController::class, 'syncLampuKandang']);
+    Route::post('/jadwal_patroli_perusahaan', [PatroliController::class, 'jadwalPatroli']);
     Route::post('/sync_doc_report', [PatroliController::class, 'syncDocReport']);
     Route::post('/laporan_situasi', [LaporanSituasiController::class, 'laporan_situasi']);
 

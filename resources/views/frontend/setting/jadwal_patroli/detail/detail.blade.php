@@ -10,10 +10,12 @@
 
                 <!-- Page Header -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="mb-0 fw-bold">{{ $jadwal->name }}</h4>
+                    <h4 class="mb-0 fw-bold"><a href="{{ url('jadwal_patroli') }}">JADWAL PATROLI</a> / {{ $jadwal->name }}</h4>
+                    @if(Auth::user()->level == 'owner')
                     <button type="button" class="btn btn-info btn-sm rounded-pill" onclick="tambah_data()">
                         <i class="bi bi-plus-lg me-1"></i> Tambah Data
                     </button>
+                    @endif
                 </div>
 
                 <!-- Data Table -->
@@ -26,8 +28,9 @@
                                         <th>ID</th>
                                         <th class="text-center" width="5%">No</th>
                                         <th class="text-center">Aksi</th>
-                                        <th>Nama Jadwal</th>
                                         <th>Lokasi</th>
+                                        <th>Nama Jadwal</th>
+                                        
                                         <th>Urutan</th>
                                         <th>Jam Patroli</th>
                                         <th>Perusahaan</th>

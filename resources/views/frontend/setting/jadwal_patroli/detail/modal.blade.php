@@ -12,7 +12,8 @@
                   <div class="modal-body">
                       <div class="row">
                           <div class="col-12">
-                              <input type="hidden" id="patroli_id" name="patroli_id" value="{{ $id }}">
+                            <input type="hidden" id="id" name="id">  
+                            <input type="hidden" id="patroli_id" name="patroli_id" value="{{ $id }}">
 
                               <div class="mb-2">
                                   <label for="location_id" class="form-label">Lokasi Patroli</label>
@@ -26,7 +27,7 @@
                               <div class="mb-2">
                                   <label for="urutan" class="form-label">Urutan</label>
                                   <input type="number" id="urutan" name="urutan" class="form-control"
-                                      placeholder="Masukkan Urutan Patroli Contoh: 1">
+                                      placeholder="Kosongkan maka akan terisi otomatis">
                               </div>
                               <div class="mb-2">
                                   <div class="row">
