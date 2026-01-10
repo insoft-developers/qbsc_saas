@@ -65,7 +65,7 @@
             </li>
             --}}
             <li class="side-nav-item">
-                <a href="{{ url('/asset_page') }}" class="side-nav-link">
+                <a href="{{ url('/reseller/download') }}" class="side-nav-link">
                     <i class="ri-newspaper-line"></i>
                     <span> Download Aplikasi </span>
 

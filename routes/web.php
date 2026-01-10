@@ -31,6 +31,7 @@ use App\Http\Controllers\Frontend\ProfileController;
 use App\Http\Controllers\Frontend\RiwayatController;
 use App\Http\Controllers\Frontend\RunningTextController;
 use App\Http\Controllers\Reseller\ResellerAuthController;
+use App\Http\Controllers\Reseller\ResellerDownloadController;
 use App\Http\Controllers\Reseller\ResellerHomeController;
 use App\Http\Controllers\Reseller\ResellerTransactionController;
 use App\Http\Controllers\Reseller\ResellerUserController;
@@ -213,6 +214,9 @@ Route::prefix('reseller')->group(function () {
 
         Route::resource('/withdraw', ResellerWithdrawController::class);
         Route::get('/withdraw_table', [ResellerWithdrawController::class, 'table'])->name('reseller.withdraw.table');
+
+        Route::resource('/download', ResellerDownloadController::class);
+        Route::get('/download_table', [ResellerDownloadController::class, 'table'])->name('download.table');
         
     });
 
