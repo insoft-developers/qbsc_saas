@@ -37,6 +37,9 @@ class ResellerTransactionController extends Controller
                 ->addColumn('payment_status', function($row){
                     return $row->payment_status == null ? '' : ($row->payment_status == 'PAID' ? '<span class="badge bg-success">PAID</span>' : '<span class="badge bg-danger">'.$row->payment_status.'</span>');
                 })
+                ->addColumn('referal_fee', function($row){
+                    return number_format($row->referal_fee);
+                })
                 ->addColumn('action', function($row){
                     return '';
                 })

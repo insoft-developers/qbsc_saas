@@ -1,12 +1,7 @@
 @extends('reseller.master')
 @section('reseller')
 
-	 @php
-		$percent = $reseller->percent_fee / 100;
-		$total_fee = $percent * $total_subscribe;
-		$jwithdraw = $withdraw->sum('jumlah');
-                                                
-	@endphp
+	
     <div class="content-page">
         <div class="content">
 
@@ -131,7 +126,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex flex-wrap flex-lg-nowrap justify-content-between align-items-end">
-                                    <h3 class="mb-0 d-flex">Rp. {{ number_format($total_fee - $jwithdraw) }}</h3>
+                                    <h3 class="mb-0 d-flex">Rp. {{ number_format($fee_remain) }}</h3>
                                     <div class="d-flex align-items-end h-100">
                                         <div id="booked-revenue-chart" data-colors="#bb3939"></div>
                                     </div>
@@ -176,13 +171,13 @@
                                             <p class="text-muted mt-3">Total Penarikan Anda</p>
                                             <h3 class="mb-0">
                                                
-                                                <span>Rp. {{ number_format($jwithdraw) }}</span>
+                                                <span>Rp. {{ number_format($total_withdraw) }}</span>
                                             </h3>
                                         </div>
                                         <div class="col">
                                             <p class="text-muted mt-3">Sisa Poin Reward Anda</p>
                                             <h3 class=" mb-0">
-                                                <span>Rp. {{ number_format($total_fee - $jwithdraw) }}</span>
+                                                <span>Rp. {{ number_format($fee_remain) }}</span>
                                             </h3>
                                         </div>
                                     </div>

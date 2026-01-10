@@ -9,6 +9,7 @@ use App\Models\Kandang;
 use App\Models\Lokasi;
 use App\Models\PaketLangganan;
 use App\Models\Pembelian;
+use App\Models\Reseller;
 use App\Models\Satpam;
 use App\Models\User;
 use Carbon\Carbon;
@@ -78,6 +79,7 @@ class DuitkuCallbackController extends Controller
                         $company->save();
 
                         $this->setting_feature($active_id, $pembelian->paket_id, $pembelian->comid) ;
+                        $this->count_referal_fee($company, $pembelian->id);
 
                     }
                 }
@@ -88,6 +90,27 @@ class DuitkuCallbackController extends Controller
         } else {
             // file_put_contents('callback.txt', "* Bad Parameter *\r\n\r\n", FILE_APPEND | LOCK_EX);
             throw new Exception('Bad Parameter');
+        }
+    }
+
+
+    protected function count_referal_fee($com, $pembelian_id) 
+    {
+        $referal_code = $com->referal_code;
+        $pembelian = Pembelian::find($pembelian_id);
+        if($referal_code !== null && !empty($referal_code)) {
+            $reseller = Reseller::where('referal_code', $referal_code)->first();
+            if($reseller) {
+                if($pembelian->payment_status == 'PAID') {
+                    $percent = $reseller->percent_fee;
+                    $nilai = $percent * $pembelian->amount / 100;
+
+                    $pembelian->referal_fee = $nilai;
+                    $pembelian->save();
+                }
+                
+
+            }
         }
     }
 

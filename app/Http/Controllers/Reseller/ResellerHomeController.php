@@ -37,6 +37,7 @@ class ResellerHomeController extends Controller
             ->where('payment_status', 'PAID');
 
         $total_subscribe = $pembelian->sum('payment_amount');
+        $total_fee = $pembelian->sum('referal_fee');
 
         
 
@@ -52,9 +53,12 @@ class ResellerHomeController extends Controller
         $withdraw = Withdraw::where('reseller_id', Auth::guard('reseller')->user()->id)
             ->where('payment_status', 'PAID');
 
+        $total_withdraw = $withdraw->sum('jumlah');
+        $fee_remain = $total_fee - $total_withdraw;
 
 
 
-        return view('reseller.dashboard', compact('view', 'active', 'subscriber', 'poin', 'reseller','total_subscribe','withdraw', 'recent'));
+
+        return view('reseller.dashboard', compact('view', 'active', 'subscriber', 'poin', 'reseller','total_subscribe','withdraw', 'recent', 'total_fee', 'total_withdraw', 'fee_remain'));
     }
 }

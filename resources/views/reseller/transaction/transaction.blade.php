@@ -29,6 +29,7 @@
                                         <th>Paket</th>
                                         <th>User</th>
                                         <th>Pembayaran</th>
+                                        <th>Fee Reseller</th>
                                         <th>Status</th>
                                         <th>Reference</th>
                                         <th>Keterangan</th>

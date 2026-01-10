@@ -100,7 +100,7 @@ class ResellerWithdrawController extends Controller
         $pembelian = Pembelian::whereIn('comid', $mycomid)
             ->where('payment_status', 'PAID');
 
-        $total_subscribe = $pembelian->sum('payment_amount');
+        $total_subscribe = $pembelian->sum('referal_fee');
         $withdraw = Withdraw::where('reseller_id', Auth::guard('reseller')->user()->id)
             ->where('payment_status', 'PAID')->sum('jumlah');
         $sisa = $total_subscribe - $withdraw;

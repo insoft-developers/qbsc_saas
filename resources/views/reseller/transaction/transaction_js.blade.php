@@ -47,6 +47,10 @@ var table = $('#list-table').DataTable({
                 data: 'amount',
                 name: 'amount'
             },
+            {
+                data: 'referal_fee',
+                name: 'referal_fee'
+            },
 
             {
                 data: 'payment_status',
