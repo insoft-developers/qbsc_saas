@@ -170,6 +170,9 @@
                 <div class="collapse" id="sidbarBaseUI">
                     <ul class="side-nav-second-level">
                         <li class="side-nav-item">
+                            <a class="side-nav-link" href="{{ url('jadwal_patroli') }}">Jadwal Patroli</a>
+                        </li>
+                        <li class="side-nav-item">
                             <a class="side-nav-link" href="{{ url('absen_location') }}">Lokasi Absen</a>
                         </li>
                         <li class="side-nav-item">

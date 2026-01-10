@@ -13,6 +13,8 @@ use App\Http\Controllers\Frontend\EkspedisiController;
 use App\Http\Controllers\Frontend\EmergencyListController;
 use App\Http\Controllers\Frontend\GenerateKeyController;
 use App\Http\Controllers\Frontend\GoogleController;
+use App\Http\Controllers\Frontend\JadwalPatroliController;
+use App\Http\Controllers\Frontend\JadwalPatroliDetailController;
 use App\Http\Controllers\Frontend\JamShiftController;
 use App\Http\Controllers\Frontend\KandangController;
 use App\Http\Controllers\Frontend\LaporanKandangController;
@@ -180,6 +182,12 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
 
     Route::post('/check_jenis_perusahaan', [PerusahaanController::class, 'check'])->name('check.jenis.perusahaan')->withoutMiddleware('isPaket');
     Route::post('/update_jenis_perusahaan', [PerusahaanController::class, 'update_jenis'])->name('update.jenis.perusahaan')->withoutMiddleware('isPaket');
+
+    Route::resource('jadwal_patroli', JadwalPatroliController::class);
+    Route::get('/jadwal_patroli_table', [JadwalPatroliController::class, 'table'])->name('jadwal.patroli.table');
+
+    Route::resource('/jadwal_patroli_detail', JadwalPatroliDetailController::class);
+    Route::post('/jadwal_patroli_detail_table', [JadwalPatroliDetailController::class, 'table'])->name('jadwal.patroli.detail.table');
 }); 
 
 Route::get('/r/register/{code}', function ($code) {
