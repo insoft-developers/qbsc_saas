@@ -134,7 +134,7 @@
                         </div>
                     </li>
 
-                    <li class="dropdown notification-list notif-list">
+                    {{-- <li class="dropdown notification-list notif-list">
                         <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#"
                             role="button" aria-haspopup="false" aria-expanded="false">
                             <i class="ri-notification-3-line fs-22"></i>
@@ -165,7 +165,7 @@
                             </a>
 
                         </div>
-                    </li>
+                    </li> --}}
 
                     <li class="d-none d-sm-inline-block">
                         <a class="nav-link" data-bs-toggle="offcanvas" href="#theme-settings-offcanvas">

@@ -56,14 +56,14 @@
                 </div>
             </li>
 
-            <li class="side-nav-item">
+            {{-- <li class="side-nav-item">
                 <a href="{{ url('/notifikasi') }}" class="side-nav-link">
                     <i class="ri-notification-line"></i>
                     <span> Notifikasi </span>
 
                 </a>
             </li>
-           
+            --}}
             <li class="side-nav-item">
                 <a href="{{ url('/asset_page') }}" class="side-nav-link">
                     <i class="ri-newspaper-line"></i>
