@@ -73,7 +73,8 @@ class AssetController extends Controller
     public function index()
     {
         $view = 'asset page';
-        return view('frontend.asset_page.asset_page', compact('view'));
+        $data = AssetPage::get();
+        return view('frontend.asset_page.asset_page', compact('view', 'data'));
     }
 
     /**
