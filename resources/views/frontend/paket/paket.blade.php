@@ -138,12 +138,12 @@
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
                                         <x-pricing-check text="Absen Scan Wajah + GPS" />
-                                        <x-pricing-check text="Unlimited Personil Satpam" />
+                                        <x-pricing-check text="30 Personil Satpam" />
                                         <x-pricing-check text="Unimited Titik Lokasi" />
-                                        <x-pricing-check text="Cek Unlimited Kandang" />
+                                        <x-pricing-check text="Cek 30 Kandang" />
                                         <x-pricing-check text="Catat Pengeluaran DOC" />
                                         <x-pricing-check text="Broadcast Message" />
-                                        <x-pricing-check text="Unlimited User Admin" />
+                                        <x-pricing-check text="30 User Admin" />
                                         <x-pricing-check text="Input Tamu Manual" />
                                         <x-pricing-check text="Scan QR Tamu" />
                                         <x-pricing-check text="Area User" />
@@ -263,12 +263,12 @@
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
                                         <x-pricing-check text="Absen Scan Wajah + GPS" />
-                                        <x-pricing-check text="Unlimited Personil Satpam" />
+                                        <x-pricing-check text="30 Personil Satpam" />
                                         <x-pricing-check text="Unimited Titik Lokasi" />
-                                        <x-pricing-check text="Cek Unlimited Kandang" />
+                                        <x-pricing-check text="Cek 30 Kandang" />
                                         <x-pricing-check text="Catat Pengeluaran DOC" />
                                         <x-pricing-check text="Broadcast Message" />
-                                        <x-pricing-check text="Unlimited User Admin" />
+                                        <x-pricing-check text="30 User Admin" />
                                         <x-pricing-check text="Input Tamu Manual" />
                                         <x-pricing-check text="Scan QR Tamu" />
                                         <x-pricing-check text="Area User" />
@@ -402,10 +402,10 @@
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
                                         <x-pricing-check text="Absen Scan Wajah + GPS" />
-                                        <x-pricing-check text="Unlimited Personil Satpam" />
+                                        <x-pricing-check text="30 Personil Satpam" />
                                         <x-pricing-check text="Unimited Titik Lokasi" />
                                         <x-pricing-check text="Broadcast Message" />
-                                        <x-pricing-check text="Unlimited User Admin" />
+                                        <x-pricing-check text="30 User Admin" />
                                         <x-pricing-check text="Input Tamu Manual" />
                                         <x-pricing-check text="Scan QR Tamu" />
                                         <x-pricing-check text="Area User" />
@@ -522,10 +522,10 @@
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
                                         <x-pricing-check text="Absen Scan Wajah + GPS" />
-                                        <x-pricing-check text="Unlimited Personil Satpam" />
+                                        <x-pricing-check text="30 Personil Satpam" />
                                         <x-pricing-check text="Unimited Titik Lokasi" />
                                         <x-pricing-check text="Broadcast Message" />
-                                        <x-pricing-check text="Unlimited User Admin" />
+                                        <x-pricing-check text="30 User Admin" />
                                         <x-pricing-check text="Input Tamu Manual" />
                                         <x-pricing-check text="Scan QR Tamu" />
                                         <x-pricing-check text="Area User" />
