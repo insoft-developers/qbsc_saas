@@ -32,6 +32,8 @@ class PatroliController extends Controller
             if ($request->location_id) {
                 $query->where('location_id', $request->location_id);
             }
+            $query->orderBy('tanggal','desc')
+                ->orderBy('jam', 'desc');
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('tanggal', function ($row) {
@@ -41,23 +43,16 @@ class PatroliController extends Controller
                     return $row->satpam->name ?? '';
                 })
                 ->addColumn('jam', function ($row) {
-                    $isInRange = $this->jamDalamRange($row->jam, $row->jam_awal, $row->jam_akhir);
+                    $isInRange = $this->jamDalamRange($row->jam, $row->jam_awal_patroli, $row->jam_akhir_patroli);
 
                     if ($isInRange) {
-                        return '<span>' . $row->jam . '</span>';
+                         return '<span class="badge bg-success text-white">' . $row->jam . '</span>';
                     } else {
-                        return '<span style="color:red;font-weight:bold;">' . $row->jam . '</span>';
+                        return '<span class="badge bg-danger text-white">' . $row->jam . '</span>';
                     }
                 })
                 ->addColumn('jam_awal', function ($row) {
-                    $awal = explode(',', $row->jam_awal);
-                    $akhir = explode(',', $row->jam_akhir);
-                    $html = '';
-                    foreach ($awal as $index => $a) {
-                        $html .= $a . '-' . $akhir[$index] . '<br>';
-                    }
-
-                    return $html;
+                    return $row->jam_awal_patroli.' - '.$row->jam_akhir_patroli;
                 })
                 ->addColumn('comid', function ($row) {
                     return $row->company->company_name ?? '';
@@ -192,6 +187,7 @@ class PatroliController extends Controller
             $query->where('location_id', $request->location_id);
         }
 
+        $query->orderBy('tanggal','desc')->orderBy('jam', 'desc');
         $data = $query->get();
 
         $pdf = Pdf::loadView('frontend.aktivitas.patroli.pdf', compact('data'))->setPaper('a4', 'landscape');

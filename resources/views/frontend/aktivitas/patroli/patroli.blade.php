@@ -81,8 +81,8 @@
                                         <th class="text-center" width="5%">No</th>
                                         <th class="text-center">Aksi</th>
                                         <th>Tanggal</th>
-                                        <th>Jam</th>
                                         <th>Jam Patroli</th>
+                                        <th>Jam Jadwal</th>
                                         <th>Lokasi</th>
                                         <th>Satpam</th>
                                         <th>LatLng</th>

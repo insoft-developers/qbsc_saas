@@ -34,10 +34,10 @@
                 data: 'nama_lokasi',
                 name: 'nama_lokasi'
             },
-            {
-                data: 'jam_awal',
-                name: 'jam_awal'
-            },
+            // {
+            //     data: 'jam_awal',
+            //     name: 'jam_awal'
+            // },
             {
                 data: 'is_active',
                 name: 'is_active'

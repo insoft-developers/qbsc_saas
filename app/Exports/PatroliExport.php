@@ -33,7 +33,7 @@ class PatroliExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
     public function collection()
     {
         // Pilih kolom yang diperlukan saja agar query ringan
-        $query = Patroli::select(['id', 'tanggal', 'jam', 'jam_awal', 'jam_akhir', 'location_id', 'satpam_id', 'latitude', 'longitude', 'note', 'comid', 'created_at'])
+        $query = Patroli::select(['id', 'tanggal', 'jam', 'jam_awal_patroli', 'jam_akhir_patroli', 'location_id', 'satpam_id', 'latitude', 'longitude', 'note', 'comid', 'created_at'])
             ->where('comid', $this->comid())
             ->with(['satpam:id,name', 'company:id,company_name', 'lokasi:id,nama_lokasi']);
 
@@ -59,20 +59,15 @@ class PatroliExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
         return $data->map(function ($row) {
             $isInRange = $this->jamDalamRange(
                 $row->jam,
-                $row->jam_awal, // sesuaikan sumber jam_awal
-                $row->jam_akhir, // sesuaikan sumber jam_akhir
+                $row->jam_awal_patroli, // sesuaikan sumber jam_awal
+                $row->jam_akhir_patroli, // sesuaikan sumber jam_akhir
             );
 
-            $awal = explode(',', $row->jam_awal);
-            $akhir = explode(',', $row->jam_akhir);
-            $html = '';
-            foreach ($awal as $index => $a) {
-                $html .= date('H:i', strtotime($a)) . '-' . date('H:i', strtotime($akhir[$index])) . ' ';
-            }
+            
             return [
                 'Tanggal' => date('d-m-Y', strtotime($row->tanggal)),
-                'Jam' => $row->jam,
-                'Jam Patroli' => $html,
+                'Jam Patroli' => $row->jam,
+                'Jam Jadwal' => $row->jam_awal_patroli.' - '.$row->jam_akhir_patroli,
                 'Lokasi' => $row->lokasi->nama_lokasi ?? '-',
                 'Nama Satpam' => optional($row->satpam)->name ?? '-',
                 'Latitude' => $row->latitude ?? '-',

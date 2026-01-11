@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\AbsenLocation;
 use App\Models\Absensi;
 use App\Models\JamShift;
 use App\Models\Satpam;
@@ -137,6 +138,34 @@ class AbsenController extends Controller
             'success' => true,
             'data' => $data,
         ]);
+    }
+
+
+    public function update_pos_satpam(Request $request) {
+        $validated = $request->validate([
+            "comid" => "required",
+            "latitude" => "required",
+            "longitude" => "required"
+        ]);
+
+        try{
+
+            AbsenLocation::where('comid', $request->comid)
+                ->update([
+                    "latitude" => $request->latitude,
+                    "longitude" => $request->longitude
+                ]);
+            return response()->json([
+                "success" => true,
+                "message" => "Update lokasi Pos Absen Berhasil"
+            ]);
+
+        }catch(\Throwable $th) {
+            return response()->json([
+                "success" => false,
+                "message" => $th->getMessage()
+            ]);
+        }
     }
     
 }

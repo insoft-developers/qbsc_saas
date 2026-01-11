@@ -22,7 +22,7 @@
                                   <label for="nama_lokasi" class="form-label">Nama Lokasi</label>
                                   <input type="text" id="nama_lokasi" name="nama_lokasi" class="form-control">
                               </div>
-                              <div class="mb-2">
+                              {{-- <div class="mb-2">
                                   <div class="card">
                                     
                                       <div class="card-body">
@@ -55,7 +55,7 @@
                                       </div>
                                   </div>
 
-                              </div>
+                              </div> --}}
                               <div class="mb-2">
                                   <label for="latitude" class="form-label">Latitude</label>
                                   <input type="text" id="latitude" name="latitude" class="form-control"

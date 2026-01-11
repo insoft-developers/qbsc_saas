@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\AbsenLocation;
 use App\Models\Company;
+use App\Models\JadwalPatroli;
 use App\Models\JamShift;
 use App\Models\Kandang;
 use App\Models\Lokasi;
@@ -40,14 +41,23 @@ class CheckData
         $absenlocation = AbsenLocation::where('comid', $comid)->first();
         if ($absenlocation) {
             if ($absenlocation->latitude == null || $absenlocation->longitude == null || $absenlocation->latitude == 0 || $absenlocation->longitude == 0 || $absenlocation->latitude == '' || $absenlocation->longitude == '') {
-                return redirect()->to('/absen_location')->with('error', 'Anda harus mengisi koordinat latitude dan longitude dengan lokasi real untuk keperluan absen satpam!');
+                return redirect()->to('/absen_location')->with('error', 'Anda harus mengisi koordinat latitude dan longitude dengan lokasi real untuk keperluan absen satpam! masuk ke aplikasi qbsc satpam dengan user satpam jabatan danru. Masuk ke Pengaturan Menu Pos Absen');
             }
         }
+
+        
 
         $jumlah_shift_kerja = JamShift::where('comid', $comid)->count();
 
         if ($jumlah_shift_kerja < 1) {
             return redirect()->to('/jam_shift')->with('error', 'Anda harus membuat data shift kerja terlebih dahulu!');
+        }
+
+        $jadwal_count = JadwalPatroli::where('comid', $comid)->where('is_active', 1)->count();
+
+
+        if ($jadwal_count != 1) {   
+            return redirect()->to('/jadwal_patroli')->with('error', 'Buat 1 Jadwal Patroli Aktif terlebih dahulu dan tidak boleh ada lebih dari 1 Jadwal yang aktif!');
         }
 
         $co = Company::find($comid);
@@ -62,6 +72,8 @@ class CheckData
                 return redirect()->to('/kandang')->with('error', 'Anda harus membuat data kandang terlebih dahulu!');
             }
         }
+
+        
 
         return $next($request);
     }

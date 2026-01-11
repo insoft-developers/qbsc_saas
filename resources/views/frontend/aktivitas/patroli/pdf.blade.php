@@ -1,15 +1,16 @@
 @php
+    use Carbon\Carbon;
     function jamDalamRangeLocal($jamKontrol, $jam_awal, $jam_akhir)
     {
-        $awal = array_map('trim', explode(',', $jam_awal));
-        $akhir = array_map('trim', explode(',', $jam_akhir));
-
-        foreach ($awal as $i => $start) {
-            if ($jamKontrol >= $start && $jamKontrol <= ($akhir[$i] ?? null)) {
-                return true;
-            }
+        if (!$jamKontrol || !$jam_awal || !$jam_akhir) {
+            return false;
         }
-        return false;
+
+        $kontrol = Carbon::parse(trim($jamKontrol));
+        $awal = Carbon::parse(trim($jam_awal));
+        $akhir = Carbon::parse(trim($jam_akhir));
+
+        return $kontrol->between($awal, $akhir);
     }
 @endphp
 
@@ -60,14 +61,8 @@
         <tbody>
             @foreach ($data as $i => $row)
                 @php
-                    $awal = explode(',', $row->jam_awal);
-                    $akhir = explode(',', $row->jam_akhir);
-                    $html = '';
-                    foreach ($awal as $index => $a) {
-                        $html .= date('H:i', strtotime($a)) . '-' . date('H:i', strtotime($akhir[$index])) . ' ';
-                    }
-
-                    $range = jamDalamRangeLocal($row->jam, $row->jam_awal, $row->jam_akhir);
+                    
+                    $range = jamDalamRangeLocal($row->jam, $row->jam_awal_patroli, $row->jam_akhir_patroli);
 
                 @endphp
 
@@ -78,7 +73,7 @@
                         {{ $row->jam }}
                     </td>
 
-                    <td>{{ $html }}</td>
+                    <td>{{ $row->jam_awal_patroli }} - {{ $row->jam_akhir_patroli }}</td>
                     <td>{{ $row->lokasi->nama_lokasi ?? '' }}</td>
                     <td>{{ $row->satpam->name ?? '' }}</td>
                     <td>{{ $row->latitude }}</td>

@@ -36,20 +36,20 @@ class LokasiController extends Controller
                 ->addColumn('longitude', function ($row) {
                     return $row->longitude == null ? 'Belum Diset' : $row->longitude;
                 })
-                ->addColumn('jam_awal', function($row){
-                    $html = '<ul>';
-                    if($row->jam_awal == null && $row->jam_akhir == null) {} 
-                    else {
-                        $jam_awal_arr = explode(",", $row->jam_awal);
-                        $jam_akhir_arr = explode(",", $row->jam_akhir);
-                        foreach($jam_awal_arr as $arrIndex => $jarr) {
-                            $html .= '<li>'.$jarr.'-'.$jam_akhir_arr[$arrIndex].'</li>';
-                        }
+                // ->addColumn('jam_awal', function($row){
+                //     $html = '<ul>';
+                //     if($row->jam_awal == null && $row->jam_akhir == null) {} 
+                //     else {
+                //         $jam_awal_arr = explode(",", $row->jam_awal);
+                //         $jam_akhir_arr = explode(",", $row->jam_akhir);
+                //         foreach($jam_awal_arr as $arrIndex => $jarr) {
+                //             $html .= '<li>'.$jarr.'-'.$jam_akhir_arr[$arrIndex].'</li>';
+                //         }
                         
-                    }
-                    $html .= '</ul>';
-                    return $html;
-                })
+                //     }
+                //     $html .= '</ul>';
+                //     return $html;
+                // })
                 ->addColumn('action', function ($row) {
 
                     $disabled = $this->isOwner() ? '': 'disabled'; 
@@ -68,7 +68,7 @@ class LokasiController extends Controller
                     $button .= '</center>';
                     return $button;
                 })
-                ->rawColumns(['action', 'is_active','jam_awal'])
+                ->rawColumns(['action', 'is_active'])
                 ->make(true);
 
             // bi bi-trash3
@@ -99,8 +99,8 @@ class LokasiController extends Controller
         $validated = $request->validate([
             'qrcode' => 'required',
             'nama_lokasi' => 'required|max:100|min:3',
-            'jam_awal.*' => 'required',
-            'jam_akhir.*' => 'required'  
+            // 'jam_awal.*' => 'required',
+            // 'jam_akhir.*' => 'required'  
         ]);
 
         $paket = $this->what_paket($this->comid());
@@ -117,11 +117,11 @@ class LokasiController extends Controller
         // Simpan ke database
         try {
 
-            $jam_awal_str = implode(",", $input['jam_awal']);
-            $jam_akhir_str = implode(",", $input['jam_akhir']);
+            // $jam_awal_str = implode(",", $input['jam_awal']);
+            // $jam_akhir_str = implode(",", $input['jam_akhir']);
 
-            $input['jam_awal'] = $jam_awal_str;
-            $input['jam_akhir'] = $jam_akhir_str;
+            // $input['jam_awal'] = $jam_awal_str;
+            // $input['jam_akhir'] = $jam_akhir_str;
 
             $input['comid'] = $this->comid();
             $input['nama_lokasi'] = strtoupper($request->nama_lokasi);
@@ -154,10 +154,10 @@ class LokasiController extends Controller
     {
         $lokasi = Lokasi::find($id);
         $data['data'] = $lokasi;
-        $jam_awal_arr = explode(",", $lokasi->jam_awal);
-        $jam_akhir_arr = explode(",", $lokasi->jam_akhir);
-        $data['awal'] = $jam_awal_arr;
-        $data['akhir'] = $jam_akhir_arr;
+        // $jam_awal_arr = explode(",", $lokasi->jam_awal);
+        // $jam_akhir_arr = explode(",", $lokasi->jam_akhir);
+        // $data['awal'] = $jam_awal_arr;
+        // $data['akhir'] = $jam_akhir_arr;
         return $data;
     }
 
@@ -173,18 +173,18 @@ class LokasiController extends Controller
         $validated = $request->validate([
             'qrcode' => 'required',
             'nama_lokasi' => 'required|max:100|min:3',
-            'jam_awal.*' => 'required',
-            'jam_akhir.*' => 'required'  
+            // 'jam_awal.*' => 'required',
+            // 'jam_akhir.*' => 'required'  
         ]);
 
         // Simpan ke database
         try {
 
-            $jam_awal_str = implode(",", $input['jam_awal']);
-            $jam_akhir_str = implode(",", $input['jam_akhir']);
+            // $jam_awal_str = implode(",", $input['jam_awal']);
+            // $jam_akhir_str = implode(",", $input['jam_akhir']);
 
-            $input['jam_awal'] = $jam_awal_str;
-            $input['jam_akhir'] = $jam_akhir_str;
+            // $input['jam_awal'] = $jam_awal_str;
+            // $input['jam_akhir'] = $jam_akhir_str;
 
             $input['comid'] = $this->comid();
             $input['nama_lokasi'] = strtoupper($request->nama_lokasi);

@@ -18,9 +18,10 @@ trait CommonTrait
         return $user->company_id;
     }
 
-    public function isOwner() {
+    public function isOwner()
+    {
         $user = User::find(Auth::user()->id);
-        if($user->level == 'owner') {
+        if ($user->level == 'owner') {
             return true;
         } else {
             return false;
@@ -41,24 +42,15 @@ trait CommonTrait
 
     public function jamDalamRange($jamKontrol, $jam_awal, $jam_akhir)
     {
-        $awal = array_map('trim', explode(',', $jam_awal));
-        $akhir = array_map('trim', explode(',', $jam_akhir));
-
-        $patroli = [];
-        foreach ($awal as $i => $start) {
-            $patroli[] = [
-                'start' => $start,
-                'end' => $akhir[$i] ?? null,
-            ];
+        if (!$jamKontrol || !$jam_awal || !$jam_akhir) {
+            return false;
         }
 
-        foreach ($patroli as $item) {
-            if ($jamKontrol >= $item['start'] && $jamKontrol <= $item['end']) {
-                return true; // jam ada dalam salah satu interval
-            }
-        }
+        $kontrol = Carbon::parse(trim($jamKontrol));
+        $awal = Carbon::parse(trim($jam_awal));
+        $akhir = Carbon::parse(trim($jam_akhir));
 
-        return false; // tidak dalam range manapun
+        return $kontrol->between($awal, $akhir);
     }
 
     public function shiftDetection($clockIn, $comid)
@@ -92,9 +84,10 @@ trait CommonTrait
         return null;
     }
 
-    public function what_paket($comid) {
+    public function what_paket($comid)
+    {
         $com = Company::find($comid);
         $paket = PaketLangganan::find($com->paket_id);
-        return $paket;   
+        return $paket;
     }
 }

@@ -37,6 +37,8 @@ class PatroliController extends Controller
             'note' => 'nullable|string',
             'comid' => 'required',
             'photo' => 'nullable|file|mimes:jpg,jpeg,png', // tidak batasi ukuran
+            'jam_awal_patroli' => 'nullable',
+            'jam_akhir_patroli' => 'nullable'
         ]);
 
         try {
@@ -87,6 +89,8 @@ class PatroliController extends Controller
                 'note' => $request->note,
                 'comid' => $request->comid,
                 'photo_path' => $photoPath,
+                'jam_awal_patroli' => $request->jam_awal_patroli,
+                'jam_akhir_patroli' => $request->jam_akhir_patroli
             ]);
 
             return response()->json([
@@ -612,7 +616,11 @@ class PatroliController extends Controller
             $active = JadwalPatroli::where('comid', $request->comid)->where('is_active', 1)->first();
             if ($active) {
 
-                $data = JadwalPatroliDetail::where('patroli_id', $active->id)->get();
+                $data = JadwalPatroliDetail::where('patroli_id', $active->id)
+                ->whereHas('location', function ($q) {
+                    $q->where('is_active', 1);
+                })
+                ->get();
                 return response()->json([
                     'success' => true,
                     'data' => $data,
