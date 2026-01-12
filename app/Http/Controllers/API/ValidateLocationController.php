@@ -38,6 +38,7 @@ class ValidateLocationController extends Controller
     public function updateCoordinates(Request $request)
     {
         $request->validate([
+            'nama_lokasi' => 'required',
             'comid' => 'required',
             'qrcode' => 'required',
             'lat' => 'required',
@@ -47,6 +48,7 @@ class ValidateLocationController extends Controller
         $data = Lokasi::where('qrcode', $request->qrcode)->where('comid', $request->comid)->first();
 
         if ($data) {
+            $data->nama_lokasi = $request->nama_lokasi;
             $data->latitude = $request->lat;
             $data->longitude = $request->lng;
             $data->updated_at = Carbon::now();
