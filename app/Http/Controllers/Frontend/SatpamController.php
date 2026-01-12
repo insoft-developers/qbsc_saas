@@ -94,7 +94,7 @@ class SatpamController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'foto' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'foto' => 'required|image|mimes:jpg,jpeg,png',
             'name' => 'required|string|max:100',
             'whatsapp' => 'required|string|max:20|unique:satpams,whatsapp',
             'password' => 'required|string|min:6',
@@ -173,7 +173,7 @@ class SatpamController extends Controller
         $satpam = Satpam::findOrFail($id);
 
         $validated = $request->validate([
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png',
             'name' => 'required|string|max:100',
             'whatsapp' => ['required', 'string', 'max:20', Rule::unique('satpams', 'whatsapp')->ignore($satpam->id)],
             'password' => 'nullable|string|min:6',
