@@ -44,7 +44,8 @@ class AbsensiController extends Controller
                 })
                 ->addColumn('latitude', function ($row) {
                     if ($row->latitude && $row->longitude) {
-                        $url = "https://www.google.com/maps/@{$row->latitude},{$row->longitude},21z";
+                        $url = "https://www.google.com/maps/search/?api=1&query={$row->latitude},{$row->longitude}";
+
                         return '
             <div style="text-align:center">
                 <a href="' .
@@ -56,11 +57,13 @@ class AbsensiController extends Controller
                             $row->longitude .
                             '
                 </a>
-            </div>';
+            </div>
+        ';
                     } else {
                         return '<div style="text-align:center">-</div>';
                     }
                 })
+
                 ->addColumn('jam_masuk', function ($row) {
                     return '<div style="text-align:center">' . date('H:i:s', strtotime($row->jam_masuk)) . '</div>';
                 })
@@ -100,11 +103,11 @@ class AbsensiController extends Controller
                 })
 
                 ->addColumn('action', function ($row) {
-                    $disabled = $this->isOwner() ? '': 'disabled'; 
+                    $disabled = $this->isOwner() ? '' : 'disabled';
                     $button = '';
                     $button .= '<center>';
-                    $button .= '<button '.$disabled.' onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
-                    $button .= '<button '.$disabled.' onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
+                    $button .= '<button ' . $disabled . ' onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
+                    $button .= '<button ' . $disabled . ' onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
                     $button .= '</center>';
                     return $button;
                 })
@@ -123,7 +126,7 @@ class AbsensiController extends Controller
         $view = 'absensi-satpam';
         $satpams = Satpam::where('comid', $this->comid())->get();
         $isOwner = $this->isOwner();
-        return view('frontend.aktivitas.absensi.absensi', compact('view', 'satpams','isOwner'));
+        return view('frontend.aktivitas.absensi.absensi', compact('view', 'satpams', 'isOwner'));
     }
 
     /**

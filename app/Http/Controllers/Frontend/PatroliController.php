@@ -32,8 +32,7 @@ class PatroliController extends Controller
             if ($request->location_id) {
                 $query->where('location_id', $request->location_id);
             }
-            $query->orderBy('tanggal','desc')
-                ->orderBy('jam', 'desc');
+            $query->orderBy('tanggal', 'desc')->orderBy('jam', 'desc');
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('tanggal', function ($row) {
@@ -46,13 +45,13 @@ class PatroliController extends Controller
                     $isInRange = $this->jamDalamRange($row->jam, $row->jam_awal_patroli, $row->jam_akhir_patroli);
 
                     if ($isInRange) {
-                         return '<span class="badge bg-success text-white">' . $row->jam . '</span>';
+                        return '<span class="badge bg-success text-white">' . $row->jam . '</span>';
                     } else {
                         return '<span class="badge bg-danger text-white">' . $row->jam . '</span>';
                     }
                 })
                 ->addColumn('jam_awal', function ($row) {
-                    return $row->jam_awal_patroli.' - '.$row->jam_akhir_patroli;
+                    return $row->jam_awal_patroli . ' - ' . $row->jam_akhir_patroli;
                 })
                 ->addColumn('comid', function ($row) {
                     return $row->company->company_name ?? '';
@@ -62,7 +61,8 @@ class PatroliController extends Controller
                 })
                 ->addColumn('latitude', function ($row) {
                     if ($row->latitude && $row->longitude) {
-                        $url = "https://www.google.com/maps/@{$row->latitude},{$row->longitude},21z";
+                        $url = "https://www.google.com/maps/search/?api=1&query={$row->latitude},{$row->longitude}";
+
                         return '
             <div style="text-align:center">
                 <a href="' .
@@ -74,11 +74,13 @@ class PatroliController extends Controller
                             $row->longitude .
                             '
                 </a>
-            </div>';
+            </div>
+        ';
                     } else {
                         return '<div style="text-align:center">-</div>';
                     }
                 })
+
                 ->addColumn('photo_path', function ($row) {
                     if (!empty($row->photo_path)) {
                         $url = asset('storage/' . $row->photo_path);
@@ -92,15 +94,15 @@ class PatroliController extends Controller
                 })
 
                 ->addColumn('action', function ($row) {
-                    $disabled = $this->isOwner() ? '': 'disabled'; 
+                    $disabled = $this->isOwner() ? '' : 'disabled';
                     $button = '';
                     $button .= '<center>';
                     // $button .= '<button onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
-                    $button .= '<button '.$disabled.' onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
+                    $button .= '<button ' . $disabled . ' onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
                     $button .= '</center>';
                     return $button;
                 })
-                ->rawColumns(['action', 'latitude', 'tanggal', 'photo_path', 'jam_awal','jam'])
+                ->rawColumns(['action', 'latitude', 'tanggal', 'photo_path', 'jam_awal', 'jam'])
                 ->make(true);
 
             // bi bi-trash3
@@ -187,7 +189,7 @@ class PatroliController extends Controller
             $query->where('location_id', $request->location_id);
         }
 
-        $query->orderBy('tanggal','desc')->orderBy('jam', 'desc');
+        $query->orderBy('tanggal', 'desc')->orderBy('jam', 'desc');
         $data = $query->get();
 
         $pdf = Pdf::loadView('frontend.aktivitas.patroli.pdf', compact('data'))->setPaper('a4', 'landscape');

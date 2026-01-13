@@ -54,7 +54,8 @@ class PatroliKandangController extends Controller
                 })
                 ->addColumn('latitude', function ($row) {
                     if ($row->latitude && $row->longitude) {
-                        $url = "https://www.google.com/maps/@{$row->latitude},{$row->longitude},21z";
+                        $url = "https://www.google.com/maps/search/?api=1&query={$row->latitude},{$row->longitude}";
+
                         return '
             <div style="text-align:center">
                 <a href="' .
@@ -66,7 +67,8 @@ class PatroliKandangController extends Controller
                             $row->longitude .
                             '
                 </a>
-            </div>';
+            </div>
+        ';
                     } else {
                         return '<div style="text-align:center">-</div>';
                     }
@@ -144,7 +146,8 @@ class PatroliKandangController extends Controller
                 })
                 ->addColumn('latitude', function ($row) {
                     if ($row->latitude && $row->longitude) {
-                        $url = "https://www.google.com/maps/@{$row->latitude},{$row->longitude},21z";
+                        $url = "https://www.google.com/maps/search/?api=1&query={$row->latitude},{$row->longitude}";
+
                         return '
             <div style="text-align:center">
                 <a href="' .
@@ -156,7 +159,8 @@ class PatroliKandangController extends Controller
                             $row->longitude .
                             '
                 </a>
-            </div>';
+            </div>
+        ';
                     } else {
                         return '<div style="text-align:center">-</div>';
                     }
@@ -226,7 +230,8 @@ class PatroliKandangController extends Controller
                 })
                 ->addColumn('latitude', function ($row) {
                     if ($row->latitude && $row->longitude) {
-                        $url = "https://www.google.com/maps/@{$row->latitude},{$row->longitude},21z";
+                        $url = "https://www.google.com/maps/search/?api=1&query={$row->latitude},{$row->longitude}";
+
                         return '
             <div style="text-align:center">
                 <a href="' .
@@ -238,7 +243,8 @@ class PatroliKandangController extends Controller
                             $row->longitude .
                             '
                 </a>
-            </div>';
+            </div>
+        ';
                     } else {
                         return '<div style="text-align:center">-</div>';
                     }
@@ -308,7 +314,8 @@ class PatroliKandangController extends Controller
                 })
                 ->addColumn('latitude', function ($row) {
                     if ($row->latitude && $row->longitude) {
-                        $url = "https://www.google.com/maps/@{$row->latitude},{$row->longitude},21z";
+                        $url = "https://www.google.com/maps/search/?api=1&query={$row->latitude},{$row->longitude}";
+
                         return '
             <div style="text-align:center">
                 <a href="' .
@@ -320,7 +327,8 @@ class PatroliKandangController extends Controller
                             $row->longitude .
                             '
                 </a>
-            </div>';
+            </div>
+        ';
                     } else {
                         return '<div style="text-align:center">-</div>';
                     }
