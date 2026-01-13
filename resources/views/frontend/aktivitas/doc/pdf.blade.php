@@ -4,10 +4,21 @@
 <head>
     <title>Data Pengiriman Doc</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h3 {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 12px;
+            margin-bottom: 20px;
         }
 
         th,
@@ -15,16 +26,22 @@
             border: 1px solid #000;
             padding: 6px;
             text-align: left;
+            vertical-align: middle;
         }
 
         th {
             background-color: #eee;
         }
+
+        td img {
+            max-height: 70px;
+            max-width: 100px;
+        }
     </style>
 </head>
 
 <body>
-    <h3 style="text-align:center;">Data Pengiriman Doc</h3>
+    <h3>Data Pengiriman Doc</h3>
     <table>
         <thead>
             <tr>
@@ -40,6 +57,7 @@
                 <th>Jenis</th>
                 <th>Catatan</th>
                 <th>Perusahaan</th>
+                <th>Foto</th>
             </tr>
         </thead>
         <tbody>
@@ -49,7 +67,6 @@
                     <td>{{ date('d-m-Y', strtotime($row->tanggal)) }}</td>
                     <td>{{ $row->jam }}</td>
                     <td>{{ date('d-m-Y H:i', strtotime($row->input_date)) }}</td>
-                    
                     <td>{{ $row->satpam->name ?? '' }}</td>
                     <td>{{ $row->jumlah }}</td>
                     <td>{{ $row->ekspedisi->name ?? '' }}</td>
@@ -58,6 +75,11 @@
                     <td>{{ $row->jenis == 1 ? 'Male' : 'Female' }}</td>
                     <td>{{ $row->note }}</td>
                     <td>{{ $row->company->company_name ?? '' }}</td>
+                    <td>
+                        @if($row->foto)
+                            <img src="{{ public_path('storage/' . $row->foto) }}" alt="Foto Doc">
+                        @endif
+                    </td>
                 </tr>
             @endforeach
         </tbody>

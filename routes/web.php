@@ -30,6 +30,7 @@ use App\Http\Controllers\Frontend\SatpamController;
 use App\Http\Controllers\Frontend\TamuController;
 use App\Http\Controllers\Frontend\UserController;
 use App\Http\Controllers\Frontend\ProfileController;
+use App\Http\Controllers\Frontend\RekapController;
 use App\Http\Controllers\Frontend\RiwayatController;
 use App\Http\Controllers\Frontend\RunningTextController;
 use App\Http\Controllers\Reseller\ResellerAuthController;
@@ -188,6 +189,13 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
 
     Route::resource('/jadwal_patroli_detail', JadwalPatroliDetailController::class);
     Route::post('/jadwal_patroli_detail_table', [JadwalPatroliDetailController::class, 'table'])->name('jadwal.patroli.detail.table');
+
+
+    Route::get('/rekap', [RekapController::class, 'index']);
+    Route::get('/laporan_rekap_data', [RekapController::class, 'table'])->name('laporan.rekap.data');
+
+    Route::get('/laporan_rekap_excel', [RekapController::class, 'exportExcel'])->name('laporan.rekap.excel');
+    Route::get('/laporan_rekap_pdf', [RekapController::class, 'exportPdf'])->name('laporan.rekap.pdf');
 }); 
 
 Route::get('/r/register/{code}', function ($code) {

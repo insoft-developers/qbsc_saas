@@ -26,6 +26,7 @@
             border: 1px solid #000;
             padding: 6px;
             text-align: left;
+            vertical-align: middle;
         }
 
         th {
@@ -34,6 +35,11 @@
 
         .page-break {
             page-break-before: always;
+        }
+
+        img {
+            max-height: 80px;
+            max-width: 80px;
         }
     </style>
 </head>
@@ -56,6 +62,7 @@
                 <th>Catatan</th>
                 <th>Sync Date</th>
                 <th>Perusahaan</th>
+                <th>Foto</th>
             </tr>
         </thead>
         <tbody>
@@ -72,6 +79,11 @@
                     <td>{{ $row->note }}</td>
                     <td>{{ date('d-m-Y H:i', strtotime($row->created_at)) }}</td>
                     <td>{{ $row->company->company_name ?? '' }}</td>
+                    <td>
+                        @if ($row->foto)
+                            <img src="{{ public_path('storage/' . $row->foto) }}" alt="Foto Suhu">
+                        @endif
+                    </td>
                 </tr>
             @endforeach
         </tbody>
@@ -95,6 +107,7 @@
                 <th>Catatan</th>
                 <th>Sync Date</th>
                 <th>Perusahaan</th>
+                <th>Foto</th>
             </tr>
         </thead>
         <tbody>
@@ -111,6 +124,11 @@
                     <td>{{ $row->note }}</td>
                     <td>{{ date('d-m-Y H:i', strtotime($row->created_at)) }}</td>
                     <td>{{ $row->company->company_name ?? '' }}</td>
+                    <td>
+                        @if ($row->foto)
+                            <img src="{{ public_path('storage/' . $row->foto) }}" alt="Foto Kipas">
+                        @endif
+                    </td>
                 </tr>
             @endforeach
         </tbody>
@@ -134,6 +152,7 @@
                 <th>Catatan</th>
                 <th>Sync Date</th>
                 <th>Perusahaan</th>
+                <th>Foto</th>
             </tr>
         </thead>
         <tbody>
@@ -150,6 +169,11 @@
                     <td>{{ $row->note }}</td>
                     <td>{{ date('d-m-Y H:i', strtotime($row->created_at)) }}</td>
                     <td>{{ $row->company->company_name ?? '' }}</td>
+                    <td>
+                        @if ($row->foto)
+                            <img src="{{ public_path('storage/' . $row->foto) }}" alt="Foto Alarm">
+                        @endif
+                    </td>
                 </tr>
             @endforeach
         </tbody>
@@ -173,6 +197,7 @@
                 <th>Catatan</th>
                 <th>Sync Date</th>
                 <th>Perusahaan</th>
+                <th>Foto</th>
             </tr>
         </thead>
         <tbody>
@@ -189,6 +214,11 @@
                     <td>{{ $row->note }}</td>
                     <td>{{ date('d-m-Y H:i', strtotime($row->created_at)) }}</td>
                     <td>{{ $row->company->company_name ?? '' }}</td>
+                    <td>
+                        @if ($row->foto)
+                            <img src="{{ public_path('storage/' . $row->foto) }}" alt="Foto Lampu">
+                        @endif
+                    </td>
                 </tr>
             @endforeach
         </tbody>

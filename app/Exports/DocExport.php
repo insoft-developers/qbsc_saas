@@ -7,8 +7,12 @@ use App\Traits\CommonTrait;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithDrawings;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterSheet;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
-class DocExport implements FromCollection, WithHeadings, ShouldAutoSize
+class DocExport implements FromCollection, WithHeadings, ShouldAutoSize, WithDrawings, WithEvents
 {
     use CommonTrait;
 
@@ -26,33 +30,28 @@ class DocExport implements FromCollection, WithHeadings, ShouldAutoSize
     }
 
     /**
-     * @return \Illuminate\Support\Collection
+     * ======================
+     * DATA TEXT
+     * ======================
      */
     public function collection()
     {
-        // Pilih kolom yang diperlukan saja agar query ringan
-        $query = DocChick::where('comid', $this->comid())->with(['satpam:id,name', 'company:id,company_name', 'ekspedisi:id,name']);
+        $query = DocChick::where('comid', $this->comid())
+            ->with(['satpam:id,name', 'company:id,company_name', 'ekspedisi:id,name']);
 
-        // Filter tanggal (opsional)
-        if (!empty($this->start) && !empty($this->end)) {
+        if ($this->start && $this->end) {
             $query->whereBetween('tanggal', [$this->start, $this->end]);
         }
 
-        // Filter satpam (opsional)
-        if (!empty($this->satpam_id)) {
+        if ($this->satpam_id) {
             $query->where('satpam_id', $this->satpam_id);
         }
 
-        // Filter status (opsional)
-        if (!empty($this->ekspedisi_id)) {
+        if ($this->ekspedisi_id) {
             $query->where('ekspedisi_id', $this->ekspedisi_id);
         }
 
-        // Jalankan query
-        $data = $query->get();
-
-        // Transform data ke format Excel
-        return $data->map(function ($row) {
+        return $query->get()->map(function ($row) {
             return [
                 'Tanggal' => date('d-m-Y', strtotime($row->tanggal)),
                 'Jam' => $row->jam,
@@ -64,13 +63,96 @@ class DocExport implements FromCollection, WithHeadings, ShouldAutoSize
                 'No Polisi' => $row->no_polisi,
                 'Jenis' => $row->jenis == 1 ? 'Male' : 'Female',
                 'Catatan' => $row->note ?? '-',
-                'Perusahaan' => $row->company->company_name ?? '', // nanti bisa ditambah kalau sudah ada relasi
+                'Perusahaan' => $row->company->company_name ?? '',
+                'Foto' => '', // placeholder foto
             ];
         });
     }
 
+    /**
+     * ======================
+     * HEADER
+     * ======================
+     */
     public function headings(): array
     {
-        return ['Tanggal', 'Jam', 'Tgl Input','Nama Satpam', 'Jumlah', 'Ekspedisi', 'Tujuan', 'No Polisi', 'Jenis', 'Catatan', 'Perusahaan'];
+        return ['Tanggal', 'Jam', 'Tgl Input','Nama Satpam', 'Jumlah', 'Ekspedisi', 'Tujuan', 'No Polisi', 'Jenis', 'Catatan', 'Perusahaan', 'Foto'];
+    }
+
+    /**
+     * ======================
+     * FOTO (DRAWING)
+     * ======================
+     */
+    public function drawings()
+    {
+        $drawings = [];
+
+        $rows = DocChick::where('comid', $this->comid())
+            ->when($this->start && $this->end, fn($q) => $q->whereBetween('tanggal', [$this->start, $this->end]))
+            ->when($this->satpam_id, fn($q) => $q->where('satpam_id', $this->satpam_id))
+            ->when($this->ekspedisi_id, fn($q) => $q->where('ekspedisi_id', $this->ekspedisi_id))
+            ->get();
+
+        $rowIndex = 2; // baris header
+        $fotoColumn = 'L'; // kolom foto
+
+        foreach ($rows as $row) {
+            if (!$row->foto) {
+                $rowIndex++;
+                continue;
+            }
+
+            $path = public_path('storage/' . $row->foto);
+
+            if (!file_exists($path)) {
+                $rowIndex++;
+                continue;
+            }
+
+            $drawing = new Drawing();
+            $drawing->setName('Foto Doc');
+            $drawing->setDescription('Foto Dokumentasi Chick');
+            $drawing->setPath($path);
+            $drawing->setHeight(70);
+            $drawing->setCoordinates($fotoColumn . $rowIndex);
+            $drawing->setOffsetX(5);
+            $drawing->setOffsetY(5);
+
+            $drawings[] = $drawing;
+            $rowIndex++;
+        }
+
+        return $drawings;
+    }
+
+    /**
+     * ======================
+     * SETTING HEIGHT & WIDTH KOLM FOTO
+     * ======================
+     */
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function (AfterSheet $event) {
+                $row = 2;
+
+                $rows = DocChick::where('comid', $this->comid())
+                    ->when($this->start && $this->end, fn($q) => $q->whereBetween('tanggal', [$this->start, $this->end]))
+                    ->when($this->satpam_id, fn($q) => $q->where('satpam_id', $this->satpam_id))
+                    ->when($this->ekspedisi_id, fn($q) => $q->where('ekspedisi_id', $this->ekspedisi_id))
+                    ->get();
+
+                foreach ($rows as $r) {
+                    if ($r->foto) {
+                        $event->sheet->getRowDimension($row)->setRowHeight(80);
+                    }
+                    $row++;
+                }
+
+                // Lebar kolom foto
+                $event->sheet->getColumnDimension('L')->setWidth(22);
+            },
+        ];
     }
 }

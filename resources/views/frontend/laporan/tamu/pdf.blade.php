@@ -4,10 +4,21 @@
 <head>
     <title>Laporan Tamu</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h3 {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 12px;
+            margin-bottom: 20px;
         }
 
         th,
@@ -15,16 +26,22 @@
             border: 1px solid #000;
             padding: 6px;
             text-align: left;
+            vertical-align: middle;
         }
 
         th {
             background-color: #eee;
         }
+
+        td img {
+            max-height: 70px;
+            max-width: 100px;
+        }
     </style>
 </head>
 
 <body>
-    <h3 style="text-align:center;">Laporan Tamu</h3>
+    <h3>Laporan Tamu</h3>
     <table>
         <thead>
             <tr>
@@ -42,7 +59,7 @@
                 <th>Catatan</th>
                 <th>Dibuat Oleh</th>
                 <th>Perusahaan</th>
-
+                <th>Foto</th>
             </tr>
         </thead>
         <tbody>
@@ -72,7 +89,11 @@
                     <td>{{ $row->catatan }}</td>
                     <td>{{ $row->user->name ?? '' }}</td>
                     <td>{{ $row->company->company_name ?? '' }}</td>
-
+                    <td>
+                        @if($row->foto)
+                            <img src="{{ public_path('storage/' . $row->foto) }}" alt="Foto Tamu">
+                        @endif
+                    </td>
                 </tr>
             @endforeach
         </tbody>

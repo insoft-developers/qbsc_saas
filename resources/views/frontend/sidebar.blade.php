@@ -155,6 +155,9 @@
                             <a class="side-nav-link" href="{{ url('laporan_kandang') }}">Laporan Kandang</a>
                         </li>
                         @endcomtype
+                        {{-- <li class="side-nav-item">
+                            <a class="side-nav-link" href="{{ url('rekap') }}">Rekap Aktifitas</a>
+                        </li> --}}
                     </ul>
                 </div>
             </li>
