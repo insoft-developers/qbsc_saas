@@ -51,7 +51,7 @@
                                     </span>
 
 
-                                    <h2 class="fw-bold mb-0">Rp. 249.000 <span class="fs-6 fw-medium">/ bulan</span></h2>
+                                    <h2 class="fw-bold mb-0">Rp. 349.000 <span class="fs-6 fw-medium">/ bulan</span></h2>
                                     <p class="text-muted">Paket ideal untuk kebutuhan dasar Kontrol Keamanan Anda.</p>
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
@@ -92,7 +92,7 @@
 
 
 
-                                    <h2 class="fw-bold mb-0">Rp. 369.000 <span class="fs-6 fw-medium">/ bulan</span></h2>
+                                    <h2 class="fw-bold mb-0">Rp. 469.000 <span class="fs-6 fw-medium">/ bulan</span></h2>
                                     <p class="text-muted">Paket ideal untuk kebutuhan lanjut Kontrol Keamanan Anda.</p>
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
@@ -133,7 +133,7 @@
 
 
 
-                                    <h2 class="fw-bold mb-0">Rp. 499.000 <span class="fs-6 fw-medium">/ bulan</span></h2>
+                                    <h2 class="fw-bold mb-0">Rp. 599.000 <span class="fs-6 fw-medium">/ bulan</span></h2>
                                     <p class="text-muted">Paket ideal untuk kebutuhan Lengkap Kontrol Keamanan Anda.</p>
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
@@ -174,7 +174,7 @@
                                     </span>
 
 
-                                    <h2 class="fw-bold mb-0">Rp. 2.490.000 <span class="fs-6 fw-medium">/ tahun</span></h2>
+                                    <h2 class="fw-bold mb-0">Rp. 3.490.000 <span class="fs-6 fw-medium">/ tahun</span></h2>
                                     <p class="text-muted">Paket ideal untuk kebutuhan dasar Kontrol Keamanan Anda.</p>
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
@@ -215,7 +215,7 @@
 
 
 
-                                    <h2 class="fw-bold mb-0">Rp. 3.690.000 <span class="fs-6 fw-medium">/ tahun</span>
+                                    <h2 class="fw-bold mb-0">Rp. 4.690.000 <span class="fs-6 fw-medium">/ tahun</span>
                                     </h2>
                                     <p class="text-muted">Paket ideal untuk kebutuhan lanjut Kontrol Keamanan Anda.</p>
 
@@ -257,7 +257,7 @@
 
 
 
-                                    <h2 class="fw-bold mb-0">Rp. 4.990.000 <span class="fs-6 fw-medium">/ tahun</span>
+                                    <h2 class="fw-bold mb-0">Rp. 5.990.000 <span class="fs-6 fw-medium">/ tahun</span>
                                     </h2>
                                     <p class="text-muted">Paket ideal untuk kebutuhan Lengkap Kontrol Keamanan Anda.</p>
 
@@ -319,7 +319,7 @@
                                     </span>
 
 
-                                    <h2 class="fw-bold mb-0">Rp. 149.000 <span class="fs-6 fw-medium">/ bulan</span></h2>
+                                    <h2 class="fw-bold mb-0">Rp. 249.000 <span class="fs-6 fw-medium">/ bulan</span></h2>
                                     <p class="text-muted">Paket ideal untuk kebutuhan dasar Kontrol Keamanan Anda.</p>
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
@@ -358,7 +358,7 @@
 
 
 
-                                    <h2 class="fw-bold mb-0">Rp. 269.000 <span class="fs-6 fw-medium">/ bulan</span></h2>
+                                    <h2 class="fw-bold mb-0">Rp. 369.000 <span class="fs-6 fw-medium">/ bulan</span></h2>
                                     <p class="text-muted">Paket ideal untuk kebutuhan lanjut Kontrol Keamanan Anda.</p>
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
@@ -397,7 +397,7 @@
 
 
 
-                                    <h2 class="fw-bold mb-0">Rp. 399.000 <span class="fs-6 fw-medium">/ bulan</span></h2>
+                                    <h2 class="fw-bold mb-0">Rp. 499.000 <span class="fs-6 fw-medium">/ bulan</span></h2>
                                     <p class="text-muted">Paket ideal untuk kebutuhan Lengkap Kontrol Keamanan Anda.</p>
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
@@ -436,7 +436,7 @@
                                     </span>
 
 
-                                    <h2 class="fw-bold mb-0">Rp. 1.490.000 <span class="fs-6 fw-medium">/ tahun</span>
+                                    <h2 class="fw-bold mb-0">Rp. 2.490.000 <span class="fs-6 fw-medium">/ tahun</span>
                                     </h2>
                                     <p class="text-muted">Paket ideal untuk kebutuhan dasar Kontrol Keamanan Anda.</p>
 
@@ -476,7 +476,7 @@
 
 
 
-                                    <h2 class="fw-bold mb-0">Rp. 2.690.000 <span class="fs-6 fw-medium">/ tahun</span>
+                                    <h2 class="fw-bold mb-0">Rp. 3.690.000 <span class="fs-6 fw-medium">/ tahun</span>
                                     </h2>
                                     <p class="text-muted">Paket ideal untuk kebutuhan lanjut Kontrol Keamanan Anda.</p>
 
@@ -516,7 +516,7 @@
 
 
 
-                                    <h2 class="fw-bold mb-0">Rp. 3.990.000 <span class="fs-6 fw-medium">/ tahun</span>
+                                    <h2 class="fw-bold mb-0">Rp. 4.990.000 <span class="fs-6 fw-medium">/ tahun</span>
                                     </h2>
                                     <p class="text-muted">Paket ideal untuk kebutuhan Lengkap Kontrol Keamanan Anda.</p>
 
@@ -567,7 +567,7 @@
                                     <label for="jenis_pembayaran" class="form-label">Metode Pembayaran</label>
                                     <select id="jenis_pembayaran" name="jenis_pembayaran" class="form-control">
                                         <option value="">Pilih Metode Pembayaran</option>
-                                        <option value="1">Bank|VA|E-Wallet|Dll</option>
+                                        <option value="1">Bank-VA-Wallet-QRIS-dan lain lain</option>
                                         <option value="2">Transfer Manual</option>
                                     </select>
 
