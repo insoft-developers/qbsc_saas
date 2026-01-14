@@ -73,6 +73,11 @@ class JamShiftController extends Controller
         try {
             $input['comid'] = $this->comid();
             $input['name'] = strtoupper($request->name);
+            $input['jam_masuk_awal'] = $request->jam_masuk;
+            $input['jam_masuk_akhir'] = $request->jam_masuk;
+
+            $input['jam_pulang_awal'] = $request->jam_pulang;
+            $input['jam_pulang_akhir'] = $request->jam_pulang;
             JamShift::create($input);
             return response()->json([
                 'success' => true,
@@ -119,7 +124,13 @@ class JamShiftController extends Controller
         try {
             $input['comid'] = $this->comid();
             $input['name'] = strtoupper($request->name);
+            $input['jam_masuk_awal'] = $request->jam_masuk;
+            $input['jam_masuk_akhir'] = $request->jam_masuk;
+
+            $input['jam_pulang_awal'] = $request->jam_pulang;
+            $input['jam_pulang_akhir'] = $request->jam_pulang;
             $data = JamShift::find($id);
+
             $data->update($input);
             return response()->json([
                 'success' => true,
