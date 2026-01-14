@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('Patrolis', function (Blueprint $table) {
+        Schema::table('patrolis', function (Blueprint $table) {
             $table->string('jam_awal_patroli')->nullable()->after('comid');
             $table->string('jam_akhir_patroli')->nullable()->after('jam_awal_patroli');
         });
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('Patrolis', function (Blueprint $table) {
+        Schema::table('patrolis', function (Blueprint $table) {
             //
         });
     }
