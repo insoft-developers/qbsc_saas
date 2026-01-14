@@ -7,6 +7,7 @@ use App\Models\AbsenLocation;
 use App\Models\Absensi;
 use App\Models\Lokasi;
 use App\Models\Satpam;
+use App\Models\SatpamLocation;
 use App\Traits\CommonTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -100,5 +101,34 @@ class ValidateLocationController extends Controller
                 'message' => 'Lokasi Absen tidak ditemukan!',
             ]);
         }
+    }
+
+
+    public function updateSatpamLocation(Request $request) {
+        $request->validate([
+            'satpam_id' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required',
+        ]);
+
+        $satpam = Satpam::find($request->satpam_id);
+
+        // 🔹 Update lokasi terakhir (realtime)
+        $satpam->update([
+            'last_latitude' => $request->latitude,
+            'last_longitude' => $request->longitude,
+            'last_seen_at' => now(),
+        ]);
+
+        // 🔹 Simpan history perjalanan
+        SatpamLocation::create([
+            'satpam_id' => $satpam->id,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
+            'accuracy' => $request->accuracy,
+            'recorded_at' => now(),
+        ]);
+
+        return response()->json(['success' => true]);
     }
 }
