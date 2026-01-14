@@ -41,7 +41,7 @@ class LaporanAnggotaController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 "success" => false,
-                "message" => $th->getMessage()
+                "message" => 'Gangguan Server/Offline Mode'
             ]);
         }
     }
