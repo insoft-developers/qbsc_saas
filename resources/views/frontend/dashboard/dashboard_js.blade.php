@@ -45,7 +45,7 @@
                                         </span>`;
                         } else {
                             jam_keluar = `<span class="text-danger">
-                                        ${formatTanggalWaktu(absensi[i].jam_keluar)}<br><small class="text-muted">${absensi[i].catatan_keluar}</small>
+                                        ${formatTanggalWaktu(absensi[i].jam_keluar)}<br><small class="text-muted">${absensi[i].catatan_keluar ?? ''}</small>
                                     </span>`;
                         }
                         if (absensi[i].latitude && absensi[i].longitude) {
@@ -80,20 +80,20 @@
                                 </td>
 
                                 <td>
-                                    <span class="fw-semibold">
+                                    <span>
                                         ${formatTanggal(absensi[i].tanggal)}
                                     </span>
                                 </td>
 
                                 <td>
-                                    <span class="fw-semibold text-dark">
+                                    <span>
                                         ${absensi[i].shift_name ?? "-"}
                                     </span>
                                 </td>
 
                                 <td>
                                     <span class="text-success">
-                                        ${formatTanggalWaktu(absensi[i].jam_masuk)}<br><small class="text-muted">${absensi[i].catatan_masuk}</small>
+                                        ${formatTanggalWaktu(absensi[i].jam_masuk)}<br><small class="text-muted">${absensi[i].catatan_masuk ?? ''}</small>
                                     </span>
                                 </td>
 
@@ -200,7 +200,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td><strong>${formatTanggal(patroli[i].tanggal)}</strong></td>
+                                <td>${formatTanggal(patroli[i].tanggal)}</td>
                                 <td style="color:blue;">${patroli[i].jam}</td>
                                 <td style="color:green;">${patroli[i].lokasi.nama_lokasi ?? ''}</td>
                                 <td><a href="${lokasi_url}" target="_blank">

@@ -186,7 +186,7 @@
         .widget-card {
             height: auto !important;
                 background: linear-gradient(135deg, #d9fcb6, #8a9dc2);
-            color: #fff;
+            
             border: 2px solid orange;
             border-radius: 10px;
         }
@@ -194,7 +194,7 @@
         .widget-card2 {
             height: auto !important;
             background: linear-gradient(135deg, #d9fcb6, #e1ebff);
-            color: #fff;
+            
             border: 2px solid #cac1b1;
             border-radius: 10px;
         }
