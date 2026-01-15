@@ -102,7 +102,7 @@ class PatroliController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal simpan data',
-                'error' => $th->getMessage(),
+                'error' => 'Gangguan Server/Offline Mode',
             ]);
         }
     }
@@ -188,7 +188,7 @@ class PatroliController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal simpan data',
-                'error' => $th->getMessage(),
+                'error' => 'Gangguan Server/Offline Mode',
             ]);
         }
     }
@@ -305,7 +305,7 @@ class PatroliController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal simpan data',
-                'error' => $th->getMessage(),
+                'error' => 'Gangguan Server/Offline Mode',
             ]);
         }
     }
@@ -381,7 +381,7 @@ class PatroliController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal simpan data',
-                'error' => $th->getMessage(),
+                'error' => 'Gangguan Server/Offline Mode',
             ]);
         }
     }
@@ -457,7 +457,7 @@ class PatroliController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal simpan data',
-                'error' => $th->getMessage(),
+                'error' => 'Gangguan Server/Offline Mode',
             ]);
         }
     }
@@ -533,7 +533,7 @@ class PatroliController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal simpan data',
-                'error' => $th->getMessage(),
+                'error' => 'Gangguan Server/Offline Mode',
             ]);
         }
     }
@@ -600,8 +600,8 @@ class PatroliController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
-                'message' => $th->getMessage(),
-                'error' => $th->getMessage(),
+                'message' => 'Gangguan Server/Offline Mode',
+                'error' => 'Gangguan Server/Offline Mode',
             ]);
         }
     }
@@ -634,7 +634,7 @@ class PatroliController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
-                'message' => $th->getMessage(),
+                'message' => 'Gangguan Server/Offline Mode',
             ]);
         }
     }

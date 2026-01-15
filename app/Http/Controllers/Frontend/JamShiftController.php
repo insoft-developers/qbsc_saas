@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\JamShift;
 use App\Traits\CommonTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class JamShiftController extends Controller
 {
-    use CommonTrait;   
+    use CommonTrait;
     public function jam_shift_table(Request $request)
     {
         if ($request->ajax()) {
@@ -18,21 +19,21 @@ class JamShiftController extends Controller
             $data = JamShift::where('comid', $comid);
             return DataTables::of($data)
                 ->addIndexColumn()
-                
+
                 ->addColumn('action', function ($row) {
-                    $disabled = $this->isOwner() ? '': 'disabled'; 
+                    $disabled = $this->isOwner() ? '' : 'disabled';
                     $button = '';
                     $button .= '<center>';
-                    $button .= '<button '.$disabled.' onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
-                    $button .= '<button '.$disabled.' onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
+                    $button .= '<button ' . $disabled . ' onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
+                    $button .= '<button ' . $disabled . ' onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
                     $button .= '</center>';
                     return $button;
                 })
-                
+
                 ->addColumn('comid', function ($row) {
                     return $row->company->company_name ?? '';
                 })
-                
+
                 ->rawColumns(['action'])
                 ->make(true);
 
@@ -46,7 +47,7 @@ class JamShiftController extends Controller
     {
         $view = 'jam-shift';
         $isOwner = $this->isOwner();
-        return view('frontend.setting.shift.shift',compact('view','isOwner'));
+        return view('frontend.setting.shift.shift', compact('view', 'isOwner'));
     }
 
     /**
@@ -73,11 +74,13 @@ class JamShiftController extends Controller
         try {
             $input['comid'] = $this->comid();
             $input['name'] = strtoupper($request->name);
-            $input['jam_masuk_awal'] = $request->jam_masuk;
-            $input['jam_masuk_akhir'] = $request->jam_masuk;
+            $input['jam_masuk_awal'] = $request->jam_masuk_awal ?? Carbon::createFromFormat('H:i:s', $request->jam_masuk)->subHour()->format('H:i:s');
 
-            $input['jam_pulang_awal'] = $request->jam_pulang;
-            $input['jam_pulang_akhir'] = $request->jam_pulang;
+            $input['jam_masuk_akhir'] = $request->jam_masuk_akhir ?? Carbon::createFromFormat('H:i:s', $request->jam_masuk)->addHour()->format('H:i:s');
+
+            $input['jam_pulang_awal'] = $request->jam_pulang_awal ?? Carbon::createFromFormat('H:i:s', $request->jam_pulang)->subHour()->format('H:i:s');
+
+            $input['jam_pulang_akhir'] = $request->jam_pulang_akhir ?? Carbon::createFromFormat('H:i:s', $request->jam_pulang)->addHours(2)->format('H:i:s');
             JamShift::create($input);
             return response()->json([
                 'success' => true,
@@ -124,11 +127,16 @@ class JamShiftController extends Controller
         try {
             $input['comid'] = $this->comid();
             $input['name'] = strtoupper($request->name);
-            $input['jam_masuk_awal'] = $request->jam_masuk;
-            $input['jam_masuk_akhir'] = $request->jam_masuk;
 
-            $input['jam_pulang_awal'] = $request->jam_pulang;
-            $input['jam_pulang_akhir'] = $request->jam_pulang;
+            $input['jam_masuk_awal'] = $request->jam_masuk_awal ?? Carbon::createFromFormat('H:i:s', $request->jam_masuk)->subHour()->format('H:i:s');
+
+            $input['jam_masuk_akhir'] = $request->jam_masuk_akhir ?? Carbon::createFromFormat('H:i:s', $request->jam_masuk)->addHour()->format('H:i:s');
+
+            $input['jam_pulang_awal'] = $request->jam_pulang_awal ?? Carbon::createFromFormat('H:i:s', $request->jam_pulang)->subHour()->format('H:i:s');
+
+            $input['jam_pulang_akhir'] = $request->jam_pulang_akhir ?? Carbon::createFromFormat('H:i:s', $request->jam_pulang)->addHours(2)->format('H:i:s');
+
+            
             $data = JamShift::find($id);
 
             $data->update($input);

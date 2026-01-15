@@ -64,8 +64,8 @@ class LaporanSituasiController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
-                'message' => $th->getMessage(),
-                'error' => $th->getMessage(),
+                'message' => 'Gangguan Server/Offline Mode',
+                'error' => 'Gangguan Server/Offline Mode',
             ]);
         }
     }

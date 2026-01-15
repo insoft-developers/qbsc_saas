@@ -16,14 +16,21 @@
 
                               <div class="mb-2">
                                   <label for="name" class="form-label">Nama Shift</label>
-                                  <input type="text" id="name" name="name" class="form-control" placeholder="cth: Shift Pagi">
+                                  <input type="text" id="name" name="name" class="form-control"
+                                      placeholder="cth: Shift Pagi">
+                                  <div class="card-note">
+                                      Nama Shift Contoh: Shift Pagi, Shift Siang, Shift Malam dll.
+                                  </div>
                               </div>
                               <div class="row">
-                                  <div class="col-4" style="display: none;">
+                                  <div class="col-12">
                                       <div class="mb-2">
                                           <label for="jam_masuk_awal" class="form-label">Jam Masuk Awal</label>
                                           <input step="1" type="time" id="jam_masuk_awal" name="jam_masuk_awal"
                                               class="form-control">
+                                          <div class="card-note">
+                                              Jam Mulai Satpam Boleh Absensi Masuk. Dibawah jam ini satpam belum bisa absen Masuk (jika dikosongkan maka akan terisi otomatis dengan jam masuk dikurangi 1 jam).
+                                          </div>
                                       </div>
                                   </div>
                                   <div class="col-12">
@@ -31,24 +38,35 @@
                                           <label for="jam_masuk" class="form-label">Jam Masuk</label>
                                           <input step="1" type="time" id="jam_masuk" name="jam_masuk"
                                               class="form-control">
+                                           <div class="card-note">
+                                              Jam Masuk Satpam, Absen diatas jam ini akan dihitung terlambat.
+                                          </div>
                                       </div>
                                   </div>
-                                  <div class="col-4" style="display: none;">
+                                  <div class="col-12">
                                       <div class="mb-2">
                                           <label for="jam_masuk_akhir" class="form-label">Jam Masuk Akhir</label>
-                                          <input step="1" type="time" id="jam_masuk_akhir" name="jam_masuk_akhir"
-                                              class="form-control">
+                                          <input step="1" type="time" id="jam_masuk_akhir"
+                                              name="jam_masuk_akhir" class="form-control">
+                                          <div class="card-note">
+                                              Jam Paling lama satpam boleh absen Masuk, Diatas jam ini satpam tidak akan bisa absen masuk lagi dan dihitung tidak bekerja.
+                                              (jika dikosongkan maka akan terisi otomatis dengan jam masuk ditambah 1 jam)
+                                          </div>
                                       </div>
                                   </div>
                               </div>
 
 
                               <div class="row">
-                                  <div class="col-4" style="display: none;">
+                                  <div class="col-12">
                                       <div class="mb-2">
                                           <label for="jam_pulang_awal" class="form-label">Jam Pulang Awal</label>
-                                          <input step="1" type="time" id="jam_pulang_awal" name="jam_pulang_awal"
-                                              class="form-control">
+                                          <input step="1" type="time" id="jam_pulang_awal"
+                                              name="jam_pulang_awal" class="form-control">
+                                          <div class="card-note">
+                                              Jam Paling cepat satpam boleh absen pulang, dan hitung sebagai pulang cepat. dibawah jam ini satpam belum bisa absen pulang.
+                                              (jika dikosongkan maka akan terisi otomatis dengan jam pulang dikurangi 1 jam)
+                                          </div>
                                       </div>
                                   </div>
                                   <div class="col-12">
@@ -56,13 +74,20 @@
                                           <label for="jam_pulang" class="form-label">Jam Pulang</label>
                                           <input step="1" type="time" id="jam_pulang" name="jam_pulang"
                                               class="form-control">
+                                          <div class="card-note">
+                                              Jam Pulang Satpam, Absen dibawah jam ini satpam akan dihitung pulang cepat.
+                                          </div>
                                       </div>
                                   </div>
-                                  <div class="col-4" style="display: none;">
+                                  <div class="col-12">
                                       <div class="mb-2">
                                           <label for="jam_pulang_akhir" class="form-label">Jam Pulang Akhir</label>
-                                          <input step="1" type="time" id="jam_pulang_akhir" name="jam_pulang_akhir"
-                                              class="form-control">
+                                          <input step="1" type="time" id="jam_pulang_akhir"
+                                              name="jam_pulang_akhir" class="form-control">
+                                        <div class="card-note">
+                                              Jam paling lama satpam bisa absen pulang. diatas jam ini maka satpam tidak akan lagi bisa absen pulang.
+                                              (jika dikosongkan maka akan terisi otomatis dengan jam pulang ditambah 2 jam).
+                                          </div>
                                       </div>
                                   </div>
                               </div>

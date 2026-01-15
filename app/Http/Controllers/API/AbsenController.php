@@ -7,6 +7,7 @@ use App\Models\AbsenLocation;
 use App\Models\Absensi;
 use App\Models\JamShift;
 use App\Models\Satpam;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -25,6 +26,84 @@ class AbsenController extends Controller
         $userId = $request->user_id;
         $file = $request->file('image');
         $model = $request->absen_model;
+        $jamSekarang = date("H:i:s");
+        // $jamSekarang = '08:30:30';
+
+        $now = Carbon::now();
+        $myShift = JamShift::find($request->shift_id);
+
+        if ($model == 'masuk') {
+            $jamMasukAwal = Carbon::parse($myShift->jam_masuk_awal)->setDateFrom($now);
+            $jamMasukAkhir = Carbon::parse($myShift->jam_masuk_akhir)->setDateFrom($now);
+            $jamMasukUser = Carbon::parse($jamSekarang)->setDateFrom($now);
+
+            if ($jamMasukAkhir->lt($jamMasukAwal)) {
+                $jamMasukAkhir->addDay();
+
+                if ($jamMasukUser->lt($jamMasukAwal)) {
+                    $selisihJam = $jamMasukUser->diffInHours($jamMasukAwal);
+                    if ($selisihJam > 6) {
+                        $jamMasukUser->addDay();
+                    }
+                }
+            }
+
+            if ($jamMasukUser->lt($jamMasukAwal)) {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => 'Absen gagal, absen masuk diperbolehkan mulai pukul ' . $myShift->jam_masuk_awal,
+                    ],
+                    404,
+                );
+            }
+
+            if ($jamMasukUser->gt($jamMasukAkhir)) {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => 'Absen gagal, absen masuk diperbolehkan paling lambat pukul ' . $myShift->jam_masuk_akhir,
+                    ],
+                    404,
+                );
+            }
+        } else {
+            $jamPulang = date('H:i:s');
+            $jamPulangAwal = Carbon::parse($myShift->jam_pulang_awal)->setDateFrom($now);
+            $jamPulangAkhir = Carbon::parse($myShift->jam_pulang_akhir)->setDateFrom($now);
+            $jamPulangUser = Carbon::parse($jamPulang)->setDateFrom($now);
+
+            if ($jamPulangAkhir->lt($jamPulangAwal)) {
+                $jamPulangAkhir->addDay();
+
+                if ($jamPulangUser->lt($jamPulangAwal)) {
+                    $selisihJam = $jamPulangUser->diffInHours($jamPulangAwal);
+                    if ($selisihJam > 6) {
+                        $jamPulangUser->addDay();
+                    }
+                }
+            }
+
+            if ($jamPulangUser->lt($jamPulangAwal)) {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => 'Absen gagal, absen pulang diperbolehkan mulai pukul ' . $myShift->jam_pulang_awal,
+                    ],
+                    404,
+                );
+            }
+
+            if ($jamPulangUser->gt($jamPulangAkhir)) {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => 'Absen gagal, absen pulang diperbolehkan paling lambat pukul ' . $myShift->jam_pulang_akhir,
+                    ],
+                    404,
+                );
+            }
+        }
 
         $user = Satpam::find($userId);
         if (!$user || !$user->face_embedding) {
@@ -126,9 +205,8 @@ class AbsenController extends Controller
         ]);
     }
 
-
-    public function laporan_absensi(Request $request) {
-        
+    public function laporan_absensi(Request $request)
+    {
         $limit = (int) $request->query('limit', 20);
 
         $query = Absensi::with(['satpam:id,name', 'company:id,company_name'])->where('satpam_id', $request->satpam_id);
@@ -140,33 +218,28 @@ class AbsenController extends Controller
         ]);
     }
 
-
-    public function update_pos_satpam(Request $request) {
+    public function update_pos_satpam(Request $request)
+    {
         $validated = $request->validate([
-            "comid" => "required",
-            "latitude" => "required",
-            "longitude" => "required"
+            'comid' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required',
         ]);
 
-        try{
-
-            AbsenLocation::where('comid', $request->comid)
-                ->update([
-                    "latitude" => $request->latitude,
-                    "longitude" => $request->longitude
-                ]);
-            return response()->json([
-                "success" => true,
-                "message" => "Update lokasi Pos Absen Berhasil"
+        try {
+            AbsenLocation::where('comid', $request->comid)->update([
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
             ]);
-
-        }catch(\Throwable $th) {
             return response()->json([
-                "success" => false,
-                "message" => $th->getMessage()
+                'success' => true,
+                'message' => 'Update lokasi Pos Absen Berhasil',
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gangguan Server/Offline Mode',
             ]);
         }
     }
-    
 }
-

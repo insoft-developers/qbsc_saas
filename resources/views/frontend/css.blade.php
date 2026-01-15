@@ -1,4 +1,13 @@
 <style>
+    .card-note{
+        background: pink;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 400;
+    margin-top: 5px;
+    border-radius: 3px;
+    margin-bottom: 16px;
+    }
     #table-laporan-kandang th,
     #table-laporan-kandang td {
         padding: 6px 4px !important;

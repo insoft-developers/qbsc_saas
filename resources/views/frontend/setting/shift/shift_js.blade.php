@@ -31,7 +31,7 @@
             {
                 data: 'jam_masuk_awal',
                 name: 'jam_masuk_awal',
-                visible:false
+               
             },
             {
                 data: 'jam_masuk',
@@ -40,12 +40,12 @@
             {
                 data: 'jam_masuk_akhir',
                 name: 'jam_masuk_akhir',
-                visible: false,
+               
             },
             {
                 data: 'jam_pulang_awal',
                 name: 'jam_pulang_awal',
-                visible: false,
+               
             },
             {
                 data: 'jam_pulang',
@@ -54,7 +54,7 @@
             {
                 data: 'jam_pulang_akhir',
                 name: 'jam_pulang_akhir',
-                visible: false,
+               
             },
             {
                 data: 'comid',
