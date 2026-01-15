@@ -1,13 +1,14 @@
 <style>
-    .card-note{
+    .card-note {
         background: pink;
-    padding: 4px 10px;
-    font-size: 12px;
-    font-weight: 400;
-    margin-top: 5px;
-    border-radius: 3px;
-    margin-bottom: 16px;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 400;
+        margin-top: 5px;
+        border-radius: 3px;
+        margin-bottom: 16px;
     }
+
     #table-laporan-kandang th,
     #table-laporan-kandang td {
         padding: 6px 4px !important;
@@ -179,3 +180,32 @@
         }
     }
 </style>
+
+@if ($view == 'dashboard')
+    <style>
+        .widget-card {
+            height: auto !important;
+                background: linear-gradient(135deg, #d9fcb6, #8a9dc2);
+            color: #fff;
+            border: 2px solid orange;
+            border-radius: 10px;
+        }
+
+        .widget-card2 {
+            height: auto !important;
+            background: linear-gradient(135deg, #d9fcb6, #e1ebff);
+            color: #fff;
+            border: 2px solid #cac1b1;
+            border-radius: 10px;
+        }
+
+        .avatar-bulat {
+            border-radius: 25px !important;
+            border: 4px solid;
+        }
+
+        .widget-number {
+            font-size:20px !important;
+        }
+    </style>
+@endif

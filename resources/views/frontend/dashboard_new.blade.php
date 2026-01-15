@@ -17,7 +17,7 @@
                 @endif
 
                  <div class="col-xl-4">
-                     <div class="card overflow-hidden border-top-0">
+                     <div class="widget-card card overflow-hidden border-top-0">
                          <div class="progress progress-sm rounded-0 bg-light" role="progressbar" aria-valuenow="88"
                              aria-valuemin="0" aria-valuemax="100">
                              <div class="progress-bar bg-primary" style="width: 90%"></div>
@@ -29,13 +29,13 @@
                                      
                                  </div>
                                  <div class="avatar-sm mb-4">
-                                     <div class="avatar-title bg-primary-subtle text-primary fs-24 rounded">
+                                     <div class="avatar-title avatar-bulat bg-primary-subtle text-primary fs-24 rounded">
                                          <i class="bi bi-people"></i>
                                      </div>
                                  </div>
                              </div>
                              <div class="d-flex flex-wrap flex-lg-nowrap justify-content-between align-items-end">
-                                 <h3 class="mb-0 d-flex">{{$satpams}} </h3>
+                                 <h3 class="mb-0 d-flex widget-number"><a href="{{ url('satpam') }}">{{$satpams}} Personil</a></h3>
                                  
                              </div>
                          </div><!-- end card-body -->
@@ -43,7 +43,7 @@
                  </div><!-- end col -->
 
                  <div class="col-xl-4">
-                     <div class="card overflow-hidden border-top-0">
+                     <div class="widget-card card overflow-hidden border-top-0">
                          <div class="progress progress-sm rounded-0 bg-light" role="progressbar" aria-valuenow="88"
                              aria-valuemin="0" aria-valuemax="100">
                              <div class="progress-bar bg-dark" style="width: 40%"></div>
@@ -55,13 +55,13 @@
                                      
                                  </div>
                                  <div class="avatar-sm mb-4">
-                                     <div class="avatar-title bg-dark-subtle text-dark fs-24 rounded">
+                                     <div class="avatar-title avatar-bulat bg-dark-subtle text-dark fs-24 rounded">
                                          <i class="bi bi-building"></i>
                                      </div>
                                  </div>
                              </div>
                              <div class="d-flex flex-wrap flex-lg-nowrap justify-content-between align-items-end">
-                                 <h3 class="mb-0 d-flex">{{ $locations }} </h3>
+                                 <h3 class="mb-0 d-flex widget-number"><a href="{{ url('lokasi') }}">{{ $locations }} Titik Lokasi Patroli</a></h3>
                                  
                              </div>
                          </div><!-- end card-body -->
@@ -69,7 +69,7 @@
                  </div><!-- end col -->
 
                  <div class="col-xl-4">
-                     <div class="card overflow-hidden border-top-0">
+                     <div class="widget-card card overflow-hidden border-top-0">
                          <div class="progress progress-sm rounded-0 bg-light" role="progressbar" aria-valuenow="88"
                              aria-valuemin="0" aria-valuemax="100">
                              <div class="progress-bar bg-danger" style="width: 60%"></div>
@@ -81,13 +81,13 @@
                                      
                                  </div>
                                  <div class="avatar-sm mb-4">
-                                     <div class="avatar-title bg-danger-subtle text-danger fs-24 rounded">
+                                     <div class="avatar-title avatar-bulat bg-danger-subtle text-danger fs-24 rounded">
                                          <i class="bi bi-person"></i>
                                      </div>
                                  </div>
                              </div>
                              <div class="d-flex flex-wrap flex-lg-nowrap justify-content-between align-items-end">
-                                 <h3 class="mb-0 d-flex">{{ $users }} </h3>
+                                 <h3 class="mb-0 d-flex widget-number"><a href="{{ url('user') }}">{{ $users }} Akun Pengguna</a></h3>
                                  
                              </div>
                          </div><!-- end card-body -->
@@ -99,7 +99,7 @@
                  
 
                  <div class="col-xxl-8 order-2 order-lg-1">
-                     <div class="card">
+                     <div class="card widget-card2">
                          <div class="card-header d-flex justify-content-between flex-wrap align-items-center">
                              <div>
                                  <h4 class="card-title">Absen Terbaru</h4>
@@ -147,7 +147,7 @@
                  
 
                  <div class="col-xxl-8 order-2 order-lg-1">
-                     <div class="card">
+                     <div class="card widget-card2">
                          <div class="card-header d-flex justify-content-between flex-wrap align-items-center">
                              <div>
                                  <h4 class="card-title">Patroli Terbaru</h4>

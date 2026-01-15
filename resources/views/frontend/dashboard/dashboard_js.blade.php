@@ -49,8 +49,8 @@
                                     </span>`;
                         }
                         if (absensi[i].latitude && absensi[i].longitude) {
-                            var lokasi_url = "https://www.google.com/maps/@" + absensi[i].latitude + "," +
-                                absensi[i].longitude + ",21z";
+                            var lokasi_url = "https://www.google.com/maps/search/?api=1&query="+absensi[i].latitude+","+absensi[i].longitude+"";
+                           
                         } else {
                             var lokasi_url = "#";
                         }
@@ -154,8 +154,9 @@
 
                     for (var i = 0; i < patroli.length; i++) {
                         if (patroli[i].latitude && patroli[i].longitude) {
-                            var lokasi_url = "https://www.google.com/maps/@" + patroli[i].latitude + "," +
-                                patroli[i].longitude + ",21z";
+                            
+                            var lokasi_url = "https://www.google.com/maps/search/?api=1&query="+patroli[i].latitude+","+patroli[i].longitude+"";
+                            
                         } else {
                             var lokasi_url = "#";
                         }
