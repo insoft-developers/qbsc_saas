@@ -43,15 +43,18 @@ class AbsenCommand extends Command
 
             if ($jamMasuk->lte($jamSetting)) {
                 $status = 'tepat-waktu';
+                $isTerlambat = 0;
             } else {
                 // Hitung keterlambatan dalam menit
                 $menitTerlambat = $jamMasuk->diffInMinutes($jamSetting);
                 $status = "terlambat $menitTerlambat menit";
+                $isTerlambat = 1;
             }
 
             // Simpan
             $masuk->update([
                 'catatan_masuk' => $status,
+                'is_terlambat' => $isTerlambat
             ]);
         }
     }

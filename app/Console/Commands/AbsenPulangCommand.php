@@ -46,7 +46,7 @@ class AbsenPulangCommand extends Command
             // Tentukan status pulang
             if ($jamPulang->gte($jamSetting)) {
                 $status = 'tepat-waktu';
-
+                $isPulangCepat = 0;
                 // Jika ingin hitung lembur:
                 // $menitLembur = $jamSetting->diffInMinutes($jamPulang);
                 // if ($menitLembur > 0) {
@@ -56,10 +56,12 @@ class AbsenPulangCommand extends Command
                 // Pulang lebih cepat
                 $lebihCepat = $jamSetting->diffInMinutes($jamPulang);
                 $status = "pulang lebih cepat $lebihCepat menit";
+                $isPulangCepat = 1;
             }
 
             $pulang->update([
                 'catatan_keluar' => $status,
+                'is_pulang_cepat' => $isPulangCepat
             ]);
         }
     }
