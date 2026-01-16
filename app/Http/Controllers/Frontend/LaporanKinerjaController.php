@@ -58,7 +58,7 @@ class LaporanKinerjaController extends Controller
                     return $row->absensi->where('status', 2)->count();
                 })
                 ->addColumn('tepat_waktu', function ($row) {
-                    return $row->absensi->where('status', 2)->where('is_terlambat', 0)->where('pulang_cepat', 0)->count();
+                    return $row->absensi->where('status', 2)->where('is_terlambat', 0)->where('is_pulang_cepat', 0)->count();
                 })
                 ->addColumn('terlambat', function ($row) {
                     return $row->absensi->where('status', 2)->where('is_terlambat', 1)->count() . ' X';
