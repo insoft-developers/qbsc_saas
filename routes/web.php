@@ -67,6 +67,7 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
     Route::post('/tampilkan_absensi_satpam', [DashboardController::class, 'tampilkan_absensi_satpam'])->name('tampilkan.absensi.satpam');
     Route::post('/tampilkan_patroli_satpam', [DashboardController::class, 'tampilkan_patroli_satpam'])->name('tampilkan.patroli.satpam');
     Route::post('/tampilkan_satpam_terlambat', [DashboardController::class, 'terlambat'])->name('tampilkan.satpam.terlambat');
+    Route::post('/tampilkan_satpam_pulang_cepat', [DashboardController::class, 'pulang_cepat'])->name('tampilkan.satpam.pulang.cepat');
     
 
     Route::resource('satpam', SatpamController::class);

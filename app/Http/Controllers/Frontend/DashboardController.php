@@ -61,7 +61,7 @@ class DashboardController extends Controller
     }
 
     public function terlambat(Request $request) {
-        $terlambat = Absensi::with('satpam:id,name,face_photo_path')->where('comid', $this->comid())->where('is_terlambat', 1)
+        $terlambat = Absensi::with('satpam:id,name,face_photo_path,whatsapp')->where('comid', $this->comid())->where('is_terlambat', 1)
         ->whereBetween('tanggal', [
             now()->startOfMonth()->toDateString(),
             now()->endOfMonth()->toDateString()
@@ -73,4 +73,22 @@ class DashboardController extends Controller
             "data" => $terlambat
         ]);
     }
+
+
+    public function pulang_cepat(Request $request) {
+        $pulang_cepat = Absensi::with('satpam:id,name,face_photo_path,whatsapp')->where('comid', $this->comid())->where('is_pulang_cepat', 1)
+        ->whereBetween('tanggal', [
+            now()->startOfMonth()->toDateString(),
+            now()->endOfMonth()->toDateString()
+        ])
+        ->get();
+
+        return response()->json([
+            "success" => true,
+            "data" => $pulang_cepat
+        ]);
+    }
+
+
+    
 }

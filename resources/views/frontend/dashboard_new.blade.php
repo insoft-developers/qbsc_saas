@@ -220,7 +220,7 @@
                                              <th>Nama Satpam</th>
                                              <th>Tanggal</th>
                                              <th>Shift</th>
-                                             <th>Jam Masuk</th>
+                                             <th>Satpam Masuk</th>
                                              <th>Jadwal Masuk</th>
                                              <th>Lokasi</th>
                                              <th>Keterangan</th>

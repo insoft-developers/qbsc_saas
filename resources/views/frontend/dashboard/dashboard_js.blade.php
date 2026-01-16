@@ -3,6 +3,7 @@
     tampilkan_absensi_satpam();
     tampilkan_patroli_satpam();
     tampilkan_satpam_terlambat();
+    tampilkan_satpam_pulang_cepat();
     
 
     function tampilkan_absensi_satpam() {
@@ -234,12 +235,129 @@
         })
     }
 
+    function tampilkan_satpam_pulang_cepat() {
+        $("#table-dashboard-pulang-cepat tbody").html(
+            '<tr><td colspan="7"><center><p>Refreshing data ....</p></center></td></tr>');
+        $.ajax({
+            url: "{{ route('tampilkan.satpam.pulang.cepat') }}",
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(data) {
+                if (data.success) {
+                    var absensi = data.data;
+                    var html = '';
+
+                    if (absensi.length < 1) {
+                        $("#table-dashboard-pulang-cepat tbody").html(
+                            '<tr><td colspan="7"><center><p>Data absensi masih kosong</p></center></td></tr>'
+                            );
+                        return;
+                    }
+                    for (var i = 0; i < absensi.length; i++) {
+
+                        if (absensi[i].status == 1) {
+                            $masuk = `
+                            <span class="badge bg-primary-subtle text-primary">
+                                Masuk
+                            </span>`;
+                        } else {
+                            $masuk = `
+                            <span class="badge bg-danger-subtle text-danger">
+                                Pulang
+                            </span>`;
+                        }
+
+                        
+                        if (absensi[i].latitude && absensi[i].longitude) {
+                            var lokasi_url = "https://www.google.com/maps/search/?api=1&query="+absensi[i].latitude+","+absensi[i].longitude+"";
+                           
+                        } else {
+                            var lokasi_url = "#";
+                        }
+
+
+                        html += `
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm me-2">
+                                            <img 
+                                                src="{{ asset('storage') }}/` + (absensi[i].satpam?.face_photo_path ??
+                            '') + `" 
+                                                alt="Foto Satpam"
+                                                class="rounded-circle shadow-sm"
+                                                style="width: 55px; height: 55px; object-fit: cover;"
+                                            >
+                                        </div>
+
+                                        <div>
+                                            <h6 class="mb-1 fw-semibold">${absensi[i].satpam?.name ?? "-"}</h6>
+                                            <small class="text-muted">
+                                                ${absensi[i].satpam?.whatsapp ?? "-"}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span>
+                                        ${formatTanggal(absensi[i].tanggal)}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span>
+                                        ${absensi[i].shift_name ?? "-"}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="text-success">
+                                        <strong>${formatWaktu(absensi[i].jam_keluar)}</strong>
+                                    </span>
+                                </td>
+
+                                <td>
+                                     <span class="text-danger">
+                                        <strong>${absensi[i].jam_setting_pulang}</strong>
+                                    </span>
+                                </td>
+
+                                <td><a href="${lokasi_url}" target="_blank">
+                                   
+                                        Lihat lokasi
+                                    
+                                    </a>
+                                </td>
+
+                                <td class="text-center">
+                                    <small>${absensi[i].catatan_keluar ?? ''}</small>
+                                </td>
+                            </tr>
+                            `;
+
+
+                        $("#table-dashboard-pulang-cepat tbody").html(html);
+                    }
+                }
+
+            }
+        })
+    }
+
     function refresh_absensi() {
         tampilkan_absensi_satpam();
     }
 
     function refresh_terlambat() {
         tampilkan_satpam_terlambat();
+    }
+
+    function refresh_pulang_cepat() {
+        tampilkan_satpam_pulang_cepat();
     }
 
 

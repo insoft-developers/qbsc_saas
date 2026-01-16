@@ -631,8 +631,9 @@
 
             const jam = String(d.getHours()).padStart(2, '0');
             const menit = String(d.getMinutes()).padStart(2, '0');
+            const detik = String(d.getSeconds()).padStart(2, '0');
 
-            return `${jam}:${menit}`;
+            return `${jam}:${menit}:${detik}`;
         }
 
         setInterval(() => {
