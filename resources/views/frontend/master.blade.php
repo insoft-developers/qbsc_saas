@@ -621,6 +621,20 @@
             return `${hari}-${bulan}-${tahun} ${jam}:${menit}`;
         }
 
+
+        function formatWaktu(tgl) {
+            const d = new Date(tgl);
+
+            const hari = String(d.getDate()).padStart(2, '0');
+            const bulan = String(d.getMonth() + 1).padStart(2, '0'); // bulan mulai 0
+            const tahun = d.getFullYear();
+
+            const jam = String(d.getHours()).padStart(2, '0');
+            const menit = String(d.getMinutes()).padStart(2, '0');
+
+            return `${jam}:${menit}`;
+        }
+
         setInterval(() => {
             check_notif();
         }, 10000);

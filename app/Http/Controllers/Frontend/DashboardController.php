@@ -21,14 +21,14 @@ class DashboardController extends Controller
         $locations = Lokasi::where('comid', $comid)->count();
         $users = User::where('company_id', $comid)->count();
         $hadir = Absensi::where('comid', $comid)->where('status', 1)->count();
-        $terlambat = Absensi::where('comid', $comid)->where('status', 1)->where('is_terlambat', 1)
+        $terlambat = Absensi::where('comid', $comid)->where('is_terlambat', 1)
         ->whereBetween('tanggal', [
             now()->startOfMonth()->toDateString(),
             now()->endOfMonth()->toDateString()
         ])
         ->count();
         
-        $pulang_cepat = Absensi::where('comid', $comid)->where('status', 2)->where('is_pulang_cepat', 1)
+        $pulang_cepat = Absensi::where('comid', $comid)->where('is_pulang_cepat', 1)
         ->whereBetween('tanggal', [
             now()->startOfMonth()->toDateString(),
             now()->endOfMonth()->toDateString()
@@ -57,6 +57,20 @@ class DashboardController extends Controller
         return response()->json([
             "success" => true,
             "data"=> $data
+        ]);
+    }
+
+    public function terlambat(Request $request) {
+        $terlambat = Absensi::with('satpam:id,name,face_photo_path')->where('comid', $this->comid())->where('is_terlambat', 1)
+        ->whereBetween('tanggal', [
+            now()->startOfMonth()->toDateString(),
+            now()->endOfMonth()->toDateString()
+        ])
+        ->get();
+
+        return response()->json([
+            "success" => true,
+            "data" => $terlambat
         ]);
     }
 }

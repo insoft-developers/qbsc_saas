@@ -66,7 +66,8 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('checkData');
     Route::post('/tampilkan_absensi_satpam', [DashboardController::class, 'tampilkan_absensi_satpam'])->name('tampilkan.absensi.satpam');
     Route::post('/tampilkan_patroli_satpam', [DashboardController::class, 'tampilkan_patroli_satpam'])->name('tampilkan.patroli.satpam');
-
+    Route::post('/tampilkan_satpam_terlambat', [DashboardController::class, 'terlambat'])->name('tampilkan.satpam.terlambat');
+    
 
     Route::resource('satpam', SatpamController::class);
     Route::get('/satpam_table', [SatpamController::class, 'satpam_table'])->name('satpam.table');

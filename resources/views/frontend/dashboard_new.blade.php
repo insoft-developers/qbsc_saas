@@ -194,8 +194,96 @@
 
 
              <div class="row">
-                 
+                 <div class="col-xxl-8 order-2 order-lg-1">
+                     <div class="card widget-card2">
+                         <div class="card-header d-flex justify-content-between flex-wrap align-items-center">
+                             <div>
+                                 <h4 class="card-title">Satpam Terlambat bulan ini</h4>
+                                 
+                             </div>
 
+                             <div class="">
+                                 <a href="{{ url('/absensi') }}" class="btn btn-outline-primary">
+                                     Lihat Semua
+                                 </a>
+                                 <a onclick="refresh_terlambat()" class="btn btn-outline-success">
+                                     Refresh
+                                 </a>
+
+                             </div>
+                         </div>
+                         <div class="card-body p-0">
+                             <div class="table-responsive">
+                                 <table id="table-dashboard-terlambat" class="table align-middle mb-0">
+                                     <thead>
+                                         <tr class="table-light text-capitalize">
+                                             <th>Nama Satpam</th>
+                                             <th>Tanggal</th>
+                                             <th>Shift</th>
+                                             <th>Jam Masuk</th>
+                                             <th>Jadwal Masuk</th>
+                                             <th>Lokasi</th>
+                                             <th>Keterangan</th>
+                                         </tr>
+                                     </thead>
+                                     <!-- end table heading -->
+
+                                     <tbody>
+                                     </tbody>
+                                     <!-- end table body -->
+                                 </table>
+                                 <!-- end table -->
+                             </div>
+                         </div>
+                     </div>
+                 </div><!-- end col-->
+             </div>
+             <div class="row">
+                 <div class="col-xxl-8 order-2 order-lg-1">
+                     <div class="card widget-card2">
+                         <div class="card-header d-flex justify-content-between flex-wrap align-items-center">
+                             <div>
+                                 <h4 class="card-title">Satpam Pulang Cepat bulan ini</h4>
+                                 
+                             </div>
+
+                             <div class="">
+                                 <a href="{{ url('/absensi') }}" class="btn btn-outline-primary">
+                                     Lihat Semua
+                                 </a>
+                                 <a onclick="refresh_pulang_cepat()" class="btn btn-outline-success">
+                                     Refresh
+                                 </a>
+
+                             </div>
+                         </div>
+                         <div class="card-body p-0">
+                             <div class="table-responsive">
+                                 <table id="table-dashboard-pulang-cepat" class="table align-middle mb-0">
+                                     <thead>
+                                         <tr class="table-light text-capitalize">
+                                             <th>Nama Satpam</th>
+                                             <th>Tanggal</th>
+                                             <th>Shift</th>
+                                             <th>Jam Satpam Pulang</th>
+                                             <th>Jadwal Jam Pulang</th>
+                                             <th>Lokasi</th>
+                                             <th>Keterangan</th>
+                                         </tr>
+                                     </thead>
+                                     <!-- end table heading -->
+
+                                     <tbody>
+                                     </tbody>
+                                     <!-- end table body -->
+                                 </table>
+                                 <!-- end table -->
+                             </div>
+                         </div>
+                     </div>
+                 </div><!-- end col-->
+             </div>
+             <div class="row">
                  <div class="col-xxl-8 order-2 order-lg-1">
                      <div class="card widget-card2">
                          <div class="card-header d-flex justify-content-between flex-wrap align-items-center">
@@ -241,15 +329,13 @@
                  </div><!-- end col-->
              </div>
 
-             <div class="row">
-                 
 
+             <div class="row">
                  <div class="col-xxl-8 order-2 order-lg-1">
                      <div class="card widget-card2">
                          <div class="card-header d-flex justify-content-between flex-wrap align-items-center">
                              <div>
                                  <h4 class="card-title">Patroli Terbaru</h4>
-                                 
                              </div>
 
                              <div class="">

@@ -2,7 +2,7 @@
 
     tampilkan_absensi_satpam();
     tampilkan_patroli_satpam();
-
+    tampilkan_satpam_terlambat();
     
 
     function tampilkan_absensi_satpam() {
@@ -102,12 +102,8 @@
                                 </td>
 
                                 <td><a href="${lokasi_url}" target="_blank">
-                                    <small class="text-muted d-block">
-                                        Lat: ${absensi[i].latitude ?? "-"}
-                                    </small>
-                                    <small class="text-muted d-block">
-                                        Lng: ${absensi[i].longitude ?? "-"}
-                                    </small></a>
+                                     Lihat lokasi
+                                   </a>
                                 </td>
 
                                 <td class="text-center">
@@ -125,8 +121,125 @@
         })
     }
 
+    function tampilkan_satpam_terlambat() {
+        $("#table-dashboard-terlambat tbody").html(
+            '<tr><td colspan="7"><center><p>Refreshing data ....</p></center></td></tr>');
+        $.ajax({
+            url: "{{ route('tampilkan.satpam.terlambat') }}",
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(data) {
+                if (data.success) {
+                    var absensi = data.data;
+                    var html = '';
+
+                    if (absensi.length < 1) {
+                        $("#table-dashboard-terlambat tbody").html(
+                            '<tr><td colspan="7"><center><p>Data absensi masih kosong</p></center></td></tr>'
+                            );
+                        return;
+                    }
+                    for (var i = 0; i < absensi.length; i++) {
+
+                        if (absensi[i].status == 1) {
+                            $masuk = `
+                            <span class="badge bg-primary-subtle text-primary">
+                                Masuk
+                            </span>`;
+                        } else {
+                            $masuk = `
+                            <span class="badge bg-danger-subtle text-danger">
+                                Pulang
+                            </span>`;
+                        }
+
+                        
+                        if (absensi[i].latitude && absensi[i].longitude) {
+                            var lokasi_url = "https://www.google.com/maps/search/?api=1&query="+absensi[i].latitude+","+absensi[i].longitude+"";
+                           
+                        } else {
+                            var lokasi_url = "#";
+                        }
+
+
+                        html += `
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm me-2">
+                                            <img 
+                                                src="{{ asset('storage') }}/` + (absensi[i].satpam?.face_photo_path ??
+                            '') + `" 
+                                                alt="Foto Satpam"
+                                                class="rounded-circle shadow-sm"
+                                                style="width: 55px; height: 55px; object-fit: cover;"
+                                            >
+                                        </div>
+
+                                        <div>
+                                            <h6 class="mb-1 fw-semibold">${absensi[i].satpam?.name ?? "-"}</h6>
+                                            <small class="text-muted">
+                                                ${absensi[i].satpam?.whatsapp ?? "-"}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span>
+                                        ${formatTanggal(absensi[i].tanggal)}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span>
+                                        ${absensi[i].shift_name ?? "-"}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="text-success">
+                                        <strong>${formatWaktu(absensi[i].jam_masuk)}</strong>
+                                    </span>
+                                </td>
+
+                                <td>
+                                     <span class="text-danger">
+                                        <strong>${absensi[i].jam_setting_masuk}</strong>
+                                    </span>
+                                </td>
+
+                                <td><a href="${lokasi_url}" target="_blank">
+                                   
+                                        Lihat lokasi
+                                    
+                                    </a>
+                                </td>
+
+                                <td class="text-center">
+                                    <small>${absensi[i].catatan_masuk ?? ''}</small>
+                                </td>
+                            </tr>
+                            `;
+
+
+                        $("#table-dashboard-terlambat tbody").html(html);
+                    }
+                }
+
+            }
+        })
+    }
+
     function refresh_absensi() {
         tampilkan_absensi_satpam();
+    }
+
+    function refresh_terlambat() {
+        tampilkan_satpam_terlambat();
     }
 
 
@@ -204,12 +317,8 @@
                                 <td style="color:blue;">${patroli[i].jam}</td>
                                 <td style="color:green;">${patroli[i].lokasi.nama_lokasi ?? ''}</td>
                                 <td><a href="${lokasi_url}" target="_blank">
-                                    <small class="text-muted d-block">
-                                        Lat: ${patroli[i].latitude ?? "-"}
-                                    </small>
-                                    <small class="text-muted d-block">
-                                        Lng: ${patroli[i].longitude ?? "-"}
-                                    </small></a>
+                                     Lihat lokasi
+                                    </a>
                                 </td>
                                 <td>
                                     ${gambar}
