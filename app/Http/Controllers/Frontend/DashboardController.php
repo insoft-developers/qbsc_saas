@@ -66,6 +66,7 @@ class DashboardController extends Controller
             now()->startOfMonth()->toDateString(),
             now()->endOfMonth()->toDateString()
         ])
+        ->orderBy('id','desc')
         ->get();
 
         return response()->json([
@@ -81,6 +82,7 @@ class DashboardController extends Controller
             now()->startOfMonth()->toDateString(),
             now()->endOfMonth()->toDateString()
         ])
+        ->orderBy('id','desc')
         ->get();
 
         return response()->json([
