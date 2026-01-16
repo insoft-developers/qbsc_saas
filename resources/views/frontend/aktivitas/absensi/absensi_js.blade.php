@@ -97,6 +97,7 @@
         $('#filter_end').val('');
         $('#filter_satpam').val('');
         $('#filter_status').val('');
+        $('#filter_jam_absen').val('');
         table.ajax.reload();
     });
 

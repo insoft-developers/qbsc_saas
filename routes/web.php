@@ -18,6 +18,7 @@ use App\Http\Controllers\Frontend\JadwalPatroliDetailController;
 use App\Http\Controllers\Frontend\JamShiftController;
 use App\Http\Controllers\Frontend\KandangController;
 use App\Http\Controllers\Frontend\LaporanKandangController;
+use App\Http\Controllers\Frontend\LaporanKinerjaController;
 use App\Http\Controllers\Frontend\LaporanSituasiController;
 use App\Http\Controllers\Frontend\LokasiController;
 use App\Http\Controllers\Frontend\MesinController;
@@ -129,6 +130,9 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
     Route::get('/laporan_situasi_table', [LaporanSituasiController::class, 'laporan_situasi_table'])->name('laporan.situasi.table');
     Route::get('/situasi_export_xls', [LaporanSituasiController::class, 'export_xls'])->name('situasi.export.xls');
     Route::get('/situasi_export_pdf', [LaporanSituasiController::class, 'export_pdf'])->name('situasi.export.pdf');
+
+    Route::resource('laporan_kinerja', LaporanKinerjaController::class);
+    Route::get('laporan_kinerja_table', [LaporanKinerjaController::class, 'table'])->name('laporan.kinerja.table');
 
     Route::resource('tamu', TamuController::class);
     Route::get('/tamu_table', [TamuController::class, 'tamu_table'])->name('tamu.table');

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -29,5 +30,10 @@ class Satpam extends Authenticatable
     {
         // Kalau user punya foto di storage, tampilkan URL-nya
         return $this->face_photo_path ? asset('storage/' . $this->face_photo_path) : asset('images/satpam-default.png');
+    }
+
+    public function absensi():HasMany
+    {
+        return $this->hasMany(Absensi::class, 'satpam_id', 'id');
     }
 }

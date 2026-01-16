@@ -145,6 +145,9 @@
                 <div class="collapse" id="sidebarLayouts">
                     <ul class="side-nav-second-level">
                         <li class="side-nav-item">
+                            <a class="side-nav-link" href="{{ url('laporan_kinerja') }}">Laporan Kinerja</a>
+                        </li>
+                        <li class="side-nav-item">
                             <a class="side-nav-link" href="{{ url('laporan_situasi') }}">Laporan Situasi</a>
                         </li>
                         <li class="side-nav-item">
