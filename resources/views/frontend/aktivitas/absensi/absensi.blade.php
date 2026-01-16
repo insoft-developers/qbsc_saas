@@ -33,7 +33,7 @@
                                         <label for="filter_end" class="form-label mb-0">Sampai Tanggal</label>
                                         <input type="date" id="filter_end" class="form-control form-control-sm">
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <label for="filter_satpam" class="form-label mb-0">Nama Satpam</label>
                                         <select id="filter_satpam" class="form-select form-select-sm">
                                             <option value="">Semua Satpam</option>
@@ -42,12 +42,23 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-1">
                                         <label for="filter_status" class="form-label mb-0">Status</label>
                                         <select id="filter_status" class="form-select form-select-sm">
                                             <option value="">Semua</option>
                                             <option value="1">Masuk</option>
                                             <option value="2">Pulang</option>
+
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="filter_jam_absen" class="form-label mb-0">Jam Absen</label>
+                                        <select id="filter_jam_absen" class="form-select form-select-sm">
+                                            <option value="">Semua</option>
+                                            <option value="1">Tepat Waktu</option>
+                                            <option value="2">Terlambat Masuk</option>
+                                            <option value="3">Cepat Pulang</option>
+                                            <option value="4">Terlambat & Cepat Pulang</option> 
 
                                         </select>
                                     </div>

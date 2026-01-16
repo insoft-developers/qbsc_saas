@@ -9,6 +9,7 @@
                 d.end_date = $('#filter_end').val();
                 d.satpam_id = $('#filter_satpam').val();
                 d.status = $('#filter_status').val();
+                d.jam_absen = $('#filter_jam_absen').val();
             }
         },
 
@@ -104,7 +105,9 @@
             start_date: $('#filter_start').val() || '',
             end_date: $('#filter_end').val() || '',
             satpam_id: $('#filter_satpam').val() || '',
-            status: $('#filter_status').val() || ''
+            status: $('#filter_status').val() || '',
+            jam_absen: $('#filter_jam_absen').val() || '',
+            
         });
 
         window.location.href = "{{ route('absensi.export.xls') }}?" + params;
@@ -115,7 +118,9 @@
             start_date: $('#filter_start').val() || '',
             end_date: $('#filter_end').val() || '',
             satpam_id: $('#filter_satpam').val() || '',
-            status: $('#filter_status').val() || ''
+            status: $('#filter_status').val() || '',
+            jam_absen: $('#filter_jam_absen').val() || '',
+            
         });
 
         window.location.href = "{{ route('absensi.export.pdf') }}?" + params;

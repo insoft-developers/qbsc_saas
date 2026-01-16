@@ -16,13 +16,15 @@ class AbsensiExport implements FromCollection, WithHeadings, ShouldAutoSize
     protected $end;
     protected $satpam_id;
     protected $status;
+    protected $jam_absen;
 
-    public function __construct($start = null, $end = null, $satpam_id = null, $status = null)
+    public function __construct($start = null, $end = null, $satpam_id = null, $status = null, $jam_absen = null)
     {
         $this->start = $start;
         $this->end = $end;
         $this->satpam_id = $satpam_id;
         $this->status = $status;
+        $this->jam_absen = $jam_absen;
     }
 
     /**
@@ -31,12 +33,9 @@ class AbsensiExport implements FromCollection, WithHeadings, ShouldAutoSize
     public function collection()
     {
         // Pilih kolom yang diperlukan saja agar query ringan
-        $query = Absensi::select([
-            'id', 'tanggal', 'latitude', 'longitude','shift_name','jam_setting_masuk', 'jam_masuk', 'jam_setting_pulang', 'jam_keluar',
-            'status', 'catatan_masuk', 'catatan_keluar', 'satpam_id','comid'
-        ])
-        ->where('comid', $this->comid())
-        ->with(['satpam:id,name', 'company:id,company_name']);
+        $query = Absensi::select(['id', 'tanggal', 'latitude', 'longitude', 'shift_name', 'jam_setting_masuk', 'jam_masuk', 'jam_setting_pulang', 'jam_keluar', 'status', 'catatan_masuk', 'catatan_keluar', 'satpam_id', 'comid', 'is_terlambat', 'is_pulang_cepat'])
+            ->where('comid', $this->comid())
+            ->with(['satpam:id,name', 'company:id,company_name']);
 
         // Filter tanggal (opsional)
         if (!empty($this->start) && !empty($this->end)) {
@@ -51,6 +50,18 @@ class AbsensiExport implements FromCollection, WithHeadings, ShouldAutoSize
         // Filter status (opsional)
         if (!empty($this->status)) {
             $query->where('status', $this->status);
+        }
+
+        if (!empty($this->jam_absen)) {
+            if ($this->jam_absen == 1) {
+                $query->where('is_terlambat', 0)->where('is_pulang_cepat', 0);
+            } elseif ($this->jam_absen == 2) {
+                $query->where('is_terlambat', 1);
+            } elseif ($this->jam_absen == 3) {
+                $query->where('is_pulang_cepat', 1);
+            } elseif ($this->jam_absen == 4) {
+                $query->where('is_terlambat', 1)->where('is_pulang_cepat', 1);
+            }
         }
 
         // Jalankan query
@@ -78,20 +89,6 @@ class AbsensiExport implements FromCollection, WithHeadings, ShouldAutoSize
 
     public function headings(): array
     {
-        return [
-            'Tanggal',
-            'Nama Satpam',
-            'Latitude',
-            'Longitude',
-            'Shift',
-            'Jam Shift Masuk',
-            'Masuk',
-            'Jam Shift Keluar',
-            'Keluar',
-            'Status',
-            'Catatan Masuk',
-            'Catatan Pulang',
-            'Perusahaan'
-        ];
+        return ['Tanggal', 'Nama Satpam', 'Latitude', 'Longitude', 'Shift', 'Jam Shift Masuk', 'Masuk', 'Jam Shift Keluar', 'Keluar', 'Status', 'Catatan Masuk', 'Catatan Pulang', 'Perusahaan'];
     }
 }

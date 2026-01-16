@@ -31,6 +31,18 @@ class AbsensiController extends Controller
             if ($request->status) {
                 $query->where('status', $request->status);
             }
+
+            if ($request->jam_absen) {
+                if ($request->jam_absen == 1) {
+                    $query->where('is_terlambat', 0)->where('is_pulang_cepat', 0);
+                } elseif ($request->jam_absen == 2) {
+                    $query->where('is_terlambat', 1);
+                } elseif ($request->jam_absen == 3) {
+                    $query->where('is_pulang_cepat', 1);
+                } elseif ($request->jam_absen == 4) {
+                    $query->where('is_terlambat', 1)->where('is_pulang_cepat', 1);
+                }
+            }
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('tanggal', function ($row) {
@@ -253,7 +265,7 @@ class AbsensiController extends Controller
 
     public function exportXls(Request $request)
     {
-        return Excel::download(new AbsensiExport($request->start_date ?: null, $request->end_date ?: null, $request->satpam_id ?: null, $request->status ?: null), 'Data_Absensi.xlsx');
+        return Excel::download(new AbsensiExport($request->start_date ?: null, $request->end_date ?: null, $request->satpam_id ?: null, $request->status ?: null, $request->jam_absen ?: null), 'Data_Absensi.xlsx');
     }
 
     public function exportPdf(Request $request)
@@ -270,6 +282,18 @@ class AbsensiController extends Controller
 
         if ($request->status) {
             $query->where('status', $request->status);
+        }
+
+        if ($request->jam_absen) {
+            if ($request->jam_absen == 1) {
+                $query->where('is_terlambat', 0)->where('is_pulang_cepat', 0);
+            } elseif ($request->jam_absen == 2) {
+                $query->where('is_terlambat', 1);
+            } elseif ($request->jam_absen == 3) {
+                $query->where('is_pulang_cepat', 1);
+            } elseif ($request->jam_absen == 4) {
+                $query->where('is_terlambat', 1)->where('is_pulang_cepat', 1);
+            }
         }
 
         $data = $query->get();
