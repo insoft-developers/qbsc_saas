@@ -10,6 +10,7 @@
          <div class="container-fluid">
 
              <div class="row">
+
                 @if (session('error'))
                     <div class="alert alert-danger">
                         {{ session('error') }}
@@ -93,7 +94,104 @@
                          </div><!-- end card-body -->
                      </div><!-- end card -->
                  </div><!-- end col -->
+
+
+                 
+
+                 
+
+
+
              </div><!-- end row -->
+
+              <div class="row">
+                 <div class="col-xl-4">
+                     <div class="widget-card card overflow-hidden border-top-0">
+                         <div class="progress progress-sm rounded-0 bg-light" role="progressbar" aria-valuenow="88"
+                             aria-valuemin="0" aria-valuemax="100">
+                             <div class="progress-bar bg-success" style="width: 90%"></div>
+                         </div>
+                         <div class="card-body">
+                             <div class="d-flex align-items-center justify-content-between">
+                                 <div class="">
+                                     <p class="text-muted fw-semibold fs-16 mb-1">Satpam Bertugas</p>
+                                     
+                                 </div>
+                                 <div class="avatar-sm mb-4">
+                                     <div class="avatar-title avatar-bulat bg-success-subtle text-primary fs-24 rounded">
+                                         <i class="bi bi-people"></i>
+                                     </div>
+                                 </div>
+                             </div>
+                             <div class="d-flex flex-wrap flex-lg-nowrap justify-content-between align-items-end">
+                                 <h3 class="mb-0 d-flex widget-number"><a href="{{ url('absensi') }}">{{$hadir}} Personil</a></h3>
+                                 
+                             </div>
+                         </div><!-- end card-body -->
+                     </div><!-- end card -->
+                 </div><!-- end col -->
+
+                 <div class="col-xl-4">
+                     <div class="widget-card card overflow-hidden border-top-0">
+                         <div class="progress progress-sm rounded-0 bg-light" role="progressbar" aria-valuenow="88"
+                             aria-valuemin="0" aria-valuemax="100">
+                             <div class="progress-bar bg-danger" style="width: 40%"></div>
+                         </div>
+                         <div class="card-body">
+                             <div class="d-flex align-items-center justify-content-between">
+                                 <div class="">
+                                     <p class="text-muted fw-semibold fs-16 mb-1">Satpam Terlambat</p>
+                                     
+                                 </div>
+                                 <div class="avatar-sm mb-4">
+                                     <div class="avatar-title avatar-bulat bg-danger-subtle text-dark fs-24 rounded">
+                                         <i class="bi bi-people"></i>
+                                     </div>
+                                 </div>
+                             </div>
+                             <div class="d-flex flex-wrap flex-lg-nowrap justify-content-between align-items-end">
+                                 <h3 class="mb-0 d-flex widget-number"><a href="{{ url('absensi') }}">{{ $terlambat }} Personil</a></h3>
+                                 
+                             </div>
+                         </div><!-- end card-body -->
+                     </div><!-- end card -->
+                 </div><!-- end col -->
+
+                 <div class="col-xl-4">
+                     <div class="widget-card card overflow-hidden border-top-0">
+                         <div class="progress progress-sm rounded-0 bg-light" role="progressbar" aria-valuenow="88"
+                             aria-valuemin="0" aria-valuemax="100">
+                             <div class="progress-bar bg-warning" style="width: 60%"></div>
+                         </div>
+                         <div class="card-body">
+                             <div class="d-flex align-items-center justify-content-between">
+                                 <div class="">
+                                     <p class="text-muted fw-semibold fs-16 mb-1">Satpam Pulang Cepat</p>
+                                     
+                                 </div>
+                                 <div class="avatar-sm mb-4">
+                                     <div class="avatar-title avatar-bulat bg-warning-subtle text-danger fs-24 rounded">
+                                         <i class="bi bi-people"></i>
+                                     </div>
+                                 </div>
+                             </div>
+                             <div class="d-flex flex-wrap flex-lg-nowrap justify-content-between align-items-end">
+                                 <h3 class="mb-0 d-flex widget-number"><a href="{{ url('absensi') }}">{{ $pulang_cepat }} Personil</a></h3>
+                                 
+                             </div>
+                         </div><!-- end card-body -->
+                     </div><!-- end card -->
+                 </div><!-- end col -->
+
+
+                 
+
+                 
+
+
+
+             </div><!-- end row -->
+
 
              <div class="row">
                  

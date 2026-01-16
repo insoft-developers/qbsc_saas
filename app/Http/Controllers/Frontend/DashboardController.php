@@ -20,7 +20,23 @@ class DashboardController extends Controller
         $satpams = Satpam::where('comid', $comid)->count();
         $locations = Lokasi::where('comid', $comid)->count();
         $users = User::where('company_id', $comid)->count();
-        return view('frontend.dashboard_new', compact('view','satpams','locations', 'users'));
+        $hadir = Absensi::where('comid', $comid)->where('status', 1)->count();
+        $terlambat = Absensi::where('comid', $comid)->where('status', 1)->where('is_terlambat', 1)
+        ->whereBetween('tanggal', [
+            now()->startOfMonth()->toDateString(),
+            now()->endOfMonth()->toDateString()
+        ])
+        ->count();
+        
+        $pulang_cepat = Absensi::where('comid', $comid)->where('status', 2)->where('is_pulang_cepat', 1)
+        ->whereBetween('tanggal', [
+            now()->startOfMonth()->toDateString(),
+            now()->endOfMonth()->toDateString()
+        ])
+        ->count();
+
+
+        return view('frontend.dashboard_new', compact('view','satpams','locations', 'users', 'hadir','terlambat','pulang_cepat'));
     }
 
     public function tampilkan_absensi_satpam() {

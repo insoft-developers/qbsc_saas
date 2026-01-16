@@ -1,4 +1,8 @@
 <style>
+
+    #list-table th {
+        
+    }
     .card-note {
         background: pink;
         padding: 4px 10px;
