@@ -58,43 +58,46 @@ class LaporanKinerjaController extends Controller
                     return $row->absensi->where('status', 2)->count();
                 })
                 ->addColumn('tepat_waktu', function ($row) {
-                    return $row->absensi->where('is_terlambat', 0)->where('pulang_cepat', 0)->count();
+                    return $row->absensi->where('status', 2)->where('is_terlambat', 0)->where('pulang_cepat', 0)->count();
                 })
                 ->addColumn('terlambat', function ($row) {
-                    return $row->absensi->where('is_terlambat', 1)->count() . ' X';
+                    return $row->absensi->where('status', 2)->where('is_terlambat', 1)->count() . ' X';
                 })
                 ->addColumn('total_terlambat', function ($row) {
                     $totalTerlambat = 0;
 
                     foreach ($row->absensi as $abs) {
-                        if (strpos($abs->catatan_masuk, 'terlambat') !== false) {
-                            // cek apakah ada teks Terlambat
-                            preg_match('/\d+/', $abs->catatan_masuk, $matches);
-                            $menit = $matches[0] ?? 0; // ambil angka, default 0
-                            $totalTerlambat += (int) $menit;
+                        if ($abs->status == 2) {
+                            if (strpos($abs->catatan_masuk, 'terlambat') !== false) {
+                                // cek apakah ada teks Terlambat
+                                preg_match('/\d+/', $abs->catatan_masuk, $matches);
+                                $menit = $matches[0] ?? 0; // ambil angka, default 0
+                                $totalTerlambat += (int) $menit;
+                            }
                         }
                     }
 
-                    return $totalTerlambat.' menit';
-                    
+                    return $totalTerlambat . ' menit';
                 })
 
                 ->addColumn('cepat_pulang', function ($row) {
-                    return $row->absensi->where('is_pulang_cepat', 1)->count() . ' X';
+                    return $row->absensi->where('status', 2)->where('is_pulang_cepat', 1)->count() . ' X';
                 })
                 ->addColumn('total_cepat_pulang', function ($row) {
                     $pulangCepat = 0;
 
                     foreach ($row->absensi as $abs) {
-                        if (strpos($abs->catatan_keluar, 'pulang lebih cepat') !== false) {
-                            // cek apakah ada teks Terlambat
-                            preg_match('/\d+/', $abs->catatan_keluar, $matches);
-                            $menit = $matches[0] ?? 0; // ambil angka, default 0
-                            $pulangCepat += (int) $menit;
+                        if ($abs->status == 2) {
+                            if (strpos($abs->catatan_keluar, 'pulang lebih cepat') !== false) {
+                                // cek apakah ada teks Terlambat
+                                preg_match('/\d+/', $abs->catatan_keluar, $matches);
+                                $menit = $matches[0] ?? 0; // ambil angka, default 0
+                                $pulangCepat += (int) $menit;
+                            }
                         }
                     }
 
-                    return $pulangCepat.' menit';
+                    return $pulangCepat . ' menit';
                 })
 
                 ->addColumn('comid', function ($row) {
