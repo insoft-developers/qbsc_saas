@@ -265,8 +265,8 @@
                                              <th>Nama Satpam</th>
                                              <th>Tanggal</th>
                                              <th>Shift</th>
-                                             <th>Jam Satpam Pulang</th>
-                                             <th>Jadwal Jam Pulang</th>
+                                             <th>Satpam Pulang</th>
+                                             <th>Jadwal Pulang</th>
                                              <th>Lokasi</th>
                                              <th>Keterangan</th>
                                          </tr>

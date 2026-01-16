@@ -80,7 +80,7 @@
                                     </div>
                                 </td>
 
-                                <td>
+                                <td style="white-space:nowrap;">
                                     <span>
                                         ${formatTanggal(absensi[i].tanggal)}
                                     </span>
@@ -189,7 +189,7 @@
                                     </div>
                                 </td>
 
-                                <td>
+                                <td style="white-space:nowrap;">
                                     <span>
                                         ${formatTanggal(absensi[i].tanggal)}
                                     </span>
@@ -302,7 +302,7 @@
                                     </div>
                                 </td>
 
-                                <td>
+                                <td style="white-space:nowrap;">
                                     <span>
                                         ${formatTanggal(absensi[i].tanggal)}
                                     </span>
