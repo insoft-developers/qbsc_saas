@@ -53,8 +53,7 @@ class AbsenController extends Controller
                     [
                         'success' => false,
                         'message' => 'Absen gagal, absen masuk diperbolehkan mulai pukul ' . $myShift->jam_masuk_awal,
-                    ],
-                    404,
+                    ]
                 );
             }
 
@@ -63,8 +62,7 @@ class AbsenController extends Controller
                     [
                         'success' => false,
                         'message' => 'Absen gagal, absen masuk diperbolehkan paling lambat pukul ' . $myShift->jam_masuk_akhir,
-                    ],
-                    404,
+                    ]
                 );
             }
         } else {
@@ -89,8 +87,7 @@ class AbsenController extends Controller
                     [
                         'success' => false,
                         'message' => 'Absen gagal, absen pulang diperbolehkan mulai pukul ' . $myShift->jam_pulang_awal,
-                    ],
-                    404,
+                    ]
                 );
             }
 
@@ -99,8 +96,7 @@ class AbsenController extends Controller
                     [
                         'success' => false,
                         'message' => 'Absen gagal, absen pulang diperbolehkan paling lambat pukul ' . $myShift->jam_pulang_akhir,
-                    ],
-                    404,
+                    ]
                 );
             }
         }
