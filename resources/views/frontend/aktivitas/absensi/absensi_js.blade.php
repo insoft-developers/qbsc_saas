@@ -47,6 +47,10 @@
                 name: 'latitude'
             },
             {
+                data: 'latitude2',
+                name: 'latitude2'
+            },
+            {
                 data: 'shift_name',
                 name: 'shift_name'
             },
@@ -69,6 +73,14 @@
             {
                 data: 'status',
                 name: 'status'
+            },
+            {
+                data: 'foto_masuk',
+                name: 'foto_masuk'
+            },
+            {
+                data: 'foto_pulang',
+                name: 'foto_pulang'
             },
             {
                 data: 'catatan_masuk',

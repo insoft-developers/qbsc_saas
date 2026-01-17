@@ -95,13 +95,16 @@
                                         <th class="text-center">Aksi</th>
                                         <th>Tanggal</th>
                                         <th>Nama Satpam</th>
-                                        <th>Lokasi</th>
+                                        <th>Lokasi Masuk</th>
+                                        <th>Lokasi Pulang</th>
                                         <th>Shift</th>
                                         <th>Shift Masuk</th>
                                         <th>Masuk</th>
                                         <th>Shift Pulang</th>
                                         <th>Keluar</th>
                                         <th>Status</th>
+                                        <th>Foto Masuk</th>
+                                        <th>Foto Pulang</th>
                                         <th>Catatan Masuk</th>
                                         <th>Catatan Pulang</th>
                                         <th>Perusahaan</th>

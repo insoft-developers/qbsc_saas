@@ -10,6 +10,9 @@ use App\Models\Satpam;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
+
 
 class AbsenController extends Controller
 {
@@ -26,7 +29,7 @@ class AbsenController extends Controller
         $userId = $request->user_id;
         $file = $request->file('image');
         $model = $request->absen_model;
-        $jamSekarang = date("H:i:s");
+        $jamSekarang = date('H:i:s');
         // $jamSekarang = '08:30:30';
 
         $now = Carbon::now();
@@ -49,21 +52,17 @@ class AbsenController extends Controller
             }
 
             if ($jamMasukUser->lt($jamMasukAwal)) {
-                return response()->json(
-                    [
-                        'success' => false,
-                        'message' => 'Absen gagal, absen masuk diperbolehkan mulai pukul ' . $myShift->jam_masuk_awal,
-                    ]
-                );
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Absen gagal, absen masuk diperbolehkan mulai pukul ' . $myShift->jam_masuk_awal,
+                ]);
             }
 
             if ($jamMasukUser->gt($jamMasukAkhir)) {
-                return response()->json(
-                    [
-                        'success' => false,
-                        'message' => 'Absen gagal, absen masuk diperbolehkan paling lambat pukul ' . $myShift->jam_masuk_akhir,
-                    ]
-                );
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Absen gagal, absen masuk diperbolehkan paling lambat pukul ' . $myShift->jam_masuk_akhir,
+                ]);
             }
         } else {
             $jamPulang = date('H:i:s');
@@ -83,21 +82,17 @@ class AbsenController extends Controller
             }
 
             if ($jamPulangUser->lt($jamPulangAwal)) {
-                return response()->json(
-                    [
-                        'success' => false,
-                        'message' => 'Absen gagal, absen pulang diperbolehkan mulai pukul ' . $myShift->jam_pulang_awal,
-                    ]
-                );
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Absen gagal, absen pulang diperbolehkan mulai pukul ' . $myShift->jam_pulang_awal,
+                ]);
             }
 
             if ($jamPulangUser->gt($jamPulangAkhir)) {
-                return response()->json(
-                    [
-                        'success' => false,
-                        'message' => 'Absen gagal, absen pulang diperbolehkan paling lambat pukul ' . $myShift->jam_pulang_akhir,
-                    ]
-                );
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Absen gagal, absen pulang diperbolehkan paling lambat pukul ' . $myShift->jam_pulang_akhir,
+                ]);
             }
         }
 
@@ -137,19 +132,108 @@ class AbsenController extends Controller
         if ($matched) {
             if ($model == 'masuk') {
                 $myShift = JamShift::find($request->shift_id);
-
                 $shift_id = $myShift->id ?? null;
                 $nama_shift = $myShift->name ?? null;
                 $jam_masuk_shift = $myShift->jam_masuk ?? null;
                 $jam_pulang_shift = $myShift->jam_pulang ?? null;
-                Absensi::create(['tanggal' => $tanggal, 'satpam_id' => $userId, 'latitude' => $request->latitude, 'longitude' => $request->longitude, 'jam_masuk' => $jam, 'shift_id' => $shift_id, 'shift_name' => $nama_shift, 'jam_setting_masuk' => $jam_masuk_shift, 'jam_setting_pulang' => $jam_pulang_shift, 'status' => 1, 'description' => 'Absensi Berhasil', 'comid' => $user->comid]);
+
+                $pathMasuk = null;
+
+                if ($request->hasFile('image')) {
+                    $file = $request->file('image');
+
+                    // Gunakan Intervention Image
+                    $manager = new ImageManager(new Driver());
+                    $image = $manager->read($file->getRealPath());
+
+                    // Resize otomatis jika terlalu besar
+                    if ($image->width() > 1280) {
+                        $image->scale(width: 1280);
+                    }
+
+                    // Tentukan folder penyimpanan
+                    $folder = storage_path('app/public/absensi');
+                    if (!file_exists($folder)) {
+                        mkdir($folder, 0777, true);
+                    }
+
+                    // Buat nama unik
+                    $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                    $savePath = $folder . '/' . $filename;
+
+                    // Simpan langsung (sekali saja)
+                    $image->save($savePath, 80); // kualitas 80% untuk kompres <1MB
+
+                    // Simpan path relatif ke database
+                    $pathMasuk = 'absensi/' . $filename;
+                }
+
+                Absensi::create([
+                    'tanggal' => $tanggal,
+                    'satpam_id' => $userId,
+                    'latitude' => $request->latitude,
+                    'longitude' => $request->longitude,
+                    'jam_masuk' => $jam,
+                    'shift_id' => $shift_id,
+                    'shift_name' => $nama_shift,
+                    'jam_setting_masuk' => $jam_masuk_shift,
+                    'jam_setting_pulang' => $jam_pulang_shift,
+                    'status' => 1,
+                    'description' => 'Absensi Berhasil',
+                    'comid' => $user->comid,
+                    'foto_masuk' => $pathMasuk,
+                ]);
+
                 $message = 'Absensi masuk berhasil.';
             } else {
                 $absensi = Absensi::where('satpam_id', $userId)->where('status', 1)->whereNull('jam_keluar')->orderBy('id', 'desc')->first();
 
+                $last_shift_id = $absensi->shift_id;
+                if($last_shift_id != $request->shift_id) {
+                    return response()->json([
+                        "success" => false,
+                        "message" => 'Shift Kerja Pulang tidak cocok dengan Shift Kerja Masuk'
+                    ]);
+                }
+
+
                 if ($absensi) {
+                    $pathPulang = null;
+
+                    if ($request->hasFile('image')) {
+                        $file = $request->file('image');
+
+                        // Gunakan Intervention Image
+                        $manager = new ImageManager(new Driver());
+                        $image = $manager->read($file->getRealPath());
+
+                        // Resize otomatis jika terlalu besar
+                        if ($image->width() > 1280) {
+                            $image->scale(width: 1280);
+                        }
+
+                        // Tentukan folder penyimpanan
+                        $folder = storage_path('app/public/absensi');
+                        if (!file_exists($folder)) {
+                            mkdir($folder, 0777, true);
+                        }
+
+                        // Buat nama unik
+                        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                        $savePath = $folder . '/' . $filename;
+
+                        // Simpan langsung (sekali saja)
+                        $image->save($savePath, 80); // kualitas 80% untuk kompres <1MB
+
+                        // Simpan path relatif ke database
+                        $pathPulang = 'absensi/' . $filename;
+                    }
+
                     $absensi->jam_keluar = date('Y-m-d H:i:s');
                     $absensi->status = 2;
+                    $absensi->latitude2 = $request->latitude;
+                    $absensi->longitude2 = $request->longitude;
+                    $absensi->foto_pulang = $pathPulang;
                     $absensi->save();
                     $message = 'Absensi pulang berhasil';
                 } else {

@@ -8,7 +8,7 @@
 
     function tampilkan_absensi_satpam() {
         $("#table-dashboard-absensi tbody").html(
-            '<tr><td colspan="7"><center><p>Refreshing data ....</p></center></td></tr>');
+            '<tr><td colspan="10"><center><p>Refreshing data ....</p></center></td></tr>');
         $.ajax({
             url: "{{ route('tampilkan.absensi.satpam') }}",
             type: "POST",
@@ -23,7 +23,7 @@
 
                     if (absensi.length < 1) {
                         $("#table-dashboard-absensi tbody").html(
-                            '<tr><td colspan="7"><center><p>Data absensi masih kosong</p></center></td></tr>'
+                            '<tr><td colspan="10"><center><p>Data absensi masih kosong</p></center></td></tr>'
                             );
                         return;
                     }
@@ -57,9 +57,34 @@
                         }
 
 
+                        if (absensi[i].latitude2 && absensi[i].longitude2) {
+                            var pulang_url = "https://www.google.com/maps/search/?api=1&query="+absensi[i].latitude2+","+absensi[i].longitude2+"";
+                           
+                        } else {
+                            var pulang_url = "#";
+                        }
+
+                        
+                        var src_foto_masuk = absensi[i].foto_masuk == null ? '-' : `<img 
+                                        src="{{ asset('storage') }}/` + (absensi[i].foto_masuk ??
+                                        '') + `" 
+                                        alt="Foto Masuk"
+                                        class="rounded-circle shadow-sm"
+                                        style="width: 55px; height: 55px; object-fit: cover;"
+                                    >`;   
+
+                        var src_foto_pulang = absensi[i].foto_pulang == null ? '-' : `<img 
+                                        src="{{ asset('storage') }}/` + (absensi[i].foto_pulang ??
+                                        '') + `" 
+                                        alt="Foto Pulang"
+                                        class="rounded-circle shadow-sm"
+                                        style="width: 55px; height: 55px; object-fit: cover;"
+                                    >`;
+
+
                         html += `
                             <tr>
-                                <td>
+                                <td style="white-space:nowrap;">
                                     <div class="d-flex align-items-center">
                                         <div class="avatar-sm me-2">
                                             <img 
@@ -86,25 +111,36 @@
                                     </span>
                                 </td>
 
-                                <td>
+                                <td style="white-space:nowrap;">
                                     <span>
                                         ${absensi[i].shift_name ?? "-"}
                                     </span>
                                 </td>
 
-                                <td>
+                                <td style="white-space:nowrap;">
                                     <span class="text-success">
                                         ${formatTanggalWaktu(absensi[i].jam_masuk)}<br><small class="text-muted">${absensi[i].catatan_masuk ?? ''}</small>
                                     </span>
                                 </td>
 
-                                <td>
+                                <td style="white-space:nowrap;">
                                     ${jam_keluar}
                                 </td>
 
-                                <td><a href="${lokasi_url}" target="_blank">
+                                <td style="white-space:nowrap;"><a href="${lokasi_url}" target="_blank">
                                      Lihat lokasi
                                    </a>
+                                </td>
+
+                                <td style="white-space:nowrap;"><a href="${pulang_url}" target="_blank">
+                                     Lihat lokasi
+                                   </a>
+                                </td>
+                                <td style="white-space:nowrap;">
+                                    ${src_foto_masuk}   
+                                </td>   
+                                <td style="white-space:nowrap;">
+                                    ${src_foto_pulang}
                                 </td>
 
                                 <td class="text-center">
@@ -168,7 +204,7 @@
 
                         html += `
                             <tr>
-                                <td>
+                                <td style="white-space:nowrap;">
                                     <div class="d-flex align-items-center">
                                         <div class="avatar-sm me-2">
                                             <img 
@@ -195,25 +231,25 @@
                                     </span>
                                 </td>
 
-                                <td>
+                                <td style="white-space:nowrap;">
                                     <span>
                                         ${absensi[i].shift_name ?? "-"}
                                     </span>
                                 </td>
 
-                                <td>
+                                <td style="white-space:nowrap;">
                                     <span class="text-success">
                                         <strong>${formatWaktu(absensi[i].jam_masuk)}</strong>
                                     </span>
                                 </td>
 
-                                <td>
+                                <td style="white-space:nowrap;">
                                      <span class="text-danger">
                                         <strong>${absensi[i].jam_setting_masuk}</strong>
                                     </span>
                                 </td>
 
-                                <td><a href="${lokasi_url}" target="_blank">
+                                <td style="white-space:nowrap;"><a href="${lokasi_url}" target="_blank">
                                    
                                         Lihat lokasi
                                     
@@ -281,7 +317,7 @@
 
                         html += `
                             <tr>
-                                <td>
+                                <td style="white-space:nowrap;">
                                     <div class="d-flex align-items-center">
                                         <div class="avatar-sm me-2">
                                             <img 
@@ -308,25 +344,25 @@
                                     </span>
                                 </td>
 
-                                <td>
+                                <td style="white-space:nowrap;">
                                     <span>
                                         ${absensi[i].shift_name ?? "-"}
                                     </span>
                                 </td>
 
-                                <td>
+                                <td style="white-space:nowrap;">
                                     <span class="text-success">
                                         <strong>${formatWaktu(absensi[i].jam_keluar)}</strong>
                                     </span>
                                 </td>
 
-                                <td>
+                                <td style="white-space:nowrap;">
                                      <span class="text-danger">
                                         <strong>${absensi[i].jam_setting_pulang}</strong>
                                     </span>
                                 </td>
 
-                                <td><a href="${lokasi_url}" target="_blank">
+                                <td style="white-space:nowrap;"><a href="${lokasi_url}" target="_blank">
                                    
                                         Lihat lokasi
                                     
@@ -411,7 +447,7 @@
                         }
 
                         html += `<tr>
-                                <td>
+                                <td style="white-space:nowrap;">
                                     <div class="d-flex align-items-center">
                                         <div class="avatar-sm me-2">
                                             <img 
@@ -431,17 +467,17 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td>${formatTanggal(patroli[i].tanggal)}</td>
+                                <td style="white-space:nowrap;">${formatTanggal(patroli[i].tanggal)}</td>
                                 <td style="color:blue;">${patroli[i].jam}</td>
                                 <td style="color:green;">${patroli[i].lokasi.nama_lokasi ?? ''}</td>
-                                <td><a href="${lokasi_url}" target="_blank">
+                                <td style="white-space:nowrap;"><a href="${lokasi_url}" target="_blank">
                                      Lihat lokasi
                                     </a>
                                 </td>
-                                <td>
+                                <td style="white-space:nowrap;">
                                     ${gambar}
                                 </td>
-                                <td>${patroli[i].note}</td>
+                                <td style="white-space:nowrap;">${patroli[i].note}</td>
                                 </tr>`;
                     }
 

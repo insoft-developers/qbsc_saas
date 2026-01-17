@@ -76,6 +76,28 @@ class AbsensiController extends Controller
                     }
                 })
 
+                ->addColumn('latitude2', function ($row) {
+                    if ($row->latitude2 && $row->longitude2) {
+                        $url = "https://www.google.com/maps/search/?api=1&query={$row->latitude2},{$row->longitude2}";
+
+                        return '
+            <div style="text-align:center">
+                <a href="' .
+                            $url .
+                            '" target="_blank" class="text-primary fw-bold">
+                    ' .
+                            $row->latitude2 .
+                            ' , ' .
+                            $row->longitude2 .
+                            '
+                </a>
+            </div>
+        ';
+                    } else {
+                        return '<div style="text-align:center">-</div>';
+                    }
+                })
+
                 ->addColumn('jam_masuk', function ($row) {
                     return '<div style="text-align:center">' . date('H:i:s', strtotime($row->jam_masuk)) . '</div>';
                 })
@@ -84,6 +106,24 @@ class AbsensiController extends Controller
                 })
                 ->addColumn('status', function ($row) {
                     return $row->status == 1 ? '<span class="badge bg-info rounded-pill"><i class="fa fa-check"></i> Masuk</span>' : '<span class="badge bg-danger rounded-pill">Pulang</span>';
+                })
+
+                ->addColumn('foto_masuk', function ($row) {
+                    if (!empty($row->foto_masuk)) {
+                        $url = asset('storage/' . $row->foto_masuk);
+                        return '<a href="' . asset('storage/' . $row->foto_masuk) . '" target="_blank"><img  style="cursor:pointer;" src="' . $url . '" alt="Foto" width="50" height="50" class="rounded-circle border"></a>';
+                    } else {
+                        return '-';
+                    }
+                })
+
+                ->addColumn('foto_pulang', function ($row) {
+                    if (!empty($row->foto_pulang)) {
+                        $url = asset('storage/' . $row->foto_pulang);
+                        return '<a href="' . asset('storage/' . $row->foto_pulang) . '" target="_blank"><img  style="cursor:pointer;" src="' . $url . '" alt="Foto" width="50" height="50" class="rounded-circle border"></a>';
+                    } else {
+                        return '-';
+                    }
                 })
 
                 // 🔍 Filter manual untuk kolom relasi
@@ -123,7 +163,7 @@ class AbsensiController extends Controller
                     $button .= '</center>';
                     return $button;
                 })
-                ->rawColumns(['action', 'latitude', 'tanggal', 'jam_masuk', 'jam_keluar', 'status'])
+                ->rawColumns(['action', 'latitude', 'tanggal', 'jam_masuk', 'jam_keluar', 'status','latitude2','foto_masuk','foto_pulang'])
                 ->make(true);
 
             // bi bi-trash3
@@ -298,7 +338,7 @@ class AbsensiController extends Controller
 
         $data = $query->get();
 
-        $pdf = Pdf::loadView('frontend.aktivitas.absensi.pdf', compact('data'))->setPaper('a4', 'landscape');
+        $pdf = Pdf::loadView('frontend.aktivitas.absensi.pdf', compact('data'))->setPaper('legal', 'landscape');
 
         return $pdf->stream('Data_Absensi.pdf');
     }

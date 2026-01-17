@@ -312,7 +312,10 @@
                                              <th>Shift</th>
                                              <th>Masuk</th>
                                              <th>Pulang</th>
-                                             <th>Lokasi</th>
+                                             <th>Lokasi Masuk</th>
+                                             <th>Lokasi Pulang</th>
+                                             <th>Foto Masuk</th>
+                                             <th>Foto Pulang</th>
                                              <th>Keterangan</th>
                                          </tr>
                                      </thead>
