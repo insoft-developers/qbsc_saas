@@ -34,6 +34,7 @@ use App\Http\Controllers\Frontend\ProfileController;
 use App\Http\Controllers\Frontend\RekapController;
 use App\Http\Controllers\Frontend\RiwayatController;
 use App\Http\Controllers\Frontend\RunningTextController;
+use App\Http\Controllers\Frontend\TrackingController;
 use App\Http\Controllers\Reseller\ResellerAuthController;
 use App\Http\Controllers\Reseller\ResellerDownloadController;
 use App\Http\Controllers\Reseller\ResellerHomeController;
@@ -136,6 +137,10 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
     Route::get('/kinerja_export_xls', [LaporanKinerjaController::class, 'export_xls'])->name('kinerja.export.xls');
 
     Route::get('/kinerja_export_pdf', [LaporanKinerjaController::class, 'export_pdf'])->name('kinerja.export.pdf');
+
+    Route::resource('/tracking', TrackingController::class);
+    Route::get('/tracking_table', [TrackingController::class, 'table'])->name('tracking.table');
+    Route::get('/tracking_map/{id}', [TrackingController::class, 'map']);
 
     Route::resource('tamu', TamuController::class);
     Route::get('/tamu_table', [TamuController::class, 'tamu_table'])->name('tamu.table');

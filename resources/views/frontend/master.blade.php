@@ -63,6 +63,10 @@
 
     <!-- Icons css -->
     <link href="{{ asset('template/frontend') }}/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    @if($view == 'map')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+    @endif
+    
     @include('frontend/css')
 
 
@@ -540,6 +544,11 @@
 
         <!-- Dashboard App js -->
         {{-- <script src="{{ asset('template/frontend') }}/assets/js/pages/dashboard.js"></script> --}}
+    @endif
+
+    @if($view == 'map')
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
     @endif
     <!-- App js -->
     <script src="{{ asset('template/frontend') }}/assets/js/app.min.js"></script>
