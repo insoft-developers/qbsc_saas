@@ -105,11 +105,13 @@
                                         <th width="10%">Nama Satpam</th>
                                         <th>Jabatan</th>
                                         <th width="10%">Hadir</th>
-                                        <th width="10%">Tepat Waktu</th>
+                                        <th width="10%">Tepat<br>Waktu</th>
                                         <th width="10%">Terlambat</th>
-                                        <th width="10%">Total Terlambat</th>
-                                        <th width="10%">Cepat Pulang</th>
-                                        <th width="10%">Total Cepat Pulang</th>
+                                        <th width="10%">Total<br>Terlambat</th>
+                                        <th width="10%">Cepat<br>Pulang</th>
+                                        <th width="10%">Total<br>Cepat Pulang</th>
+                                        <th width="10%">Titik<br>Patroli</th>
+                                        <th width="10%">Patroli<br>Diuar Jadwal</th>
                                         <th width="10%">Perusahaan</th>
 
                                     </tr>

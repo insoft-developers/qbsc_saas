@@ -36,4 +36,9 @@ class Satpam extends Authenticatable
     {
         return $this->hasMany(Absensi::class, 'satpam_id', 'id');
     }
+
+    public function patroli():HasMany
+    {
+        return $this->hasMany(Patroli::class, 'satpam_id', 'id');
+    }
 }

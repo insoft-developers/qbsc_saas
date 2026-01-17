@@ -70,6 +70,14 @@
                 name: 'total_cepat_pulang'
             },
             {
+                data: 'total_patroli',
+                name: 'total_patroli'
+            },
+            {
+                data: 'patroli_diluar_jadwal',
+                name: 'patroli_diluar_jadwal'
+            },
+            {
                 data: 'comid',
                 name: 'comid'
             },

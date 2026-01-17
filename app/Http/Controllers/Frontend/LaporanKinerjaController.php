@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Satpam;
 use App\Traits\CommonTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -24,6 +25,10 @@ class LaporanKinerjaController extends Controller
             $comid = $this->comid();
             $query = Satpam::with([
                 'absensi' => function ($q) use ($bulan, $tahun) {
+                    $q->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
+                },
+
+                'patroli' => function ($q) use ($bulan, $tahun) {
                     $q->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
                 },
             ])
@@ -98,6 +103,28 @@ class LaporanKinerjaController extends Controller
                     }
 
                     return $pulangCepat . ' menit';
+                })
+
+                ->addColumn('total_patroli', function ($row) {
+                    return $row->patroli->count();
+                })
+
+                ->addColumn('patroli_diluar_jadwal', function ($row) {
+                    return $row->patroli
+                        ->filter(function ($p) {
+                            // 🚨 Jika jadwal kosong → dianggap di luar range
+                            if (empty($p->jam_awal_patroli) || empty($p->jam_akhir_patroli)) {
+                                return true;
+                            }
+
+                            $jamPatroli = Carbon::createFromFormat('H:i:s', $p->jam);
+                            $jamMulai = Carbon::createFromFormat('H:i', $p->jam_awal_patroli);
+                            $jamAkhir = Carbon::createFromFormat('H:i', $p->jam_akhir_patroli);
+
+                            // true = DI LUAR RANGE
+                            return !$jamPatroli->between($jamMulai, $jamAkhir, true);
+                        })
+                        ->count();
                 })
 
                 ->addColumn('comid', function ($row) {
