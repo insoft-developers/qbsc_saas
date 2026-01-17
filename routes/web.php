@@ -133,6 +133,9 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
 
     Route::resource('laporan_kinerja', LaporanKinerjaController::class);
     Route::get('laporan_kinerja_table', [LaporanKinerjaController::class, 'table'])->name('laporan.kinerja.table');
+    Route::get('/kinerja_export_xls', [LaporanKinerjaController::class, 'export_xls'])->name('kinerja.export.xls');
+
+    Route::get('/kinerja_export_pdf', [LaporanKinerjaController::class, 'export_pdf'])->name('kinerja.export.pdf');
 
     Route::resource('tamu', TamuController::class);
     Route::get('/tamu_table', [TamuController::class, 'tamu_table'])->name('tamu.table');

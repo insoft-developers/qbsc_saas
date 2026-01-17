@@ -91,33 +91,34 @@
     });
 
     $('#btnReset').on('click', function() {
-        $('#filter_start').val('');
-        $('#filter_end').val('');
-        $('#filter_satpam').val('');
+       const now = new Date();
+
+        // bulan: 01 - 12
+        const bulan = String(now.getMonth() + 1).padStart(2, '0');
+        const tahun = now.getFullYear();
+
+        $('#filter_periode').val(bulan);
+        $('#filter_tahun').val(tahun);
         
         table.ajax.reload();
     });
 
     $('#btnExportXls').on('click', function() {
         let params = $.param({
-            start_date: $('#filter_start').val() || '',
-            end_date: $('#filter_end').val() || '',
-            satpam_id: $('#filter_satpam').val() || '',
-           
+            periode: $('#filter_periode').val() || '',
+            tahun: $('#filter_tahun').val() || '',           
         });
 
-        window.location.href = "{{ route('situasi.export.xls') }}?" + params;
+        window.location.href = "{{ route('kinerja.export.xls') }}?" + params;
     });
 
     $('#btnExportPdf').on('click', function() {
         let params = $.param({
-            start_date: $('#filter_start').val() || '',
-            end_date: $('#filter_end').val() || '',
-            satpam_id: $('#filter_satpam').val() || '',
-            
+            periode: $('#filter_periode').val() || '',
+            tahun: $('#filter_tahun').val() || '',           
         });
 
-        window.location.href = "{{ route('situasi.export.pdf') }}?" + params;
+        window.location.href = "{{ route('kinerja.export.pdf') }}?" + params;
 
     });
 

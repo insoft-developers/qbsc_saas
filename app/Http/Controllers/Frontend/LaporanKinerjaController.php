@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Exports\KinerjaExport;
 use App\Http\Controllers\Controller;
 use App\Models\Satpam;
 use App\Traits\CommonTrait;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 class LaporanKinerjaController extends Controller
@@ -190,5 +193,35 @@ class LaporanKinerjaController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function export_xls(Request $request)
+    {
+        return Excel::download(new KinerjaExport($request->periode ?: null, $request->tahun ?: null), 'Laporan Kinerja Satpam.xlsx');
+    }
+
+    public function export_pdf(Request $request)
+    {
+        $bulan = $request->periode ?? date('m'); // default bulan ini
+        $tahun = $request->tahun ?? date('Y'); // default tahun ini
+
+        $comid = $this->comid();
+        $query = Satpam::with([
+            'absensi' => function ($q) use ($bulan, $tahun) {
+                $q->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
+            },
+
+            'patroli' => function ($q) use ($bulan, $tahun) {
+                $q->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
+            },
+        ])
+            ->where('comid', $comid)
+            ->orderBy('created_at', 'desc');
+
+        $data = $query->get();
+
+        $pdf = Pdf::loadView('frontend.laporan.kinerja.pdf', compact('data'))->setPaper('legal', 'landscape');
+
+        return $pdf->stream('Laporan Kinerja Satpam.pdf');
     }
 }
