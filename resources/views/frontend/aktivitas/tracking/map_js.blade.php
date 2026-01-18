@@ -12,20 +12,27 @@ document.addEventListener('DOMContentLoaded', function () {
     ]);
 
     // ================= MAP =================
-    const map = L.map('map', {
-        zoomControl: true
-    }).setView(latlngs[0], 17);
+    const map = L.map('map').setView(latlngs[0], 17);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19
     }).addTo(map);
 
-    const polyline = L.polyline(latlngs, {
+    // ================= FULL ROUTE (GRAY) =================
+    const fullRouteLine = L.polyline(latlngs, {
+    color: '#64748b', // slate-500
+    weight: 4,
+    opacity: 0.9
+}).addTo(map);
+
+
+    // ================= PASSED ROUTE (BLUE) =================
+    const passedRouteLine = L.polyline([], {
         color: '#2563eb',
-        weight: 4
+        weight: 5
     }).addTo(map);
 
-    map.fitBounds(polyline.getBounds());
+    map.fitBounds(fullRouteLine.getBounds());
 
     // ================= ICON =================
     function getColor(type) {
@@ -39,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function dotIcon(color, size = 10) {
         return L.divIcon({
+            className: '',
             html: `<div style="
                 width:${size}px;
                 height:${size}px;
@@ -52,20 +60,21 @@ document.addEventListener('DOMContentLoaded', function () {
     const pointMarkers = [];
 
     tracks.forEach((t, i) => {
-        const m = L.marker([t.latitude, t.longitude], {
+        const m = L.marker(latlngs[i], {
             icon: dotIcon(getColor(t.keterangan))
         }).addTo(map);
 
         m.bindPopup(`
             <b>${t.keterangan}</b><br>
             👮 ${t.satpam_name}<br>
-            🕒 ${t.tanggal}
+            🕒 ${t.tanggal}<br>
+            📍 ${t.latitude}, ${t.longitude}
         `);
 
         pointMarkers.push(m);
     });
 
-    // ================= MAIN MARKER =================
+    // ================= MOVING MARKER =================
     const movingMarker = L.marker(latlngs[0], {
         icon: dotIcon(getColor(tracks[0].keterangan), 14)
     }).addTo(map);
@@ -73,42 +82,23 @@ document.addEventListener('DOMContentLoaded', function () {
     // ================= STATE =================
     let index = 0;
     let isPlaying = false;
-    let speed = 4500;
+    let speed = 2500;
     let animId = null;
     let lastPopupIndex = null;
-    let popupTimeout = null;
 
     const slider = document.getElementById('timeline');
     slider.max = latlngs.length - 1;
 
-    const sound = document.getElementById('checkpointSound');
-
     // ================= HELPERS =================
-    function haversine(a, b) {
-        const R = 6371;
-        const dLat = (b[0] - a[0]) * Math.PI / 180;
-        const dLng = (b[1] - a[1]) * Math.PI / 180;
-        const x =
-            Math.sin(dLat / 2) ** 2 +
-            Math.cos(a[0] * Math.PI / 180) *
-            Math.cos(b[0] * Math.PI / 180) *
-            Math.sin(dLng / 2) ** 2;
-        return 2 * R * Math.asin(Math.sqrt(x));
+    function updatePassedRoute(i) {
+        passedRouteLine.setLatLngs(latlngs.slice(0, i + 1));
     }
 
     function showPopup(i) {
         if (lastPopupIndex !== null) {
             pointMarkers[lastPopupIndex].closePopup();
         }
-
         pointMarkers[i].openPopup();
-        sound.play();
-
-        if (popupTimeout) clearTimeout(popupTimeout);
-        popupTimeout = setTimeout(() => {
-            pointMarkers[i].closePopup();
-        }, 3000);
-
         lastPopupIndex = i;
     }
 
@@ -121,16 +111,9 @@ document.addEventListener('DOMContentLoaded', function () {
             duration: 0.5
         });
 
+        updatePassedRoute(i);
         showPopup(i);
         slider.value = i;
-
-        // ===== ANOMALY DETECTION =====
-        if (i > 0) {
-            const distance = haversine(latlngs[i - 1], latlngs[i]);
-            if (distance > 0.5) {
-                console.warn('ANOMALI: loncat lokasi', distance, 'km');
-            }
-        }
     }
 
     function smoothMove(start, end, duration, cb) {
@@ -176,6 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (animId) cancelAnimationFrame(animId);
         index = 0;
         isPlaying = false;
+        passedRouteLine.setLatLngs([]);
         updateMarker(0);
     }
 
@@ -195,10 +179,6 @@ document.addEventListener('DOMContentLoaded', function () {
         reset();
         isPlaying = true;
         play();
-    };
-
-    document.getElementById('speedControl').onchange = e => {
-        speed = parseInt(e.target.value);
     };
 
     slider.oninput = e => {

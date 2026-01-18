@@ -113,8 +113,12 @@ class TrackingController extends Controller
 
     public function map($id)
     {
+        
+        
+    
         $view = 'map';
 
+        $comid = $this->comid();
         $absensi = Absensi::findOrFail($id);
 
         $jamMasuk = Carbon::parse($absensi->jam_masuk);
@@ -127,7 +131,7 @@ class TrackingController extends Controller
         $this->pushRow($row_data, $absensi->jam_masuk, $absensi->satpam->name ?? '', 'Absen Masuk', $absensi->latitude, $absensi->longitude);
 
         // ================= SUHU =================
-        $suhu = KandangSuhu::where('satpam_id', $satpamId)
+        $suhu = KandangSuhu::where('satpam_id', $satpamId)->where('comid', $comid)
             ->whereRaw('TIMESTAMP(tanggal, jam) BETWEEN ? AND ?', [$jamMasuk, $jamPulang])
             ->orderByRaw('TIMESTAMP(tanggal, jam)')
             ->get();
@@ -137,7 +141,7 @@ class TrackingController extends Controller
         }
 
         // ================= KIPAS =================
-        $kipas = KandangKipas::where('satpam_id', $satpamId)
+        $kipas = KandangKipas::where('satpam_id', $satpamId)->where('comid', $comid)
             ->whereRaw('TIMESTAMP(tanggal, jam) BETWEEN ? AND ?', [$jamMasuk, $jamPulang])
             ->orderByRaw('TIMESTAMP(tanggal, jam)')
             ->get();
@@ -147,7 +151,7 @@ class TrackingController extends Controller
         }
 
         // ================= ALARM =================
-        $alarm = KandangAlarm::where('satpam_id', $satpamId)
+        $alarm = KandangAlarm::where('satpam_id', $satpamId)->where('comid', $comid)
             ->whereRaw('TIMESTAMP(tanggal, jam) BETWEEN ? AND ?', [$jamMasuk, $jamPulang])
             ->orderByRaw('TIMESTAMP(tanggal, jam)')
             ->get();
@@ -157,7 +161,7 @@ class TrackingController extends Controller
         }
 
         // ================= LAMPU =================
-        $lampu = KandangLampu::where('satpam_id', $satpamId)
+        $lampu = KandangLampu::where('satpam_id', $satpamId)->where('comid', $comid)
             ->whereRaw('TIMESTAMP(tanggal, jam) BETWEEN ? AND ?', [$jamMasuk, $jamPulang])
             ->orderByRaw('TIMESTAMP(tanggal, jam)')
             ->get();
@@ -167,7 +171,7 @@ class TrackingController extends Controller
         }
 
         // ================= PATROLI =================
-        $patroli = Patroli::where('satpam_id', $satpamId)
+        $patroli = Patroli::where('satpam_id', $satpamId)->where('comid', $comid)
             ->whereRaw('TIMESTAMP(tanggal, jam) BETWEEN ? AND ?', [$jamMasuk, $jamPulang])
             ->orderByRaw('TIMESTAMP(tanggal, jam)')
             ->get();
@@ -190,6 +194,8 @@ class TrackingController extends Controller
         // ================= SORT =================
         $row_data = collect($row_data)->sortBy(fn($i) => Carbon::parse($i['tanggal']))->values()->toArray();
 
+
+        // return $row_data;
         return view('frontend.aktivitas.tracking.map', compact('view', 'row_data'));
     }
 
