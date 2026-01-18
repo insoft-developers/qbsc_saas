@@ -72,9 +72,7 @@ class ValidateLocationController extends Controller
             'comid' => 'required',
         ]);
 
-        $data = Lokasi::where('comid', $request->comid)
-        ->where('is_active', 1)
-        ->get();
+        $data = Lokasi::where('comid', $request->comid)->where('is_active', 1)->get();
         return response()->json([
             'success' => true,
             'data' => $data,
@@ -103,9 +101,10 @@ class ValidateLocationController extends Controller
         }
     }
 
-
-    public function updateSatpamLocation(Request $request) {
+    public function updateSatpamLocation(Request $request)
+    {
         $request->validate([
+            'uuid' => 'required|unique:satpam_locations,uuid',
             'satpam_id' => 'required',
             'latitude' => 'required',
             'longitude' => 'required',
@@ -122,6 +121,7 @@ class ValidateLocationController extends Controller
 
         // 🔹 Simpan history perjalanan
         SatpamLocation::create([
+            'uuid' => $request->uuid,
             'satpam_id' => $satpam->id,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
@@ -130,5 +130,98 @@ class ValidateLocationController extends Controller
         ]);
 
         return response()->json(['success' => true]);
+    }
+
+    public function kinerja(Request $request)
+    {
+        $bulan = date('m');
+        $tahun = date('Y');
+        $comid = $request->comid;
+
+        $satpams = Satpam::with([
+            'absensi' => function ($q) use ($bulan, $tahun) {
+                $q->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
+            },
+            'patroli' => function ($q) use ($bulan, $tahun) {
+                $q->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
+            },
+            'company:id,company_name',
+        ])
+            ->where('comid', $comid)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $data = $satpams->map(function ($row) {
+            // ===== HADIR =====
+            $hadir = $row->absensi->where('status', 2);
+
+            // ===== TERLAMBAT =====
+            $totalTerlambat = 0;
+            foreach ($hadir as $abs) {
+                if (strpos($abs->catatan_masuk, 'terlambat') !== false) {
+                    preg_match('/\d+/', $abs->catatan_masuk, $m);
+                    $totalTerlambat += (int) ($m[0] ?? 0);
+                }
+            }
+
+            // ===== PULANG CEPAT =====
+            $totalCepatPulang = 0;
+            foreach ($hadir as $abs) {
+                if (strpos($abs->catatan_keluar, 'pulang lebih cepat') !== false) {
+                    preg_match('/\d+/', $abs->catatan_keluar, $m);
+                    $totalCepatPulang += (int) ($m[0] ?? 0);
+                }
+            }
+
+            // ===== PATROLI DI LUAR JADWAL =====
+            $patroliDiluar = $row->patroli
+                ->filter(function ($p) {
+                    if (empty($p->jam_awal_patroli) || empty($p->jam_akhir_patroli)) {
+                        return true;
+                    }
+
+                    $jamPatroli = Carbon::createFromFormat('H:i:s', $p->jam);
+                    $jamMulai = Carbon::createFromFormat('H:i', $p->jam_awal_patroli);
+                    $jamAkhir = Carbon::createFromFormat('H:i', $p->jam_akhir_patroli);
+
+                    return !$jamPatroli->between($jamMulai, $jamAkhir, true);
+                })
+                ->count();
+
+            return [
+                'satpam_id' => $row->id,
+                'nama' => $row->name,
+                'jabatan' => $row->is_danru ? 'Danru' : 'Anggota',
+                'foto' => $row->face_photo_path ? asset('storage/' . $row->face_photo_path) : null,
+
+                'hadir' => $hadir->count(),
+                'tepat_waktu' => $hadir->where('is_terlambat', 0)->where('is_pulang_cepat', 0)->count(),
+
+                'terlambat' => [
+                    'jumlah' => $hadir->where('is_terlambat', 1)->count(),
+                    'menit' => $totalTerlambat,
+                ],
+
+                'cepat_pulang' => [
+                    'jumlah' => $hadir->where('is_pulang_cepat', 1)->count(),
+                    'menit' => $totalCepatPulang,
+                ],
+
+                'total_patroli' => $row->patroli->count(),
+                'patroli_diluar_jadwal' => $patroliDiluar,
+
+                'company' => $row->company->company_name ?? '',
+            ];
+        });
+
+        return response()->json([
+            'success' => true,
+            'periode' => [
+                'bulan' => $bulan,
+                'tahun' => $tahun,
+            ],
+            'total_satpam' => $data->count(),
+            'data' => $data,
+        ]);
     }
 }
