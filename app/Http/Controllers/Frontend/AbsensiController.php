@@ -269,16 +269,19 @@ class AbsensiController extends Controller
         // Simpan ke database
         try {
             $comid = $this->comid();
+
+            $data = Absensi::find($id);
+
             $input['comid'] = $comid;
             $input['status'] = $request->status_absen;
             if ($request->jam_masuk) {
-                $input['jam_masuk'] = date('Y-m-d') . ' ' . $request->jam_masuk;
+                $input['jam_masuk'] = $data->tanggal . ' ' . $request->jam_masuk;
             }
             if ($request->jam_keluar) {
-                $input['jam_keluar'] = date('Y-m-d') . ' ' . $request->jam_keluar;
+                $input['jam_keluar'] = $request->tanggal . ' ' . $request->jam_keluar;
             }
 
-            $data = Absensi::find($id);
+            
             unset($input['latitude'], $input['longitude']);
             $data->update($input);
 
