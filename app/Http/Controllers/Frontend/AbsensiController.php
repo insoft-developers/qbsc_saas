@@ -281,6 +281,8 @@ class AbsensiController extends Controller
                 $input['jam_keluar'] = $request->tanggal . ' ' . $request->jam_keluar;
             }
 
+            $input['tanggal'] = $data->tanggal;
+
             
             unset($input['latitude'], $input['longitude']);
             $data->update($input);
