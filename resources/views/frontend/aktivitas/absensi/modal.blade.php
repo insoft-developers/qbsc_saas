@@ -27,6 +27,16 @@
                                       @endforeach
                                   </select>
                               </div>
+
+                              <div class="mb-2">
+                                  <label for="shift_id" class="form-label">Shift</label>
+                                  <select id="shift_id" name="shift_id" class="form-control">
+                                     <option value="">Pilih</option>
+                                      @foreach ($shifts as $shift)
+                                          <option value="{{ $shift->id }}">{{ $shift->name }}</option>
+                                      @endforeach
+                                  </select>
+                              </div>
                               <div class="mb-2">
                                   <label for="jam_masuk" class="form-label">Jam Masuk</label>
                                   <input type="time" step="1" id="jam_masuk" name="jam_masuk" class="form-control">

@@ -211,7 +211,7 @@
                 $('#id').val(data.id);
                 $("#tanggal").val(data.tanggal);
                 $("#satpam_id").val(data.satpam_id);
-                
+                $("#shift_id").val(data.shift_id);
 
                 let jam_masuk_full = data.jam_masuk;
 

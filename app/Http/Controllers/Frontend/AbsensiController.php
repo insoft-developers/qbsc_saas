@@ -6,6 +6,7 @@ use App\Exports\AbsensiExport;
 use App\Http\Controllers\Controller;
 use App\Models\AbsenLocation;
 use App\Models\Absensi;
+use App\Models\JamShift;
 use App\Models\Satpam;
 use App\Traits\CommonTrait;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -178,7 +179,8 @@ class AbsensiController extends Controller
         $view = 'absensi-satpam';
         $satpams = Satpam::where('comid', $this->comid())->get();
         $isOwner = $this->isOwner();
-        return view('frontend.aktivitas.absensi.absensi', compact('view', 'satpams', 'isOwner'));
+        $shifts = JamShift::where('comid', $this->comid())->get();
+        return view('frontend.aktivitas.absensi.absensi', compact('view', 'satpams', 'isOwner','shifts'));
     }
 
     /**
@@ -202,6 +204,7 @@ class AbsensiController extends Controller
             'status_absen' => 'required',
             'jam_keluar' => 'nullable',
             'description' => 'nullable',
+            'shift_id' => 'required',
         ]);
 
         // Simpan ke database
@@ -220,6 +223,11 @@ class AbsensiController extends Controller
                 $input['latitude'] = $location->latitude;
                 $input['longitude'] = $location->longitude;
             }
+
+            $shift = JamShift::find($request->shift_id);
+            $input['shift_name'] = $shift->name;
+            $input['jam_setting_masuk'] = $shift->jam_masuk;
+            $input['jam_setting_pulang'] = $shift->jam_pulang;
 
             Absensi::create($input);
             return response()->json([
@@ -264,6 +272,7 @@ class AbsensiController extends Controller
             'status_absen' => 'required',
             'jam_keluar' => 'nullable',
             'description' => 'nullable',
+            'shift_id' => 'required',
         ]);
 
         // Simpan ke database
@@ -272,6 +281,11 @@ class AbsensiController extends Controller
 
             $data = Absensi::find($id);
 
+            $shift = JamShift::find($request->shift_id);
+            $input['shift_name'] = $shift->name;
+            $input['jam_setting_masuk'] = $shift->jam_masuk;
+            $input['jam_setting_pulang'] = $shift->jam_pulang;
+            
             $input['comid'] = $comid;
             $input['status'] = $request->status_absen;
             if ($request->jam_masuk) {
