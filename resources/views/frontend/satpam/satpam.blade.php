@@ -38,6 +38,7 @@
                                         <th>Nama Satpam</th>
                                         <th>Jabatan</th>
                                         <th>Whatsapp</th>
+                                        <th>Last Position</th>
                                         <th>Company</th>
 
                                     </tr>

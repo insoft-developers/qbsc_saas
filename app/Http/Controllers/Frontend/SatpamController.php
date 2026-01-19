@@ -42,6 +42,16 @@ class SatpamController extends Controller
                 ->addColumn('company', function ($row) {
                     return $row->company->company_name ?? '';
                 })
+                ->addColumn('last_position', function ($row) {
+                    if(!empty($row->last_latitude && !empty($row->last_longitude))) {
+                        $lokasi_url = "https://www.google.com/maps/search/?api=1&query=".$row->last_latitude.",".$row->last_longitude."";
+                        return '<a href="'.$lokasi_url.'" target="_blank">'.date('d-m-Y H:i', strtotime($row->last_seen_at)).'</a>';
+                    } else {
+                         return '-';
+                    }
+                     
+                   
+                })
                 ->addColumn('is_danru', function($row){
                     if($row->is_danru == 1) {
                         return '<span class="badge bg-success">Danru</span>';
@@ -66,7 +76,7 @@ class SatpamController extends Controller
                     $button .= '</center>';
                     return $button;
                 })
-                ->rawColumns(['action', 'foto','is_danru'])
+                ->rawColumns(['action', 'foto','is_danru','last_position'])
                 ->make(true);
 
             // bi bi-trash3

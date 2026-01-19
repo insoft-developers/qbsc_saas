@@ -45,6 +45,10 @@
                 data: 'whatsapp',
                 name: 'whatsapp'
             },
+            {
+                data: 'last_position',
+                name: 'last_position'
+            },
 
             {
                 data: 'company',
