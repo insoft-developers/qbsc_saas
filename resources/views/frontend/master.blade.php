@@ -550,6 +550,13 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     @endif
+    
+    @if($view == 'live-map')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        #map { height: 100vh; }
+    </style>
+    @endif
     <!-- App js -->
     <script src="{{ asset('template/frontend') }}/assets/js/app.min.js"></script>
 

@@ -1,0 +1,141 @@
+<?php
+
+namespace App\Http\Controllers\Frontend;
+
+use App\Http\Controllers\Controller;
+use App\Models\Absensi;
+use App\Models\KandangAlarm;
+use App\Models\KandangKipas;
+use App\Models\KandangLampu;
+use App\Models\KandangSuhu;
+use App\Models\Patroli;
+use App\Models\Satpam;
+use App\Models\SatpamLocation;
+use App\Traits\CommonTrait;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
+
+class LiveTrackingController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+
+    use CommonTrait;
+    public function table(Request $request)
+    {
+        if ($request->ajax()) {
+            $comid = $this->comid();
+            $data = Satpam::with([
+                'absensi' => function ($query) {
+                    $query->where('status', 1);
+                },
+            ])
+
+                ->whereHas('absensi', function ($q) {
+                    $q->where('status', 1);
+                })
+                ->where('comid', $comid);
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('jam_masuk', function ($row) {
+                    return '';
+                })
+                ->addColumn('shift_name', function ($row) {
+                    return '';
+                })
+                ->addColumn('action', function ($row) {
+                    $button = '';
+                    $button .= '<center>';
+                    $button .= '<a href="' . url('live_map/' . $row->id) . '"><button title="Tracking Data" class="me-0 btn btn-insoft btn-success"><i class="bi bi-check-square"></i></button></a>';
+
+                    $button .= '</center>';
+                    return $button;
+                })
+
+                ->addColumn('comid', function ($row) {
+                    return $row->company->company_name ?? '';
+                })
+
+                ->rawColumns(['action'])
+                ->make(true);
+
+            // bi bi-trash3
+        }
+    }
+
+    public function index()
+    {
+        $view = 'tracking';
+        return view('frontend.aktivitas.live.live_tracking', compact('view'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+    }
+
+    public function live_map($id)
+    {
+        $view = 'live-map';
+        $satpam = Satpam::find($id);
+        $satpam_id = $satpam->id;
+        $lat = $satpam->last_latitude;
+        $lng = $satpam->last_longitude;
+
+        // return $row_data;
+        return view('frontend.aktivitas.live.map', compact('view', 'satpam','satpam_id','lat','lng'));
+    }
+
+    public function update_location($userid) {
+        $satpam = Satpam::find($userid);
+        return response()->json(
+            $satpam
+        );
+    }
+    
+}

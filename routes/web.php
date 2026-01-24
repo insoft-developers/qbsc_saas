@@ -21,6 +21,7 @@ use App\Http\Controllers\Frontend\KandangController;
 use App\Http\Controllers\Frontend\LaporanKandangController;
 use App\Http\Controllers\Frontend\LaporanKinerjaController;
 use App\Http\Controllers\Frontend\LaporanSituasiController;
+use App\Http\Controllers\Frontend\LiveTrackingController;
 use App\Http\Controllers\Frontend\LokasiController;
 use App\Http\Controllers\Frontend\MesinController;
 use App\Http\Controllers\Frontend\NotifikasiController;
@@ -210,6 +211,11 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
     Route::resource('/jadwal_patroli_detail', JadwalPatroliDetailController::class);
     Route::post('/jadwal_patroli_detail_table', [JadwalPatroliDetailController::class, 'table'])->name('jadwal.patroli.detail.table');
 
+
+    Route::resource('live_tracking', LiveTrackingController::class);
+    Route::get('/live_tracking_table', [LiveTrackingController::class, 'table'])->name('live.tracking.table');
+    Route::get('/live_map/{id}', [LiveTrackingController::class, 'live_map']);
+    Route::get('/update_live_location/{userid}', [LiveTrackingController::class, 'update_location']);
 
     Route::get('/rekap', [RekapController::class, 'index']);
     Route::get('/laporan_rekap_data', [RekapController::class, 'table'])->name('laporan.rekap.data');
