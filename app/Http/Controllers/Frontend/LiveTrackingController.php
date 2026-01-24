@@ -40,10 +40,10 @@ class LiveTrackingController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('jam_masuk', function ($row) {
-                    return '';
+                     return $row->absensi[0]->jam_masuk ?? '';
                 })
                 ->addColumn('shift_name', function ($row) {
-                    return '';
+                    return $row->absensi[0]->shift_name ?? '';
                 })
                 ->addColumn('action', function ($row) {
                     $button = '';
