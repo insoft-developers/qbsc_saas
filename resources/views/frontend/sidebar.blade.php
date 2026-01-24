@@ -91,6 +91,9 @@
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="{{ url('ekspedisi') }}">Data Ekspedisi</a>
                         </li>
+                        <li class="side-nav-item">
+                            <a class="side-nav-link" href="{{ url('doc_box_option') }}">Jenis Box Doc</a>
+                        </li>
                         
                     </ul>
                 </div>

@@ -38,17 +38,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('admin')
-    ->group(function () {
-        Route::get('/notifikasi', [AdminNotifikasiController::class, 'notifikasi']);
-    });
-
+Route::prefix('admin')->group(function () {
+    Route::get('/notifikasi', [AdminNotifikasiController::class, 'notifikasi']);
+});
 
 Route::prefix('bos')
     ->middleware('auth:sanctum')
     ->group(function () {
-        Route::post('/login', [BosAuthController::class, 'login'])->withoutMiddleware('auth:sanctum');      
-        Route::post('/absensi', [BosAbsensiController::class, 'index'] );
+        Route::post('/login', [BosAuthController::class, 'login'])->withoutMiddleware('auth:sanctum');
+        Route::post('/absensi', [BosAbsensiController::class, 'index']);
         Route::post('/satpam', [BosAbsensiController::class, 'satpam']);
         Route::post('/patroli', [BosPatroliController::class, 'index']);
         Route::post('/lokasi', [BosPatroliController::class, 'lokasi']);
@@ -69,7 +67,9 @@ Route::prefix('bos')
         Route::post('/tamu_add', [BosTamuController::class, 'add']);
         Route::post('/tamu_delete', [BosTamuController::class, 'delete']);
         Route::get('/kandang_resume/{comid}', [BosKandangController::class, 'resume'])->withoutMiddleware('auth:sanctum');
-        Route::post('/tampilkan_laporan_kandang', [BosKandangController::class, 'tampilkan_laporan'])->name('apibos.tampilkan.laporan.kandang')->withoutMiddleware('auth:sanctum');
+        Route::post('/tampilkan_laporan_kandang', [BosKandangController::class, 'tampilkan_laporan'])
+            ->name('apibos.tampilkan.laporan.kandang')
+            ->withoutMiddleware('auth:sanctum');
 
         Route::post('/notifikasi', [BosNotifikasiController::class, 'index']);
         Route::post('/profile', [BosAuthController::class, 'profile']);
@@ -78,9 +78,6 @@ Route::prefix('bos')
         Route::post('/card_satpam', [BosDashboardController::class, 'satpam']);
         Route::post('/check_user_area', [BosAuthController::class, 'user_area']);
     });
-
-
-
 
 Route::get('/shift_testing', [ValidateLocationController::class, 'testing']);
 
@@ -105,6 +102,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/get_data_kandang', [PatroliController::class, 'getDataKandang']);
     Route::post('/get_data_mesin', [PatroliController::class, 'getDataMesin']);
     Route::post('/get_data_ekspedisi', [PatroliController::class, 'getDataEkspedisi']);
+    Route::post('/get_data_jenis_box', [PatroliController::class, 'getDataJenisBox']);
     Route::post('/sync_suhu_kandang', [PatroliController::class, 'syncSuhuKandang']);
     Route::post('/sync_kipas_kandang', [PatroliController::class, 'syncKipasKandang']);
     Route::post('/sync_alarm_kandang', [PatroliController::class, 'syncAlarmKandang']);
@@ -126,17 +124,27 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/get_profile_data', [AuthController::class, 'profile']);
     Route::post('/update_satpam_profile', [AuthController::class, 'updateSatpamProfile']);
     Route::post('/ubah_password_satpam', [AuthController::class, 'ubah_password']);
+
+    //LAPORAN ANGGOTA
     Route::post('/laporan_anggota_absensi', [LaporanAnggotaController::class, 'absensi']);
-    
     Route::post('/laporan_anggota_patroli', [BosPatroliController::class, 'index']);
+    Route::post('/laporan_anggota_absen', [BosAbsensiController::class, 'index']);
     Route::post('/api_satpam', [BosAbsensiController::class, 'satpam']);
     Route::post('/api_lokasi', [BosPatroliController::class, 'lokasi']);
+    Route::post('/bos_doc', [BosDocController::class, 'index']);
+    Route::post('/bos_ekspedisi', [BosDocController::class, 'ekspedisi']);
+    Route::post('/bos_tamu', [BosTamuController::class, 'index']);
+    Route::post('/bos_user', [BosTamuController::class, 'user']);
+    Route::post('/bos_situasi', [BosSituasiController::class, 'index']);
+
+    Route::post('/kandang_suhu', [BosKandangController::class, 'suhu']);
+    Route::post('/kandang_kipas', [BosKandangController::class, 'kipas']);
+    Route::post('/kandang_alarm', [BosKandangController::class, 'alarm']);
+    Route::post('/kandang_lampu', [BosKandangController::class, 'lampu']);
+    Route::post('/kandang', [BosKandangController::class, 'kandang']);
+
     Route::post('/running_text', [AuthController::class, 'runningText']);
     Route::post('/update_pos_absen_satpam', [AbsenController::class, 'update_pos_satpam']);
-    
 });
 
 Route::post('/duitku_callback', [DuitkuCallbackController::class, 'callback']);
-
-
-

@@ -31,6 +31,7 @@ class LaporanAnggotaController extends Controller
                 })
                 ->select('s.id', 's.name', 's.whatsapp', 's.face_photo_path', 'a.tanggal', 'a.jam_masuk','a.jam_keluar', 'a.status')
                 ->where('s.comid', $request->comid)
+                ->orderBy('status', 'asc')
                 ->get();
 
             return response()->json([

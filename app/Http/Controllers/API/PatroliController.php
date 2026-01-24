@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\DocBoxOption;
 use App\Models\DocChick;
 use App\Models\Ekspedisi;
 use App\Models\JadwalPatroli;
@@ -213,6 +214,20 @@ class PatroliController extends Controller
         ]);
 
         $data = Ekspedisi::where('comid', $request->comid)->get();
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ]);
+    }
+
+
+    public function getDataJenisBox(Request $request)
+    {
+        $request->validate([
+            'comid' => 'required',
+        ]);
+
+        $data = DocBoxOption::where('comid', $request->comid)->get();
         return response()->json([
             'success' => true,
             'data' => $data,
@@ -540,7 +555,6 @@ class PatroliController extends Controller
 
     public function syncDocReport(Request $request)
     {
-        $input = $request->all();
         $request->validate([
             'uuid' => 'required|uuid',
             'tanggal' => 'required|date',
@@ -554,43 +568,78 @@ class PatroliController extends Controller
             'note' => 'nullable|string',
             'comid' => 'required',
             'input_date' => 'required',
-            'foto' => 'nullable|file|mimes:jpg,jpeg,png', // tidak batasi ukuran
+            'total_ekor' => 'nullable',
+            'nama_supir' => 'nullable',
+            'nomor_segel' => 'nullable',
+            'doc_box_option' => 'nullable|string',
+            'foto.*' => 'nullable|image|mimes:jpg,jpeg,png',
         ]);
 
+
+        $doc = DocChick::where('uuid', $request->uuid)->first();
+        if($doc) {
+            return response()->json([
+                "success" => false,
+                 "message" => "Data sudah pernah di sync"   
+            ]);
+        }
+
         try {
-            $photoPath = null;
+            
+            $photoPaths = [];
 
+            // =========================
+            // MULTI FOTO + KOMPRES
+            // =========================
             if ($request->hasFile('foto')) {
-                $file = $request->file('foto');
-
-                // Gunakan Intervention Image
                 $manager = new ImageManager(new Driver());
-                $image = $manager->read($file->getRealPath());
 
-                // Resize otomatis jika terlalu besar
-                if ($image->width() > 1280) {
-                    $image->scale(width: 1280);
+                foreach ($request->file('foto') as $file) {
+                    $image = $manager->read($file->getRealPath());
+
+                    if ($image->width() > 1280) {
+                        $image->scale(width: 1280);
+                    }
+
+                    $folder = storage_path('app/public/doc');
+                    if (!file_exists($folder)) {
+                        mkdir($folder, 0777, true);
+                    }
+
+                    $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                    $savePath = $folder . '/' . $filename;
+
+                    $image->save($savePath, 80);
+
+                    $photoPaths[] = 'doc/' . $filename;
                 }
-
-                // Tentukan folder penyimpanan
-                $folder = storage_path('app/public/doc');
-                if (!file_exists($folder)) {
-                    mkdir($folder, 0777, true);
-                }
-
-                // Buat nama unik
-                $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-                $savePath = $folder . '/' . $filename;
-
-                // Simpan langsung (sekali saja)
-                $image->save($savePath, 80); // kualitas 80% untuk kompres <1MB
-
-                // Simpan path relatif ke database
-                $photoPath = 'doc/' . $filename;
             }
 
-            $input['foto'] = $photoPath;
-            $doc = DocChick::create($input);
+            // =========================
+            // SIMPAN KE DATABASE
+            // =========================
+            $doc = DocChick::create([
+                'uuid' => $request->uuid,
+                'tanggal' => $request->tanggal,
+                'jam' => $request->jam,
+                'satpam_id' => $request->satpam_id,
+                'jumlah' => $request->jumlah,
+                'ekspedisi_id' => $request->ekspedisi_id,
+                'tujuan' => $request->tujuan,
+                'no_polisi' => $request->no_polisi,
+                'jenis' => $request->jenis,
+                'note' => $request->note,
+                'comid' => $request->comid,
+                'input_date' => $request->input_date,
+                'total_ekor' => $request->total_ekor,
+                'nama_supir' => $request->nama_supir,
+                'nomor_segel' => $request->nomor_segel,
+                // 🔥 JSON DARI FLUTTER (Hive)
+                'doc_box_option' => $request->doc_box_option,
+
+                // 🔥 MULTI FOTO (JSON)
+                'foto' => json_encode($photoPaths),
+            ]);
 
             return response()->json([
                 'success' => true,
@@ -600,10 +649,11 @@ class PatroliController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
-                'message' => 'Gangguan Server/Offline Mode',
-                'error' => 'Gangguan Server/Offline Mode',
-            ]);
+                'message' => 'Gangguan Server / Offline Mode',
+                'error' => $th->getMessage(),
+            ], 500);
         }
+        
     }
 
     public function jadwalPatroli(Request $request)

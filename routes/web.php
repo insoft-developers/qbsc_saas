@@ -7,6 +7,7 @@ use App\Http\Controllers\Frontend\AssetController;
 use App\Http\Controllers\Frontend\BroadcastController;
 use App\Http\Controllers\Frontend\CustomFeatureController;
 use App\Http\Controllers\Frontend\DashboardController;
+use App\Http\Controllers\Frontend\DocBoxOptionController;
 use App\Http\Controllers\Frontend\DocOutController;
 use App\Http\Controllers\Frontend\DuitkuController;
 use App\Http\Controllers\Frontend\EkspedisiController;
@@ -110,6 +111,9 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
     Route::resource('ekspedisi', EkspedisiController::class)->middleware('checkCom');
     Route::get('/ekspedisi_table', [EkspedisiController::class, 'ekspedisi_table'])->name('ekspedisi.table')->middleware('checkCom');
 
+    Route::resource('doc_box_option', DocBoxOptionController::class)->middleware('checkCom');
+    Route::get('/doc_box_option_table', [DocBoxOptionController::class, 'table'])->name('doc.box.option.table')->middleware('checkCom');
+
     Route::resource('patroli_kandang', PatroliKandangController::class)->middleware('checkCom');
     Route::get('/kandang_suhu_table', [PatroliKandangController::class, 'kandang_suhu_table'])->name('kandang.suhu.table')->middleware('checkCom');
     Route::get('/kandang_kipas_table', [PatroliKandangController::class, 'kandang_kipas_table'])->name('kandang.kipas.table')->middleware('checkCom');
@@ -123,6 +127,8 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
     Route::get('/doc_out_table', [DocOutController::class, 'doc_out_table'])->name('doc.out.table')->middleware('checkCom');
     Route::get('/doc_export_xls', [DocOutController::class, 'export_xls'])->name('doc.export.xls')->middleware('checkCom');
     Route::get('/doc_export_pdf', [DocOutController::class, 'export_pdf'])->name('doc.export.pdf')->middleware('checkCom');
+
+
 
     Route::resource('jam_shift', JamShiftController::class);
     Route::get('/jam_shift_table', [JamShiftController::class, 'jam_shift_table'])->name('jam.shift.table');
