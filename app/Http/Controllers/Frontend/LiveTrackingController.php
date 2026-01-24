@@ -132,7 +132,7 @@ class LiveTrackingController extends Controller
     }
 
     public function update_location($userid) {
-        $satpam = Satpam::find($userid);
+        $satpam = Satpam::select('id','last_latitude', 'last_longitude')->where('id', $userid)->first();
         return response()->json(
             $satpam
         );

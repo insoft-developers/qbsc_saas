@@ -2,8 +2,8 @@
 
 <script>
     const userId = "{{ $satpam_id }}";
-    const lat = "{{ $lat }}";
-    const lng = "{{ $lng }}";
+    const lat = parseFloat("{{ $lat }}");
+    const lng = parseFloat("{{ $lng }}");
 
     const map = L.map('map').setView([lat, lng], 16);
 
@@ -13,21 +13,28 @@
 
     let marker = L.marker([lat, lng]).addTo(map);
 
+    // 1️⃣ polyline dibuat sekali
+    let polyline = L.polyline([], { color: 'blue' }).addTo(map);
+
     function updateLocation() {
         fetch(`{{ url('update_live_location') }}/${userId}`)
             .then(res => res.json())
             .then(data => {
-                if (!data) return;
+                if (!data || !data.last_latitude || !data.last_longitude) return;
 
-                const latlng = [data.last_latitude, data.last_longitude];
+                const latlng = [
+                    parseFloat(data.last_latitude),
+                    parseFloat(data.last_longitude)
+                ];
 
+                // update marker
                 marker.setLatLng(latlng);
-                map.panTo(latlng, {
-                    animate: true
-                });
+
+                // 2️⃣ tambah jalur
+                polyline.addLatLng(latlng);
             });
     }
 
-    // refresh tiap 3 detik
     setInterval(updateLocation, 5000);
 </script>
+
