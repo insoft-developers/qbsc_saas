@@ -364,7 +364,16 @@
                         Ketentuan</a>
                 </label>
             </div>
+           
+            <div class="g-recaptcha form-control"
+                data-sitekey="{{ config('services.recaptcha.site_key') }}">
+            </div>
+           
 
+            @error('g-recaptcha-response')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+            <div style="margin-top:30px;"></div>    
             <button type="submit" class="btn btn-primary">Daftar Sekarang</button>
 
         </form>
@@ -396,6 +405,8 @@
 
     <script src="{{ asset('template/frontend/assets/js/vendor.min.js') }}"></script>
     <script src="{{ asset('template/frontend/assets/js/app.min.js') }}"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 </body>
 
 </html>

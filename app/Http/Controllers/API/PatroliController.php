@@ -60,7 +60,7 @@ class PatroliController extends Controller
                 // Tentukan folder penyimpanan
                 $folder = storage_path('app/public/patroli');
                 if (!file_exists($folder)) {
-                    mkdir($folder, 0777, true);
+                    mkdir($folder, 0755, true);
                 }
 
                 // Buat nama unik
@@ -147,7 +147,7 @@ class PatroliController extends Controller
                 // Tentukan folder penyimpanan
                 $folder = storage_path('app/public/kandang');
                 if (!file_exists($folder)) {
-                    mkdir($folder, 0777, true);
+                    mkdir($folder, 0755, true);
                 }
 
                 // Buat nama unik
@@ -282,7 +282,7 @@ class PatroliController extends Controller
                 // Tentukan folder penyimpanan
                 $folder = storage_path('app/public/kandang');
                 if (!file_exists($folder)) {
-                    mkdir($folder, 0777, true);
+                    mkdir($folder, 0755, true);
                 }
 
                 // Buat nama unik
@@ -359,7 +359,7 @@ class PatroliController extends Controller
                 // Tentukan folder penyimpanan
                 $folder = storage_path('app/public/kandang');
                 if (!file_exists($folder)) {
-                    mkdir($folder, 0777, true);
+                    mkdir($folder, 0755, true);
                 }
 
                 // Buat nama unik
@@ -435,7 +435,7 @@ class PatroliController extends Controller
                 // Tentukan folder penyimpanan
                 $folder = storage_path('app/public/kandang');
                 if (!file_exists($folder)) {
-                    mkdir($folder, 0777, true);
+                    mkdir($folder, 0755, true);
                 }
 
                 // Buat nama unik
@@ -511,7 +511,7 @@ class PatroliController extends Controller
                 // Tentukan folder penyimpanan
                 $folder = storage_path('app/public/kandang');
                 if (!file_exists($folder)) {
-                    mkdir($folder, 0777, true);
+                    mkdir($folder, 0755, true);
                 }
 
                 // Buat nama unik
@@ -603,7 +603,7 @@ class PatroliController extends Controller
 
                     $folder = storage_path('app/public/doc');
                     if (!file_exists($folder)) {
-                        mkdir($folder, 0777, true);
+                        mkdir($folder, 0755, true);
                     }
 
                     $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();

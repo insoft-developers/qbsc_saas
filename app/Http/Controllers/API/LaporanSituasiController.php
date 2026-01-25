@@ -39,7 +39,7 @@ class LaporanSituasiController extends Controller
                 // Tentukan folder penyimpanan
                 $folder = storage_path('app/public/situasi');
                 if (!file_exists($folder)) {
-                    mkdir($folder, 0777, true);
+                    mkdir($folder, 0755, true);
                 }
 
                 // Buat nama unik

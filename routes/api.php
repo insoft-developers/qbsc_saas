@@ -79,7 +79,7 @@ Route::prefix('bos')
         Route::post('/check_user_area', [BosAuthController::class, 'user_area']);
     });
 
-Route::get('/shift_testing', [ValidateLocationController::class, 'testing']);
+// Route::get('/shift_testing', [ValidateLocationController::class, 'testing']);
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/verify_face', [AbsenController::class, 'verifyFace']);

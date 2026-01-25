@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
+
 
 class RegisteredUserController extends Controller
 {
@@ -37,6 +39,27 @@ class RegisteredUserController extends Controller
      */
     public function store(RegisterRequest $request): RedirectResponse
     {
+        
+        $request->validate([
+            'g-recaptcha-response' => 'required',
+        ]);
+
+        $response = Http::asForm()->post(
+        'https://www.google.com/recaptcha/api/siteverify',
+            [
+                'secret'   => config('services.recaptcha.secret'),
+                'response' => $request->input('g-recaptcha-response'),
+                'remoteip' => $request->ip(), // optional tapi bagus
+            ]
+        );
+
+        if (!$response->json('success')) {
+            return back()
+                ->withErrors(['g-recaptcha-response' => 'Captcha tidak valid'])
+                ->withInput();
+        }
+
+
         $token = Str::random(64);
 
         $company = Company::create([

@@ -21,7 +21,13 @@ class AbsenController extends Controller
         $face_url = config('services.face_api.url');
 
         $request->validate([
-            'image' => 'required|image|max:10240',
+            'image' => [
+                'required',
+                'image',
+                'mimes:jpg,jpeg,png',
+                'max:5120',
+                'dimensions:max_width=4000,max_height=4000',
+            ],
             'user_id' => 'required|integer',
             'absen_model' => 'required',
         ]);
