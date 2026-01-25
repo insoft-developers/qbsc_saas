@@ -133,7 +133,7 @@ class DocOutController extends Controller
                     return $html;
                 })
                 ->addColumn('catatan', function($row){
-                    return '<div style="white-space:normal;">'.$row->catatan.'</div>';
+                    return '<div style="white-space:normal;width:200px;">'.$row->catatan.'</div>';
                 })
                 ->addColumn('created_at', function ($row) {
                     return date('d-m-Y H:i', strtotime($row->created_at));
