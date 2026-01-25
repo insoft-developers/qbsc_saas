@@ -71,9 +71,9 @@ class DocOutController extends Controller
                     $result = collect($data)
                         ->map(function ($item) {
                             $nama = $item['option_name'] ?? '-';
-                            $box = (int) (number_format($item['jumlah_box']) ?? 0);
-                            $isi = (int) (number_format($item['isi']) ?? 0);
-                            $total = (int) (number_format($item['total_ekor']) ?? $box * $isi);
+                            $box = (int) ($item['jumlah_box'] ?? 0);
+                            $isi = (int) ($item['isi'] ?? 0);
+                            $total = (int) ($item['total_ekor'] ?? $box * $isi);
 
                             return "{$nama} : {$box} x {$isi} = {$total} Ekor";
                         })
@@ -132,7 +132,9 @@ class DocOutController extends Controller
 
                     return $html;
                 })
-
+                ->addColumn('catatan', function($row){
+                    return '<div style="white-space:normal;">'.$row->catatan.'</div>';
+                })
                 ->addColumn('created_at', function ($row) {
                     return date('d-m-Y H:i', strtotime($row->created_at));
                 })
@@ -146,7 +148,7 @@ class DocOutController extends Controller
                     $button .= '</center>';
                     return $button;
                 })
-                ->rawColumns(['action', 'tanggal', 'foto', 'input_date', 'doc_box_option'])
+                ->rawColumns(['action', 'tanggal', 'foto', 'input_date', 'doc_box_option','catatan'])
                 ->make(true);
 
             // bi bi-trash3
