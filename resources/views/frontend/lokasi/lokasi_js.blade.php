@@ -51,6 +51,10 @@
                 name: 'longitude'
             },
             {
+                data: 'map',
+                name: 'map'
+            },
+            {
                 data: 'company',
                 name: 'company'
             },

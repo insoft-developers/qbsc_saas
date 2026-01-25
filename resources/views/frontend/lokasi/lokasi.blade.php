@@ -38,6 +38,7 @@
                                         <th>Status</th>
                                         <th>Latitude</th>
                                         <th>Longitude</th>
+                                        <th>Map</th>
                                         <th>Company</th>
                                         
                                     </tr>

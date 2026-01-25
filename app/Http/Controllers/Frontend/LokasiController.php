@@ -36,39 +36,41 @@ class LokasiController extends Controller
                 ->addColumn('longitude', function ($row) {
                     return $row->longitude == null ? 'Belum Diset' : $row->longitude;
                 })
-                // ->addColumn('jam_awal', function($row){
-                //     $html = '<ul>';
-                //     if($row->jam_awal == null && $row->jam_akhir == null) {} 
-                //     else {
-                //         $jam_awal_arr = explode(",", $row->jam_awal);
-                //         $jam_akhir_arr = explode(",", $row->jam_akhir);
-                //         foreach($jam_awal_arr as $arrIndex => $jarr) {
-                //             $html .= '<li>'.$jarr.'-'.$jam_akhir_arr[$arrIndex].'</li>';
-                //         }
-                        
-                //     }
-                //     $html .= '</ul>';
-                //     return $html;
-                // })
-                ->addColumn('action', function ($row) {
+                ->addColumn('map', function ($row) {
+                    if ($row->latitude && $row->longitude) {
+                        $url = "https://www.google.com/maps/search/?api=1&query={$row->latitude},{$row->longitude}";
 
-                    $disabled = $this->isOwner() ? '': 'disabled'; 
+                        return '
+            <div style="text-align:center">
+                <a href="' .
+                            $url .
+                            '" target="_blank" class="text-primary fw-bold">
+                    Lihat Lokasi
+                </a>
+            </div>
+        ';
+                    } else {
+                        return '<div style="text-align:center">-</div>';
+                    }
+                })
+                ->addColumn('action', function ($row) {
+                    $disabled = $this->isOwner() ? '' : 'disabled';
 
                     $button = '';
                     $button .= '<center>';
                     $button .= '<a href="' . url('download_qrcode/' . $row->id) . '" title="Download QRCode" class="me-0 btn btn-insoft btn-light border-1"><i class="bi bi-qr-code"></i></a>';
                     if ($row->is_active == 1) {
-                        $button .= '<button '.$disabled.' onclick="activate(' . $row->id . ', 0)" title="Non Aktifkan" class="me-0 btn btn-insoft btn-danger"><i class="bi bi-x-lg"></i></button>';
+                        $button .= '<button ' . $disabled . ' onclick="activate(' . $row->id . ', 0)" title="Non Aktifkan" class="me-0 btn btn-insoft btn-danger"><i class="bi bi-x-lg"></i></button>';
                     } else {
-                        $button .= '<button '.$disabled.' onclick="activate(' . $row->id . ', 1)" title="Aktifkan" class="me-0 btn btn-insoft btn-success"><i class="bi bi-check-circle"></i></button>';
+                        $button .= '<button ' . $disabled . ' onclick="activate(' . $row->id . ', 1)" title="Aktifkan" class="me-0 btn btn-insoft btn-success"><i class="bi bi-check-circle"></i></button>';
                     }
 
-                    $button .= '<button '.$disabled.' onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
-                    $button .= '<button '.$disabled.' onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
+                    $button .= '<button ' . $disabled . ' onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
+                    $button .= '<button ' . $disabled . ' onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
                     $button .= '</center>';
                     return $button;
                 })
-                ->rawColumns(['action', 'is_active'])
+                ->rawColumns(['action', 'is_active','map'])
                 ->make(true);
 
             // bi bi-trash3
@@ -79,7 +81,7 @@ class LokasiController extends Controller
     {
         $view = 'lokasi';
         $isOwner = $this->isOwner();
-        return view('frontend.lokasi.lokasi', compact('view','isOwner'));
+        return view('frontend.lokasi.lokasi', compact('view', 'isOwner'));
     }
 
     /**
@@ -100,7 +102,7 @@ class LokasiController extends Controller
             'qrcode' => 'required',
             'nama_lokasi' => 'required|max:100|min:3',
             // 'jam_awal.*' => 'required',
-            // 'jam_akhir.*' => 'required'  
+            // 'jam_akhir.*' => 'required'
         ]);
 
         $paket = $this->what_paket($this->comid());
@@ -116,7 +118,6 @@ class LokasiController extends Controller
 
         // Simpan ke database
         try {
-
             // $jam_awal_str = implode(",", $input['jam_awal']);
             // $jam_akhir_str = implode(",", $input['jam_akhir']);
 
@@ -174,12 +175,11 @@ class LokasiController extends Controller
             'qrcode' => 'required',
             'nama_lokasi' => 'required|max:100|min:3',
             // 'jam_awal.*' => 'required',
-            // 'jam_akhir.*' => 'required'  
+            // 'jam_akhir.*' => 'required'
         ]);
 
         // Simpan ke database
         try {
-
             // $jam_awal_str = implode(",", $input['jam_awal']);
             // $jam_akhir_str = implode(",", $input['jam_akhir']);
 

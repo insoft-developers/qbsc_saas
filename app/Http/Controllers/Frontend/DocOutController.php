@@ -132,8 +132,8 @@ class DocOutController extends Controller
 
                     return $html;
                 })
-                ->addColumn('catatan', function($row){
-                    return '<div style="white-space:normal;width:200px;">'.$row->catatan.'</div>';
+                ->addColumn('note', function($row){
+                    return '<div style="white-space:normal;width:200px;">'.$row->note.'</div>';
                 })
                 ->addColumn('created_at', function ($row) {
                     return date('d-m-Y H:i', strtotime($row->created_at));
@@ -148,7 +148,7 @@ class DocOutController extends Controller
                     $button .= '</center>';
                     return $button;
                 })
-                ->rawColumns(['action', 'tanggal', 'foto', 'input_date', 'doc_box_option','catatan'])
+                ->rawColumns(['action', 'tanggal', 'foto', 'input_date', 'doc_box_option','note'])
                 ->make(true);
 
             // bi bi-trash3
