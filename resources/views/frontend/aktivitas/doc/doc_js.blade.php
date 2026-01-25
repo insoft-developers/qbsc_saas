@@ -56,8 +56,20 @@
                 name: 'jumlah'
             },
             {
+                data: 'total_ekor',
+                name: 'total_ekor'
+            },
+            {
+                data: 'doc_box_option',
+                name: 'doc_box_option'
+            },
+            {
                 data: 'ekspedisi_id',
                 name: 'ekspedisi_id'
+            },
+            {
+                data: 'nama_supir',
+                name: 'nama_supir'
             },
             {
                 data: 'tujuan',
@@ -68,9 +80,11 @@
                 name: 'no_polisi'
             },
             {
-                data: 'jenis',
-                name: 'jenis'
+                data: 'nomor_segel',
+                name: 'nomor_segel'
             },
+            
+            
             {
                 data: 'note',
                 name: 'note'

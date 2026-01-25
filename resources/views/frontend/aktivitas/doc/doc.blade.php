@@ -84,11 +84,14 @@
                                         <th>Jam</th>
                                         <th>Tgl Input</th>
                                         <th>Satpam</th>
-                                        <th>Jumlah</th>
+                                        <th>Total Box</th>
+                                        <th>Total Ekor</th>
+                                        <th>Detail Box</th>
                                         <th>Ekspedisi</th>
+                                        <th>Nama Supir</th>
                                         <th>Tujuan</th>
                                         <th>No Polisi</th>
-                                        <th>Jenis</th>
+                                        <th>Nomor Segel</th>
                                         <th>Catatan</th>
                                         <th>Foto</th>
                                         <th>Perusahaan</th>

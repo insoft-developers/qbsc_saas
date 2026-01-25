@@ -11,6 +11,8 @@ use Maatwebsite\Excel\Concerns\WithDrawings;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+
 
 class DocExport implements FromCollection, WithHeadings, ShouldAutoSize, WithDrawings, WithEvents
 {
@@ -36,8 +38,7 @@ class DocExport implements FromCollection, WithHeadings, ShouldAutoSize, WithDra
      */
     public function collection()
     {
-        $query = DocChick::where('comid', $this->comid())
-            ->with(['satpam:id,name', 'company:id,company_name', 'ekspedisi:id,name']);
+        $query = DocChick::where('comid', $this->comid())->with(['satpam:id,name', 'company:id,company_name', 'ekspedisi:id,name']);
 
         if ($this->start && $this->end) {
             $query->whereBetween('tanggal', [$this->start, $this->end]);
@@ -57,11 +58,16 @@ class DocExport implements FromCollection, WithHeadings, ShouldAutoSize, WithDra
                 'Jam' => $row->jam,
                 'Tgl Input' => date('d-m-Y H:i', strtotime($row->input_date)),
                 'Nama Satpam' => optional($row->satpam)->name ?? '-',
-                'Jumlah' => $row->jumlah,
+                'Jumlah Box' => $row->jumlah,
+                'Total Ekor' => $row->total_ekor,
+
+                'Box Detail' => $this->formatBoxDetail($row->doc_box_option ?? null),
+
                 'Ekspedisi' => optional($row->ekspedisi)->name ?? '-',
+                'Nama Supir' => $row->nama_supir ?? '',
                 'Tujuan' => $row->tujuan,
                 'No Polisi' => $row->no_polisi,
-                'Jenis' => $row->jenis == 1 ? 'Male' : 'Female',
+                'Nomor Segel' => $row->nomor_segel ?? '',
                 'Catatan' => $row->note ?? '-',
                 'Perusahaan' => $row->company->company_name ?? '',
                 'Foto' => '', // placeholder foto
@@ -76,7 +82,7 @@ class DocExport implements FromCollection, WithHeadings, ShouldAutoSize, WithDra
      */
     public function headings(): array
     {
-        return ['Tanggal', 'Jam', 'Tgl Input','Nama Satpam', 'Jumlah', 'Ekspedisi', 'Tujuan', 'No Polisi', 'Jenis', 'Catatan', 'Perusahaan', 'Foto'];
+        return ['Tanggal', 'Jam', 'Tgl Input', 'Nama Satpam', 'Jumlah Box', 'Total Ekor', 'Box Detail', 'Ekspedisi', 'Nama Supir', 'Tujuan', 'No Polisi', 'Nomor Segel', 'Catatan', 'Perusahaan', 'Foto'];
     }
 
     /**
@@ -95,7 +101,7 @@ class DocExport implements FromCollection, WithHeadings, ShouldAutoSize, WithDra
             ->get();
 
         $rowIndex = 2; // baris header
-        $fotoColumn = 'L'; // kolom foto
+        $fotoColumn = 'O'; // kolom foto
 
         foreach ($rows as $row) {
             if (!$row->foto) {
@@ -103,7 +109,14 @@ class DocExport implements FromCollection, WithHeadings, ShouldAutoSize, WithDra
                 continue;
             }
 
-            $path = public_path('storage/' . $row->foto);
+            $foto = $this->getFirstPhoto($row->foto);
+
+            if (!$foto) {
+                $rowIndex++;
+                continue;
+            }
+
+            $path = public_path('storage/' . $foto);
 
             if (!file_exists($path)) {
                 $rowIndex++;
@@ -135,6 +148,14 @@ class DocExport implements FromCollection, WithHeadings, ShouldAutoSize, WithDra
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
+                $sheet = $event->sheet->getDelegate();
+
+                // ===============================
+                // WRAP TEXT BOX DETAIL (KOLOM G)
+                // ===============================
+                $sheet->getStyle('G:G')->getAlignment()->setWrapText(true);
+                $sheet->getColumnDimension('G')->setWidth(40);
+
                 $row = 2;
 
                 $rows = DocChick::where('comid', $this->comid())
@@ -144,15 +165,58 @@ class DocExport implements FromCollection, WithHeadings, ShouldAutoSize, WithDra
                     ->get();
 
                 foreach ($rows as $r) {
-                    if ($r->foto) {
-                        $event->sheet->getRowDimension($row)->setRowHeight(80);
+                    // jika ada box detail atau foto → naikkan tinggi baris
+                    if ($r->box_detail || $r->foto) {
+                        $sheet->getRowDimension($row)->setRowHeight(80);
                     }
                     $row++;
                 }
 
-                // Lebar kolom foto
-                $event->sheet->getColumnDimension('L')->setWidth(22);
+                // ===============================
+                // KOLOM FOTO (HARUS O, BUKAN L ❗)
+                // ===============================
+                $sheet->getColumnDimension('O')->setWidth(22);
             },
         ];
+    }
+
+    private function formatBoxDetail($json)
+    {
+        if (empty($json)) {
+            return '-';
+        }
+
+        $data = json_decode($json, true);
+
+        if (!is_array($data)) {
+            return '-';
+        }
+
+        return collect($data)
+            ->map(function ($item) {
+                $nama = $item['option_name'] ?? '-';
+                $box = (int) ($item['jumlah_box'] ?? 0);
+                $isi = (int) ($item['isi'] ?? 0);
+                $total = (int) ($item['total_ekor'] ?? $box * $isi);
+
+                return "{$nama} : {$box} x {$isi} = {$total}";
+            })
+            ->implode("\n"); // ENTER di Excel
+    }
+
+    private function getFirstPhoto($foto)
+    {
+        if (empty($foto)) {
+            return null;
+        }
+
+        // JSON array
+        if (str_starts_with($foto, '[')) {
+            $data = json_decode($foto, true);
+            return is_array($data) && count($data) ? $data[0] : null;
+        }
+
+        // single string
+        return $foto;
     }
 }
