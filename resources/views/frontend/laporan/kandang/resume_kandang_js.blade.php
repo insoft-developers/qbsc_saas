@@ -17,7 +17,7 @@
 
         $.ajax({
             url: "{{ route('apibos.tampilkan.laporan.kandang') }}",
-            type: "POST",
+            type: "GET",
             dataType: "JSON",
             data: {
                 "comid": comid,

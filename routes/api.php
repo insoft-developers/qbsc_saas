@@ -46,7 +46,7 @@ Route::prefix('admin')->group(function () {
 Route::prefix('bos')
     ->group(function () {
    Route::get('/kandang_resume/{comid}', [BosKandangController::class, 'resume']);
-   Route::post('/tampilkan_laporan_kandang', [BosKandangController::class, 'tampilkan_laporan'])
+   Route::get('/tampilkan_laporan_kandang', [BosKandangController::class, 'tampilkan_laporan'])
             ->name('apibos.tampilkan.laporan.kandang');
 });
 
