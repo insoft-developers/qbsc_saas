@@ -23,6 +23,7 @@ use App\Http\Controllers\BOS\BosNotifikasiController;
 use App\Http\Controllers\BOS\BosPatroliController;
 use App\Http\Controllers\BOS\BosSituasiController;
 use App\Http\Controllers\BOS\BosTamuController;
+use App\Http\Controllers\BOS\BosTrackingController;
 use App\Http\Controllers\Frontend\DuitkuController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -85,6 +86,11 @@ Route::prefix('bos')
         Route::post('/user_password_change', [BosAuthController::class, 'password_change']);
         Route::post('/card_satpam', [BosDashboardController::class, 'satpam']);
         Route::post('/check_user_area', [BosAuthController::class, 'user_area']);
+
+        Route::post('/kinerja_satpam', [ValidateLocationController::class, 'kinerja']);
+
+        Route::post('/tracking', [BosTrackingController::class, 'index']);
+        Route::post('/map', [BosTrackingController::class, 'map']);
     });
 
 // Route::get('/shift_testing', [ValidateLocationController::class, 'testing']);

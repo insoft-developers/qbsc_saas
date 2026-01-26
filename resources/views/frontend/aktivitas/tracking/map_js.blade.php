@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return 'blue';
     }
 
-    function dotIcon(color, size = 10) {
+    function dotIcon(color, size = 1, opacity = 0.05) {
         return L.divIcon({
             className: '',
             html: `
@@ -55,21 +55,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 width:${size}px;
                 height:${size}px;
                 background:${color};
-                border-radius:50%;
-                border:2px solid white;">
+                opacity:${opacity};
+                border-radius:50%;">
             </div>`
         });
     }
 
-    // ================= POINT MARKERS =================
+    // ================= POINT MARKERS (HAMPIR TAK TERLIHAT) =================
     const pointMarkers = [];
 
     tracks.forEach((t, i) => {
         const marker = L.marker(latlngs[i], {
-            icon: dotIcon(getColor(t.keterangan))
+            icon: dotIcon(getColor(t.keterangan), 1, 0.03) // 🔥 sangat kecil
         }).addTo(map);
 
-        // ❌ POPUP HANYA JIKA BUKAN WALKING
+        // popup tetap bisa (opsional)
         if (t.keterangan !== 'Walking') {
             marker.bindPopup(`
                 <b>${t.keterangan}</b><br>
@@ -82,9 +82,9 @@ document.addEventListener('DOMContentLoaded', function () {
         pointMarkers.push(marker);
     });
 
-    // ================= MOVING MARKER =================
+    // ================= MOVING MARKER (UTAMA) =================
     const movingMarker = L.marker(latlngs[0], {
-        icon: dotIcon(getColor(tracks[0].keterangan), 14)
+        icon: dotIcon(getColor(tracks[0].keterangan), 14, 1)
     }).addTo(map);
 
     // ================= STATE =================
@@ -103,7 +103,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function showPopup(i) {
-        // ❌ JANGAN PERNAH TAMPILKAN POPUP WALKING
         if (tracks[i].keterangan === 'Walking') return;
 
         if (lastPopupIndex !== null) {
@@ -116,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function updateMarker(i) {
         movingMarker.setLatLng(latlngs[i]);
-        movingMarker.setIcon(dotIcon(getColor(tracks[i].keterangan), 14));
+        movingMarker.setIcon(dotIcon(getColor(tracks[i].keterangan), 14, 1));
 
         map.flyTo(latlngs[i], map.getZoom(), {
             animate: true,
