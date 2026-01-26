@@ -10,6 +10,7 @@ use App\Models\KandangLampu;
 use App\Models\KandangSuhu;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class BosKandangController extends Controller
@@ -140,7 +141,25 @@ class BosKandangController extends Controller
         ]);
     }
 
-    public function resume($comid) {
+    public function resume(Request $request, $comid) {
+        $token = $request->query('token');
+        
+        if(!$token) {
+            return response('Unauthorized', 401);
+        }
+
+        $accessToken = \Laravel\Sanctum\PersonalAccessToken::findToken($token);
+        
+        if(!$accessToken) {
+            return response('Unauthorized', 401);
+        }
+
+        $user = $accessToken->tokenable;
+        Auth::login($user);
+
+        
+
+
         $kandangs = Kandang::where('comid',$comid )->get();
         return view('frontend.laporan.kandang.kandang_resume', compact('kandangs'));
     }

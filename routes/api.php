@@ -42,6 +42,17 @@ Route::prefix('admin')->group(function () {
     Route::get('/notifikasi', [AdminNotifikasiController::class, 'notifikasi']);
 });
 
+
+Route::prefix('bos')
+    ->group(function () {
+   Route::get('/kandang_resume/{comid}', [BosKandangController::class, 'resume']);
+   Route::post('/tampilkan_laporan_kandang', [BosKandangController::class, 'tampilkan_laporan'])
+            ->name('apibos.tampilkan.laporan.kandang');
+});
+
+
+
+
 Route::prefix('bos')
     ->middleware('auth:sanctum')
     ->group(function () {
@@ -66,10 +77,7 @@ Route::prefix('bos')
         Route::post('/user', [BosTamuController::class, 'user']);
         Route::post('/tamu_add', [BosTamuController::class, 'add']);
         Route::post('/tamu_delete', [BosTamuController::class, 'delete']);
-        Route::get('/kandang_resume/{comid}', [BosKandangController::class, 'resume'])->withoutMiddleware('auth:sanctum');
-        Route::post('/tampilkan_laporan_kandang', [BosKandangController::class, 'tampilkan_laporan'])
-            ->name('apibos.tampilkan.laporan.kandang')
-            ->withoutMiddleware('auth:sanctum');
+        
 
         Route::post('/notifikasi', [BosNotifikasiController::class, 'index']);
         Route::post('/profile', [BosAuthController::class, 'profile']);
