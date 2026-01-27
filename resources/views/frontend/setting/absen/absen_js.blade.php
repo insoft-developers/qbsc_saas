@@ -36,6 +36,10 @@
                 data: 'longitude',
                 name: 'longitude'
             },
+            {
+                data: 'lokasi',
+                name: 'lokasi'
+            },
 
             {
                 data: 'max_distance',

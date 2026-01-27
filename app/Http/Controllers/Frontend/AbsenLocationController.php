@@ -22,6 +22,23 @@ class AbsenLocationController extends Controller
                 ->addColumn('company', function ($row) {
                     return $row->company->company_name ?? '';
                 })
+                ->addColumn('lokasi', function($row){
+                     if ($row->latitude && $row->longitude) {
+                        $url = "https://www.google.com/maps/search/?api=1&query={$row->latitude},{$row->longitude}";
+
+                        return '
+            <div style="text-align:center">
+                <a href="' .
+                            $url .
+                            '" target="_blank" class="text-primary fw-bold">
+                    Lihat Lokasi
+                </a>
+            </div>
+        ';
+                    } else {
+                        return '<div style="text-align:center">-</div>';
+                    }
+                })
                 ->addColumn('action', function ($row) {
                     $disabled = $this->isOwner() ? '': 'disabled'; 
                     $button = '';
@@ -32,7 +49,7 @@ class AbsenLocationController extends Controller
                     $button .= '</center>';
                     return $button;
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['action','lokasi'])
                 ->make(true);
 
             // bi bi-trash3

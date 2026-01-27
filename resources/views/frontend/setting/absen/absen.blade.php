@@ -31,6 +31,7 @@
                                         <th>Nama Lokasi</th>
                                         <th>Latitude</th>
                                         <th>Longitude</th>
+                                        <th>Titik Lokasi</th>
                                         <th>Jarak Maks.</th>
                                         <th>Company</th>
                                         
