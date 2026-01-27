@@ -112,7 +112,7 @@
                 <div class="collapse" id="sidebarPagesAuth">
                     <ul class="side-nav-second-level">
                         <li class="side-nav-item">
-                            <a class="side-nav-link" href="{{ url('live_tracking') }}">Live Tracking</a>
+                            <a class="side-nav-link" href="{{ url('live_map') }}">Live Tracking</a>
                         </li>
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="{{ url('tracking') }}">Tracking Rute</a>

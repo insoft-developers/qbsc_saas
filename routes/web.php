@@ -214,8 +214,8 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
 
     Route::resource('live_tracking', LiveTrackingController::class);
     Route::get('/live_tracking_table', [LiveTrackingController::class, 'table'])->name('live.tracking.table');
-    Route::get('/live_map/{id}', [LiveTrackingController::class, 'live_map']);
-    Route::get('/update_live_location/{userid}', [LiveTrackingController::class, 'update_location']);
+    Route::get('/live_map', [LiveTrackingController::class, 'live_map']);
+    Route::get('/update_live_location', [LiveTrackingController::class, 'update_location']);
 
     Route::get('/rekap', [RekapController::class, 'index']);
     Route::get('/laporan_rekap_data', [RekapController::class, 'table'])->name('laporan.rekap.data');

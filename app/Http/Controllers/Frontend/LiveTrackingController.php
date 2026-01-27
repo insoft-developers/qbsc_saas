@@ -8,6 +8,7 @@ use App\Models\KandangAlarm;
 use App\Models\KandangKipas;
 use App\Models\KandangLampu;
 use App\Models\KandangSuhu;
+use App\Models\Lokasi;
 use App\Models\Patroli;
 use App\Models\Satpam;
 use App\Models\SatpamLocation;
@@ -40,7 +41,7 @@ class LiveTrackingController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('jam_masuk', function ($row) {
-                     return $row->absensi[0]->jam_masuk ?? '';
+                    return $row->absensi[0]->jam_masuk ?? '';
                 })
                 ->addColumn('shift_name', function ($row) {
                     return $row->absensi[0]->shift_name ?? '';
@@ -119,23 +120,44 @@ class LiveTrackingController extends Controller
         //
     }
 
-    public function live_map($id)
+    public function live_map()
     {
+        $comid = $this->comid();
+        $satpams = Satpam::with([
+            'absensi' => function ($query) {
+                $query->where('status', 1);
+            },
+        ])
+        ->whereHas('absensi', function ($q) {
+                    $q->where('status', 1);
+                })
+        ->where('comid', $comid)
+        ->get();
+
         $view = 'live-map';
-        $satpam = Satpam::find($id);
-        $satpam_id = $satpam->id;
-        $lat = $satpam->last_latitude;
-        $lng = $satpam->last_longitude;
+
+        $patroli = Lokasi::select('id', 'nama_lokasi', 'latitude', 'longitude')->get();
+
+       
 
         // return $row_data;
-        return view('frontend.aktivitas.live.map', compact('view', 'satpam','satpam_id','lat','lng'));
+        return view('frontend.aktivitas.live.map', compact('view', 'satpams','patroli'));
     }
 
-    public function update_location($userid) {
-        $satpam = Satpam::select('id','last_latitude', 'last_longitude')->where('id', $userid)->first();
-        return response()->json(
-            $satpam
-        );
+    public function update_location()
+    {
+        $comid = $this->comid();
+        $satpams = Satpam::with([
+            'absensi' => function ($query) {
+                $query->where('status', 1);
+            },
+        ])
+        ->select('id','name','last_latitude', 'last_longitude')
+        ->whereHas('absensi', function ($q) {
+                    $q->where('status', 1);
+                })
+        ->where('comid', $comid)
+        ->get();
+        return response()->json($satpams);
     }
-    
 }
