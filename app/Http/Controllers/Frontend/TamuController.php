@@ -57,11 +57,7 @@ class TamuController extends Controller
                     $button = '';
                     $button .= '<center>';
                     if ($row->is_status == 1 || $row->is_status == 2) {
-                        if (Auth::user()->id === $row->created_by) {
-                            $button .= '<button title="Copy Link QRCode" class="me-0 btn btn-insoft btn-light border-1 copyLink" data-link="' . url('copy_link_tamu/' . $row->uuid) . '"><i class="bi bi-qr-code"></i></button>';
-                        } else {
-                            $button .= '<button disabled title="Copy Link QRCode" class="me-0 btn btn-insoft btn-light border-1"><i class="bi bi-qr-code"></i></button>';
-                        }
+                        $button .= '<button title="Copy Link QRCode" class="me-0 btn btn-insoft btn-light border-1 copyLink" data-link="' . url('copy_link_tamu/' . $row->uuid) . '"><i class="bi bi-qr-code"></i></button>';
                     } else {
                         $button .= '<button disabled title="Copy Link QRCode" class="me-0 btn btn-insoft btn-light border-1"><i class="bi bi-qr-code"></i></button>';
                     }
@@ -120,12 +116,11 @@ class TamuController extends Controller
                     }
                 })
                 ->addColumn('created_by', function ($row) {
-                    if($row->created_by == -1) {
+                    if ($row->created_by == -1) {
                         return 'Satpam';
                     } else {
-                         return $row->user->name ?? '';
+                        return $row->user->name ?? '';
                     }
-                   
                 })
                 ->addColumn('comid', function ($row) {
                     return $row->company->company_name ?? '';
@@ -171,10 +166,10 @@ class TamuController extends Controller
         ]);
 
         $paket = $this->what_paket($this->comid());
-        if($paket['is_scan_tamu'] !== 1) {
+        if ($paket['is_scan_tamu'] !== 1) {
             return response()->json([
-                "sucess" => false,
-                "message" => 'Paket anda saat ini hanya mengizinkan anda untuk menambah data tamu via aplikasi satpam secara manual, Silahkan upgrade paket anda untuk bisa membuat qr tamu dan scan di aplikasi satpam..!!'
+                'sucess' => false,
+                'message' => 'Paket anda saat ini hanya mengizinkan anda untuk menambah data tamu via aplikasi satpam secara manual, Silahkan upgrade paket anda untuk bisa membuat qr tamu dan scan di aplikasi satpam..!!',
             ]);
         }
 
