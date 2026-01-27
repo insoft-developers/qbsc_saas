@@ -16,8 +16,7 @@
 
     // ================= TILE (SATELLITE) =================
     L.tileLayer(
-        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        {
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             maxZoom: 19,
             attribution: '© Esri, Maxar'
         }
@@ -47,6 +46,7 @@
     let polylines = {};
 
     // ================= MARKER PATROLI (MERAH) =================
+    // ================= MARKER PATROLI (MERAH) =================
     patroli.forEach(p => {
 
         const latlng = [
@@ -61,16 +61,12 @@
                 zIndexOffset: 500
             })
             .addTo(map)
-            .bindTooltip(
-                `<b>${p.nama_lokasi}</b>`,
-                {
-                    permanent: true,
-                    direction: 'right',
-                    offset: [10, 0]
-                }
-            );
+            .bindPopup(`
+        <b>${p.nama_lokasi}</b><br>
+        Titik Patroli
+    `);
 
-        // (opsional) radius titik patroli
+        // radius titik patroli (opsional)
         L.circle(latlng, {
             radius: 20,
             color: 'red',
@@ -78,6 +74,7 @@
             fillOpacity: 0.2
         }).addTo(map);
     });
+
 
     // ================= INIT SATPAM =================
     satpams.forEach(sp => {
@@ -96,8 +93,7 @@
             })
             .addTo(map)
             .bindTooltip(
-                `<b>${sp.name ?? 'Satpam #' + sp.id}</b>`,
-                {
+                `<b>${sp.name ?? 'Satpam #' + sp.id}</b>`, {
                     permanent: true,
                     direction: 'top',
                     offset: [0, -15]
@@ -141,8 +137,7 @@
                             })
                             .addTo(map)
                             .bindTooltip(
-                                `<b>${sp.name ?? 'Satpam #' + sp.id}</b>`,
-                                {
+                                `<b>${sp.name ?? 'Satpam #' + sp.id}</b>`, {
                                     permanent: true,
                                     direction: 'top',
                                     offset: [0, -15]
