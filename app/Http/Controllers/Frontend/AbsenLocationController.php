@@ -18,12 +18,12 @@ class AbsenLocationController extends Controller
             $data = AbsenLocation::where('comid', $comid);
             return DataTables::of($data)
                 ->addIndexColumn()
-                
+
                 ->addColumn('company', function ($row) {
                     return $row->company->company_name ?? '';
                 })
-                ->addColumn('lokasi', function($row){
-                     if ($row->latitude && $row->longitude) {
+                ->addColumn('lokasi', function ($row) {
+                    if ($row->latitude && $row->longitude) {
                         $url = "https://www.google.com/maps/search/?api=1&query={$row->latitude},{$row->longitude}";
 
                         return '
@@ -40,22 +40,22 @@ class AbsenLocationController extends Controller
                     }
                 })
                 ->addColumn('action', function ($row) {
-                    $disabled = $this->isOwner() ? '': 'disabled'; 
+                    $disabled = $this->isOwner() ? '' : 'disabled';
                     $button = '';
                     $button .= '<center>';
-        
-                    $button .= '<button '.$disabled.' onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
+
+                    $button .= '<button ' . $disabled . ' onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
 
                     $button .= '</center>';
                     return $button;
                 })
-                ->rawColumns(['action','lokasi'])
+                ->rawColumns(['action', 'lokasi'])
                 ->make(true);
 
             // bi bi-trash3
         }
     }
-    
+
     /**
      * Display a listing of the resource.
      */
@@ -68,10 +68,7 @@ class AbsenLocationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.

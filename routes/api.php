@@ -91,9 +91,10 @@ Route::prefix('bos')
 
         Route::post('/tracking', [BosTrackingController::class, 'index']);
         Route::post('/map', [BosTrackingController::class, 'map']);
+        Route::post('/live_tracking', [BosTrackingController::class, 'live_tracking']);
+        
     });
 
-// Route::get('/shift_testing', [ValidateLocationController::class, 'testing']);
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/verify_face', [AbsenController::class, 'verifyFace']);

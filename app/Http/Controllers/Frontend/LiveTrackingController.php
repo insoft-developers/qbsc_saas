@@ -160,4 +160,7 @@ class LiveTrackingController extends Controller
         ->get();
         return response()->json($satpams);
     }
+
+
+    
 }

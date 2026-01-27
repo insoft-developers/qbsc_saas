@@ -8,7 +8,9 @@ use App\Models\KandangAlarm;
 use App\Models\KandangKipas;
 use App\Models\KandangLampu;
 use App\Models\KandangSuhu;
+use App\Models\Lokasi;
 use App\Models\Patroli;
+use App\Models\Satpam;
 use App\Models\SatpamLocation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -155,5 +157,49 @@ class BosTrackingController extends Controller
             'latitude' => $lat,
             'longitude' => $lng,
         ];
+    }
+
+
+    public function live_tracking(Request $request) {
+        $comid = $request->comid;
+        $data = [];
+        $satpams = Satpam::with([
+            'absensi' => function ($query) {
+                $query->where('status', 1);
+            },
+        ])
+        ->whereHas('absensi', function ($q) {
+                    $q->where('status', 1);
+                })
+        ->where('comid', $comid)
+        ->get();
+
+        foreach($satpams as $satpam) {
+            $row['id'] = $satpam->id;
+            $row['type'] = 'satpam';
+            $row['name'] = $satpam->name;
+            $row['latitude'] = $satpam->last_latitude;
+            $row['longitude'] = $satpam->last_longitude;
+            array_push($data, $row);
+        }
+
+        $patrolis = Lokasi::select('id', 'nama_lokasi', 'latitude', 'longitude')
+        ->whereNotNull('latitude')
+        ->whereNotNull('longitude')
+        ->get();
+
+        foreach($patrolis as $p) {
+            $row['id'] = $p->id;
+            $row['type'] = 'patroli';
+            $row['name'] = $p->nama_lokasi;
+            $row['latitude'] = $p->latitude;
+            $row['longitude'] = $p->longitude;
+            array_push($data, $row);
+        }
+
+        return response()->json([
+            "success" => true,
+            "data" => $data
+        ]);
     }
 }
