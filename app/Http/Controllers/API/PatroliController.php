@@ -296,6 +296,9 @@ class PatroliController extends Controller
                 $photoPath = 'kandang/' . $filename;
             }
 
+            $hh = Kandang::find($request->kandang_id);
+            $comid = $hh->comid;
+
             $patroli = KandangSuhu::create([
                 'uuid' => $request->uuid,
                 'tanggal' => $request->tanggal,
@@ -308,7 +311,7 @@ class PatroliController extends Controller
                 'foto' => $photoPath,
                 'latitude' => $request->latitude,
                 'longitude' => $request->longitude,
-                'comid' => $request->comid,
+                'comid' => $comid,
             ]);
 
             return response()->json([
