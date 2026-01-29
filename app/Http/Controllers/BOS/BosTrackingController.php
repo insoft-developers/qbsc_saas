@@ -186,6 +186,7 @@ class BosTrackingController extends Controller
         $patrolis = Lokasi::select('id', 'nama_lokasi', 'latitude', 'longitude')
         ->whereNotNull('latitude')
         ->whereNotNull('longitude')
+        ->where('comid', $comid)
         ->get();
 
         foreach($patrolis as $p) {

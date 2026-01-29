@@ -136,7 +136,9 @@ class LiveTrackingController extends Controller
 
         $view = 'live-map';
 
-        $patroli = Lokasi::select('id', 'nama_lokasi', 'latitude', 'longitude')->get();
+        $patroli = Lokasi::select('id', 'nama_lokasi', 'latitude', 'longitude')
+        ->where('comid', $comid)
+        ->get();
 
        
 
