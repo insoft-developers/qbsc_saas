@@ -477,7 +477,7 @@
                                 <td style="white-space:nowrap;">
                                     ${gambar}
                                 </td>
-                                <td style="white-space:nowrap;">${patroli[i].note}</td>
+                                <td style="white-space:normal;width:130px;">${patroli[i].note}</td>
                                 </tr>`;
                     }
 

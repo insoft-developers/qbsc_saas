@@ -93,6 +93,10 @@ class PatroliController extends Controller
                     return date('d-m-Y H:i', strtotime($row->created_at));
                 })
 
+                ->addColumn('note', function($row){
+                    return '<div style="white-space:normal;width:120px;">'.$row->note.'</div>';
+                })
+
                 ->addColumn('action', function ($row) {
                     $disabled = $this->isOwner() ? '' : 'disabled';
                     $button = '';
@@ -102,7 +106,7 @@ class PatroliController extends Controller
                     $button .= '</center>';
                     return $button;
                 })
-                ->rawColumns(['action', 'latitude', 'tanggal', 'photo_path', 'jam_awal', 'jam'])
+                ->rawColumns(['action', 'latitude', 'tanggal', 'photo_path', 'jam_awal', 'jam','note'])
                 ->make(true);
 
             // bi bi-trash3
