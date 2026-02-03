@@ -101,6 +101,37 @@ class ValidateLocationController extends Controller
         }
     }
 
+
+    public function updateLastPosition(Request $request) {
+        $request->validate([
+            'uuid' => 'required|unique:satpam_locations,uuid',
+            'satpam_id' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required',
+            'accuracy' => 'required|numeric|min:0|max:25',
+        ]);
+
+
+        $satpam = Satpam::find($request->satpam_id);
+
+        $satpam->last_latitude = $request->latitude;
+        $satpam->last_longitude = $request->longitude;
+        $satpam->last_seen_at = now();
+        $satpam->save();
+        // 🔹 Simpan history perjalanan
+        SatpamLocation::create([
+            'uuid' => $request->uuid,
+            'satpam_id' => $satpam->id,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
+            'accuracy' => $request->accuracy,
+            'recorded_at' => now(),
+        ]);
+
+        return response()->json(['success' => true]);
+    }
+
+
     public function updateSatpamLocation(Request $request)
     {
         $request->validate([
@@ -108,18 +139,11 @@ class ValidateLocationController extends Controller
             'satpam_id' => 'required',
             'latitude' => 'required',
             'longitude' => 'required',
+            'accuracy' => 'required|numeric|min:0|max:25',
         ]);
 
         $satpam = Satpam::find($request->satpam_id);
 
-        // 🔹 Update lokasi terakhir (realtime)
-        $satpam->update([
-            'last_latitude' => $request->latitude,
-            'last_longitude' => $request->longitude,
-            'last_seen_at' => now(),
-        ]);
-
-        // 🔹 Simpan history perjalanan
         SatpamLocation::create([
             'uuid' => $request->uuid,
             'satpam_id' => $satpam->id,

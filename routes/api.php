@@ -109,6 +109,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/update_location_coordinates', [ValidateLocationController::class, 'updateCoordinates']);
     Route::post('/update_satpam_location', [ValidateLocationController::class, 'updateSatpamLocation']);
+    Route::post('/update_last_position', [ValidateLocationController::class, 'updateLastPosition']);
 
     Route::post('/kinerja_satpam', [ValidateLocationController::class, 'kinerja']);
 
