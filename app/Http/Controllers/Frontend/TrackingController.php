@@ -184,7 +184,7 @@ class TrackingController extends Controller
         }
 
         $satcol = SatpamLocation::where('satpam_id', $satpamId)
-            ->where('accuracy', '<', 20)
+            ->where('accuracy', '<', 50)
             ->whereBetween('recorded_at', [$jamMasuk->toDateTimeString(), $jamPulang->toDateTimeString()])
             ->orderBy('recorded_at', 'asc')
             ->get();

@@ -108,7 +108,7 @@ class ValidateLocationController extends Controller
             'satpam_id' => 'required',
             'latitude' => 'required',
             'longitude' => 'required',
-            'accuracy' => 'required|numeric|min:0|max:25',
+            'accuracy' => 'required|numeric|min:0|max:50',
         ]);
 
 
@@ -139,7 +139,7 @@ class ValidateLocationController extends Controller
             'satpam_id' => 'required',
             'latitude' => 'required',
             'longitude' => 'required',
-            'accuracy' => 'required|numeric|min:0|max:25',
+            'accuracy' => 'required|numeric|min:0|max:50',
         ]);
 
         $satpam = Satpam::find($request->satpam_id);
