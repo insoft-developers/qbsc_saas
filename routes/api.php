@@ -163,7 +163,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/running_text', [AuthController::class, 'runningText']);
     Route::post('/update_pos_absen_satpam', [AbsenController::class, 'update_pos_satpam']);
     Route::post('/whatsapp_kandang', [WhatsappController::class, 'kandang']);
-    Route::get('/whatsapp_doc', [WhatsappController::class, 'doc']);
+    Route::post('/whatsapp_doc', [WhatsappController::class, 'doc']);
 
 });
 
