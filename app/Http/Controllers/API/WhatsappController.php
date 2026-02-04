@@ -87,7 +87,10 @@ class WhatsappController extends Controller
         $satpam_id = $request->satpam_id;
         $tanggal = $request->tanggal;
 
-        $docs = Patroli::with('lokasi')->where('satpam_id', $satpam_id)->where('comid', $comid)->where('tanggal', $tanggal)->get();
+        $docs = Patroli::with('lokasi')->where('satpam_id', $satpam_id)->where('comid', $comid)->where('tanggal', $tanggal)
+        ->orderBy('tanggal','desc')
+        ->orderBy('jam','desc')
+        ->get();
         return response()->json([
             "success" => true,
             "data" => $docs
