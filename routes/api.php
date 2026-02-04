@@ -166,6 +166,4 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 
-
-
 Route::post('/duitku_callback', [DuitkuCallbackController::class, 'callback']);

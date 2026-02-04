@@ -35,7 +35,7 @@ class Kandang extends Model
     public function getSuhuAttribute()
     {
         if (!$this->suhuData) {
-            return 'NO-CHECK';
+            return '-';
         }
 
         return $this->suhuData->temperature;
@@ -51,7 +51,7 @@ class Kandang extends Model
     public function getKipasAttribute()
     {
         if (!$this->kipasData) {
-            return 'NO-CHECK';
+            return '-';
         }
 
         $kno = 1;
@@ -81,12 +81,6 @@ class Kandang extends Model
         // foto dari tabel kandang_kipas
         $fotoPath = $this->kipasData->foto;
 
-        // cek file ada di storage
-        // if (Storage::exists('public/' . $fotoPath)) {
-        //     // cukup return relative path
-        //     return $fotoPath;
-        // }
-
         if($fotoPath) {
             return url('storage/'.$fotoPath);
         }
@@ -104,7 +98,7 @@ class Kandang extends Model
     public function getAlarmAttribute()
     {
         if (!$this->alarmData) {
-            return 'NO-CHECK';
+            return '-';
         }
 
         return $this->alarmData->is_alarm_on == 1 ? 'ON' : 'OFF';
@@ -119,7 +113,7 @@ class Kandang extends Model
     public function getLampuAttribute()
     {
         if (!$this->lampuData) {
-            return 'NO-CHECK';
+            return '-';
         }
 
         return $this->lampuData->is_lamp_on == 1 ? 'ON' : 'OFF';
