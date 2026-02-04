@@ -12,6 +12,7 @@ use App\Http\Controllers\API\LaporanSituasiController;
 use App\Http\Controllers\API\NotifController;
 use App\Http\Controllers\API\NotifikasiController;
 use App\Http\Controllers\API\TamuController;
+use App\Http\Controllers\API\WhatsappController;
 use App\Http\Controllers\BOS\BosAbsensiController;
 use App\Http\Controllers\BOS\BosAuthController;
 use App\Http\Controllers\BOS\BosBroadcastController;
@@ -161,6 +162,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/running_text', [AuthController::class, 'runningText']);
     Route::post('/update_pos_absen_satpam', [AbsenController::class, 'update_pos_satpam']);
+    Route::post('/whatsapp_kandang', [WhatsappController::class, 'kandang']);
 });
+
+
+
 
 Route::post('/duitku_callback', [DuitkuCallbackController::class, 'callback']);
