@@ -73,7 +73,7 @@ class WhatsappController extends Controller
         $satpam_id = $request->satpam_id;
         $tanggal = $request->tanggal;
 
-        $docs = DocChick::where('satpam_id', $satpam_id)->where('comid', $comid)->where('tanggal', $tanggal)->get();
+        $docs = DocChick::with('ekspedisi')->where('satpam_id', $satpam_id)->where('comid', $comid)->where('tanggal', $tanggal)->get();
         return response()->json([
             "success" => true,
             "data" => $docs
