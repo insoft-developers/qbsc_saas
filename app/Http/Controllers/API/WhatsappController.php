@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\DocChick;
 use App\Models\Kandang;
+use App\Models\Patroli;
 use Illuminate\Http\Request;
 
 class WhatsappController extends Controller
@@ -74,6 +75,19 @@ class WhatsappController extends Controller
         $tanggal = $request->tanggal;
 
         $docs = DocChick::with('ekspedisi')->where('satpam_id', $satpam_id)->where('comid', $comid)->where('tanggal', $tanggal)->get();
+        return response()->json([
+            "success" => true,
+            "data" => $docs
+        ]);
+    }
+
+
+    public function patroli(Request $request) {
+        $comid = $request->comid;
+        $satpam_id = $request->satpam_id;
+        $tanggal = $request->tanggal;
+
+        $docs = Patroli::with('lokasi')->where('satpam_id', $satpam_id)->where('comid', $comid)->where('tanggal', $tanggal)->get();
         return response()->json([
             "success" => true,
             "data" => $docs

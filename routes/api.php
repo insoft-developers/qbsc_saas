@@ -164,8 +164,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/update_pos_absen_satpam', [AbsenController::class, 'update_pos_satpam']);
     Route::post('/whatsapp_kandang', [WhatsappController::class, 'kandang']);
     Route::post('/whatsapp_doc', [WhatsappController::class, 'doc']);
+    Route::post('/whatsapp_patroli', [WhatsappController::class, 'patroli']);
 
 });
+
+
 
 
 Route::post('/duitku_callback', [DuitkuCallbackController::class, 'callback']);
