@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\DocChick;
 use App\Models\Kandang;
 use Illuminate\Http\Request;
 
@@ -63,6 +64,19 @@ class WhatsappController extends Controller
         return response()->json([
             'success' => true,
             'data' => $kandangs,
+        ]);
+    }
+
+
+    public function doc(Request $request) {
+        $comid = $request->comid;
+        $satpam_id = $request->satpam_id;
+        $tanggal = $request->tanggal;
+
+        $docs = DocChick::where('satpam_id', $satpam_id)->where('comid', $comid)->where('tanggal', $tanggal)->get();
+        return response()->json([
+            "success" => true,
+            "data" => $docs
         ]);
     }
 }
