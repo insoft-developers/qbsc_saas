@@ -37,6 +37,11 @@
                 name: 'is_area'
             },
             {
+                data: 'is_mobile_admin',
+                name: 'is_mobile_admin'
+            },
+
+            {
                 data: 'email',
                 name: 'email'
             },
@@ -135,6 +140,7 @@
                 $("#password").val(null);
                 $("#profile_image").val(null);
                 $("#is_area").val(data.is_area);
+                $("#is_mobile_admin").val(data.is_mobile_admin);
 
             }
         })

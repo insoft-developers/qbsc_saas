@@ -31,6 +31,7 @@
                                         <th>Foto</th>
                                         <th>Nama</th>
                                         <th>User Area</th>
+                                        <th>Admin Mobile</th>
                                         <th>Email</th>
                                         <th>Whatsapp</th>
                                         <th>Level</th>

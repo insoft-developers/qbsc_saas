@@ -30,6 +30,9 @@ class UserController extends Controller
                 ->addColumn('is_area', function ($row) {
                     return $row->is_area === 1 ? '<center><span class="badge bg-success rounded-pill">Ya</span></center>' : '<center><span class="badge bg-danger rounded-pill">Tidak</span></center>';
                 })
+                ->addColumn('is_mobile_admin', function ($row) {
+                    return $row->is_mobile_admin === 1 ? '<center><span class="badge bg-success rounded-pill">Ya</span></center>' : '<center><span class="badge bg-danger rounded-pill">Tidak</span></center>';
+                })
                 ->addColumn('company_id', function ($row) {
                     return $row->company->company_name ?? '-';
                 })
@@ -71,7 +74,7 @@ class UserController extends Controller
                     $button .= '</center>';
                     return $button;
                 })
-                ->rawColumns(['action', 'is_active', 'profile_image', 'is_area'])
+                ->rawColumns(['action', 'is_active', 'profile_image', 'is_area','is_mobile_admin'])
                 ->make(true);
         }
     }
@@ -104,6 +107,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'whatsapp' => 'required|string|max:20|unique:users,whatsapp',
             'password' => 'required|string|min:6',
+            'is_mobile_admin' => 'required',
         ]);
 
         $paket = $this->what_paket($this->comid());
@@ -145,6 +149,7 @@ class UserController extends Controller
             'level' => 'user',
             'profile_image' => $path,
             'is_area' => $request->is_area,
+            'is_mobile_admin' => $request->is_mobile_admin
         ]);
 
         return response()->json([
@@ -182,6 +187,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email,' . $id,
             'whatsapp' => 'required|string|max:20|unique:users,whatsapp,' . $id,
             'password' => 'nullable|string|min:6',
+            'is_mobile_admin' => 'required',
         ]);
 
         $paket = $this->what_paket($this->comid());
@@ -215,6 +221,7 @@ class UserController extends Controller
             'profile_image' => $path,
             'password' => $request->filled('password') ? bcrypt($request->password) : $user->password,
             'is_area' => $request->is_area,
+            'is_mobile_admin' => $request->is_mobile_admin
         ]);
 
         return response()->json([

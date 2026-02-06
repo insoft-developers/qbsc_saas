@@ -20,6 +20,7 @@ use App\Http\Controllers\BOS\BosDashboardController;
 use App\Http\Controllers\BOS\BosDocController;
 use App\Http\Controllers\BOS\BosHomeController;
 use App\Http\Controllers\BOS\BosKandangController;
+use App\Http\Controllers\BOS\BosMasterSatpamController;
 use App\Http\Controllers\BOS\BosNotifikasiController;
 use App\Http\Controllers\BOS\BosPatroliController;
 use App\Http\Controllers\BOS\BosSituasiController;
@@ -93,6 +94,11 @@ Route::prefix('bos')
         Route::post('/tracking', [BosTrackingController::class, 'index']);
         Route::post('/map', [BosTrackingController::class, 'map']);
         Route::post('/live_tracking', [BosTrackingController::class, 'live_tracking']);
+
+
+        Route::post('/master_satpam', [BosMasterSatpamController::class, 'index']);
+        Route::post('/tambah_satpam', [BosMasterSatpamController::class, 'store']);
+        
         
     });
 

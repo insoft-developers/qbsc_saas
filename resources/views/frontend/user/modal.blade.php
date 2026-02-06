@@ -39,6 +39,14 @@
                                   </select>
                               </div>
                               <div class="mb-2">
+                                  <label for="is_mobile_admin" class="form-label">Admin di Mobile</label>
+                                  <select id="is_mobile_admin" name="is_mobile_admin" class="form-control">
+                                      <option value="">Pilih</option>
+                                      <option value="0">Tidak</option>
+                                      <option value="1">Ya</option>
+                                  </select>
+                              </div>
+                              <div class="mb-2">
                                   <label for="profile_image" class="form-label">Foto Profil</label>
                                   <input type="file" id="profile_image" name="profile_image" accept=".jpg,.jpeg,.png"
                                       class="form-control">

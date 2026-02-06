@@ -31,7 +31,8 @@ class User extends Authenticatable
         'email_verified_at',
         'profile_image',
         'is_area',
-        'gogole_id'
+        'gogole_id',
+        'is_mobile_admin'
 
     ];
 

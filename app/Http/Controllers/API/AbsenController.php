@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Http;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 
-
 class AbsenController extends Controller
 {
     public function verifyFace(Request $request)
@@ -21,13 +20,7 @@ class AbsenController extends Controller
         $face_url = config('services.face_api.url');
 
         $request->validate([
-            'image' => [
-                'required',
-                'image',
-                'mimes:jpg,jpeg,png',
-                'max:5120',
-                'dimensions:max_width=4000,max_height=4000',
-            ],
+            'image' => ['required', 'image', 'mimes:jpg,jpeg,png', 'max:5120', 'dimensions:max_width=4000,max_height=4000'],
             'user_id' => 'required|integer',
             'absen_model' => 'required',
         ]);
@@ -190,18 +183,23 @@ class AbsenController extends Controller
                     'foto_masuk' => $pathMasuk,
                 ]);
 
+                Satpam::where('id', $userId)->update([
+                    'last_latitude' => $request->latitude,
+                    'last_longitude' => $request->longitude,
+                    'last_seen_at' => now(),
+                ]);
+
                 $message = 'Absensi masuk berhasil.';
             } else {
                 $absensi = Absensi::where('satpam_id', $userId)->where('status', 1)->whereNull('jam_keluar')->orderBy('id', 'desc')->first();
 
                 $last_shift_id = $absensi->shift_id;
-                if($last_shift_id != $request->shift_id) {
+                if ($last_shift_id != $request->shift_id) {
                     return response()->json([
-                        "success" => false,
-                        "message" => 'Shift Kerja Pulang tidak cocok dengan Shift Kerja Masuk'
+                        'success' => false,
+                        'message' => 'Shift Kerja Pulang tidak cocok dengan Shift Kerja Masuk',
                     ]);
                 }
-
 
                 if ($absensi) {
                     $pathPulang = null;
@@ -242,6 +240,12 @@ class AbsenController extends Controller
                     $absensi->foto_pulang = $pathPulang;
                     $absensi->save();
                     $message = 'Absensi pulang berhasil';
+
+                    Satpam::where('id', $userId)->update([
+                        'last_latitude' => $request->latitude,
+                        'last_longitude' => $request->longitude,
+                        'last_seen_at' => now(),
+                    ]);
                 } else {
                     $message = 'Belum ada absen masuk';
                 }
