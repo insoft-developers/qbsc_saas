@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'checkCom' => \App\Http\Middleware\CheckComType::class,
         'isPaket' => \App\Http\Middleware\PaketAktif::class,
         'checkData' => \App\Http\Middleware\CheckData::class,
+        'admin' => \App\Http\Middleware\AdminMiddleware::class,
     ];
 }
