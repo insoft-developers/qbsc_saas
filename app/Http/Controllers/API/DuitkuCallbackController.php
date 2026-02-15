@@ -161,7 +161,7 @@ class DuitkuCallbackController extends Controller
             }
 
             if($paket_baru->is_user_area !== 1) {
-                User::where('comid', $comid)
+                User::where('company_id', $comid)
                 ->update([
                     'is_area' => 0
                 ]);

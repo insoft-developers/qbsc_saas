@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminHomeController;
+use App\Http\Controllers\Admin\AdminTransactionController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Frontend\AbsenLocationController;
@@ -318,7 +319,11 @@ Route::prefix('backadmin')->group(function () {
         Route::resource('/user', AdminUserController::class);
         Route::get('/user_table', [AdminUserController::class, 'table'])->name('admin.user.table');
         Route::post('/user_activate', [AdminUserController::class, 'activate'])->name('admin.user.activate');
-
+        Route::get('/impersonate/{id}', [AdminUserController::class, 'impersonate'])->name('admin.impersonate');
+        Route::resource('/transaction', AdminTransactionController::class);
+        Route::get('/transaction_table', [AdminTransactionController::class, 'table'])->name('admin.transaction.table');
+        Route::post('/payment', [AdminTransactionController::class, 'paid'])->name('admin.transaction.paid');
+        
         Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
     });
 });

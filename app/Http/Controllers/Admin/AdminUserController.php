@@ -32,6 +32,7 @@ use App\Models\Tamu;
 use App\Models\User;
 use App\Models\UserArea;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -51,8 +52,8 @@ class AdminUserController extends Controller
                     if ($row->company == null) {
                         return $row->name;
                     } else {
-                        $is_peternakan = $row->company->is_peternakan == 1 ? 'Peternakan':'Reguler';
-                        return $row->name . '<br>(' . $row->company->company_name . ')<br>('.$is_peternakan.')';
+                        $is_peternakan = $row->company->is_peternakan == 1 ? 'Peternakan' : 'Reguler';
+                        return $row->name . '<br>(' . $row->company->company_name . ')<br>(' . $is_peternakan . ')';
                     }
                 })
 
@@ -60,8 +61,7 @@ class AdminUserController extends Controller
                     if ($row->company == null || $row->company->paket == null) {
                         return '-';
                     } else {
-
-                        $active = $row->company->is_active == 1 ? '<span class="badge bg-success">Aktif</span>':'<span class="badge bg-danger">Tidak Aktif</span>';
+                        $active = $row->company->is_active == 1 ? '<span class="badge bg-success">Aktif</span>' : '<span class="badge bg-danger">Tidak Aktif</span>';
                         return $row->company->paket->nama_paket . '<br>(' . date('d-m-Y', strtotime($row->company->expired_date)) . ') - ' . $active;
                     }
                 })
@@ -85,7 +85,7 @@ class AdminUserController extends Controller
                     } else {
                         $button .= '<button onclick="activate(' . $row->id . ', 1)" title="Aktifkan" class="me-0 btn btn-insoft btn-success"><i class="bi bi-check-circle"></i></button>';
                     }
-                    $button .= '<button title="Masuk Ke User" class="me-0 btn btn-insoft btn-success"><i class="bi bi-check"></i></button>';
+                    $button .= '<a target="_blank" href="' . route('admin.impersonate', $row->id) . '"><button title="Masuk Ke User" class="me-0 btn btn-insoft btn-success"><i class="bi bi-check"></i></button></a>';
                     $button .= '<button onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
                     $button .= '<button onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
 
@@ -104,7 +104,7 @@ class AdminUserController extends Controller
     {
         $view = 'user';
         $pakets = PaketLangganan::all();
-        return view('admin.user.user', compact('view','pakets'));
+        return view('admin.user.user', compact('view', 'pakets'));
     }
 
     /**
@@ -118,9 +118,7 @@ class AdminUserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {
-        
-    }
+    public function store(Request $request) {}
 
     /**
      * Display the specified resource.
@@ -141,20 +139,21 @@ class AdminUserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         $input = $request->all();
         $user = User::find($id);
         $comid = $user->company_id;
 
         Company::where('id', $comid)->update([
-            "paket_id" => $input['paket_id'],
-            "is_active" => $input['is_active'],
-            "expired_date" => date('Y-m-d', strtotime($input['expired_date'])),
+            'paket_id' => $input['paket_id'],
+            'is_active' => $input['is_active'],
+            'expired_date' => date('Y-m-d', strtotime($input['expired_date'])),
         ]);
 
         return response()->json([
-            "success" => true,
-            "message" => "Sukses"
+            'success' => true,
+            'message' => 'Sukses',
         ]);
     }
 
@@ -192,12 +191,10 @@ class AdminUserController extends Controller
                 Pembelian::where('comid', $comid)->delete();
                 RunningText::where('comid', $comid)->delete();
                 DB::table('satpam_locations')
-                    ->whereIn('satpam_id', function ($q) use($comid) {
+                    ->whereIn('satpam_id', function ($q) use ($comid) {
                         $q->select('id')->from('satpams')->where('comid', $comid);
                     })
                     ->delete();
-
-                
 
                 User::where('company_id', $comid)->delete();
                 Broadcast::where('comid', $comid)->delete();
@@ -205,7 +202,6 @@ class AdminUserController extends Controller
                 Tamu::where('created_by', $id)->delete();
                 Satpam::where('comid', $comid)->delete();
                 UserArea::where('comid', $comid)->delete();
-
 
                 DB::commit();
                 return response()->json([
@@ -259,5 +255,15 @@ class AdminUserController extends Controller
             'success' => true,
             'message' => $message,
         ]);
+    }
+
+    public function impersonate($id)
+    {
+        
+        $user = User::findOrFail($id);
+
+        Auth::login($user);
+
+        return redirect('/'); // arahkan ke halaman user
     }
 }
