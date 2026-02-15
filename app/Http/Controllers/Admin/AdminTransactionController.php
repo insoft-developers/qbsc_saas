@@ -165,7 +165,9 @@ class AdminTransactionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id) {}
+    public function destroy(string $id) {
+        return Pembelian::destroy($id);
+    }
 
     public function paid(Request $request)
     {
