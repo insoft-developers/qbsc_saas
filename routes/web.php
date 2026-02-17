@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminAssetController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminHomeController;
+use App\Http\Controllers\Admin\AdminNotifikasiController;
+use App\Http\Controllers\Admin\AdminSliderController;
 use App\Http\Controllers\Admin\AdminTransactionController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -324,6 +327,15 @@ Route::prefix('backadmin')->group(function () {
         Route::get('/transaction_table', [AdminTransactionController::class, 'table'])->name('admin.transaction.table');
         Route::post('/payment', [AdminTransactionController::class, 'paid'])->name('admin.transaction.paid');
         
+        Route::resource('/asset', AdminAssetController::class);
+        Route::get('/asset_table', [AdminAssetController::class, 'table'])->name('admin.asset.table');
+
+        Route::resource('/slider', AdminSliderController::class);
+        Route::get('/slider_table', [AdminSliderController::class, 'table'])->name('admin.slider.table');
+
+        Route::resource('/notifikasi', AdminNotifikasiController::class);
+        Route::get('/notifikasi_table', [AdminNotifikasiController::class, 'table'])->name('admin.notifikasi.table');
+
         Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
     });
 });

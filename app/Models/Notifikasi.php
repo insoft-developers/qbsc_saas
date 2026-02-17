@@ -4,14 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Notifikasi extends Model
 {
     use HasFactory;
 
-
     protected $guarded = ['id'];
 
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class, 'comid', 'id');
+    }
 
-    
+    public function getCompanyNameAttribute()
+    {
+        if ($this->comid == -1) {
+            return 'Semua Perusahaan';
+        }
+
+        return $this->company ? $this->company->name : '-';
+    }
 }

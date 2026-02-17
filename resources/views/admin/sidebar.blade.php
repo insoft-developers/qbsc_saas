@@ -49,7 +49,7 @@
                             <a class="side-nav-link" href="{{ url('backadmin/transaction') }}">Transaksi</a>
                         </li>
                         <li class="side-nav-item">
-                            <a class="side-nav-link" href="{{ url('backadmin/withdraw') }}">Withdraw</a>
+                            <a class="side-nav-link" href="{{ url('backadmin/notifikasi') }}">Notifikasi</a>
                         </li>
                         
                     </ul>
@@ -65,9 +65,17 @@
             </li>
             --}}
             <li class="side-nav-item">
-                <a href="{{ url('/reseller/download') }}" class="side-nav-link">
+                <a href="{{ url('/backadmin/asset') }}" class="side-nav-link">
                     <i class="ri-newspaper-line"></i>
-                    <span> Download Aplikasi </span>
+                    <span> Asset Page </span>
+
+                </a>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="{{ url('/backadmin/slider') }}" class="side-nav-link">
+                    <i class="ri-newspaper-line"></i>
+                    <span> Slider Page </span>
 
                 </a>
             </li>
