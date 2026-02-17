@@ -2,7 +2,7 @@
 <div class="leftside-menu">
 
     <!-- Logo Light -->
-    <a href="{{ url('/reseller') }}" class="logo logo-light">
+    <a href="{{ url('/backadmin') }}" class="logo logo-light">
         <span class="logo-lg">
             <img src="{{ asset('images/new_icon.webp') }}" alt="logo">
         </span>
@@ -12,7 +12,7 @@
     </a>
 
     <!-- Logo Dark -->
-    <a href="{{ url('/') }}" class="logo logo-dark">
+    <a href="{{ url('/backadmin') }}" class="logo logo-dark">
         <span class="logo-lg">
             <img src="{{ asset('images/new_icon.webp') }}" alt="logo">
         </span>
@@ -25,7 +25,7 @@
     <div class="simplebar" data-simplebar>
         <ul class="side-nav">
             <li class="side-nav-item">
-                <a href="{{ url('/reseller') }}" class="side-nav-link">
+                <a href="{{ url('/backadmin') }}" class="side-nav-link">
                     <i class="ri-dashboard-2-line"></i>
                     <span> Dashboard </span>
 
