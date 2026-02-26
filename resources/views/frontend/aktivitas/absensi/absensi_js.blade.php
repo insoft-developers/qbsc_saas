@@ -254,6 +254,38 @@
 
 
 
+    function lupaAbsenPulang(id) {
+        Swal.fire({
+            title: 'Yakin ingin ubah status absen?',
+            text: "Data ini akan di ubah statusnya menjadi pulang!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, Status Pulang!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{ url('pulang_otomatis') }}",
+                    type: 'POST',
+                    data: {
+                        "id":id,
+                        "_token": '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        Swal.fire('Berhasil!', response.message, 'success');
+                        reloadTable();
+                    },
+                    error: function(xhr) {
+                        Swal.fire('Gagal!', xhr.responseJSON.message || 'Terjadi kesalahan.',
+                            'error');
+                    }
+                });
+            }
+        });
+    }
+
     function deleteData(id) {
         Swal.fire({
             title: 'Yakin ingin menghapus?',
@@ -285,8 +317,6 @@
         });
     }
 
-
-
     function reloadTable() {
         table.ajax.reload(null, false);
     }
@@ -299,4 +329,6 @@
         $("#status_absen").val("");
         $("#description").val("");
     }
+
+
 </script>

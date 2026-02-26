@@ -10,6 +10,7 @@ use App\Models\JamShift;
 use App\Models\Satpam;
 use App\Traits\CommonTrait;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
@@ -157,14 +158,17 @@ class AbsensiController extends Controller
 
                 ->addColumn('action', function ($row) {
                     $disabled = $this->isOwner() ? '' : 'disabled';
+                    $disabled2 = $this->isOwner() && $row->status == 1 ? '' : 'disabled';
                     $button = '';
                     $button .= '<center>';
+                    $button .= '<button ' . $disabled2 . ' onclick="lupaAbsenPulang(' . $row->id . ')" title="Lupa Absen Pulang" class="me-0 btn btn-insoft btn-info"><i class="bi bi-check-square"></i></button>';
+
                     $button .= '<button ' . $disabled . ' onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
                     $button .= '<button ' . $disabled . ' onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
                     $button .= '</center>';
                     return $button;
                 })
-                ->rawColumns(['action', 'latitude', 'tanggal', 'jam_masuk', 'jam_keluar', 'status','latitude2','foto_masuk','foto_pulang'])
+                ->rawColumns(['action', 'latitude', 'tanggal', 'jam_masuk', 'jam_keluar', 'status', 'latitude2', 'foto_masuk', 'foto_pulang'])
                 ->make(true);
 
             // bi bi-trash3
@@ -180,7 +184,7 @@ class AbsensiController extends Controller
         $satpams = Satpam::where('comid', $this->comid())->get();
         $isOwner = $this->isOwner();
         $shifts = JamShift::where('comid', $this->comid())->get();
-        return view('frontend.aktivitas.absensi.absensi', compact('view', 'satpams', 'isOwner','shifts'));
+        return view('frontend.aktivitas.absensi.absensi', compact('view', 'satpams', 'isOwner', 'shifts'));
     }
 
     /**
@@ -285,7 +289,7 @@ class AbsensiController extends Controller
             $input['shift_name'] = $shift->name;
             $input['jam_setting_masuk'] = $shift->jam_masuk;
             $input['jam_setting_pulang'] = $shift->jam_pulang;
-            
+
             $input['comid'] = $comid;
             $input['status'] = $request->status_absen;
             if ($request->jam_masuk) {
@@ -297,7 +301,6 @@ class AbsensiController extends Controller
 
             $input['tanggal'] = $data->tanggal;
 
-            
             unset($input['latitude'], $input['longitude']);
             $data->update($input);
 
@@ -360,5 +363,39 @@ class AbsensiController extends Controller
         $pdf = Pdf::loadView('frontend.aktivitas.absensi.pdf', compact('data'))->setPaper('legal', 'landscape');
 
         return $pdf->stream('Data_Absensi.pdf');
+    }
+
+    public function pulangOtomatis(Request $request)
+    {
+        
+        $input = $request->all();
+
+        $absensi = Absensi::find($input['id']);
+
+        if ($absensi->shift_id == null) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Shift Kerja tidak ada..!',
+            ]);
+        }
+
+        $shift = JamShift::find($absensi->shift_id);
+
+        $tanggalAbsen = Carbon::parse($absensi->tanggal);
+        $jamPulangAkhir = Carbon::parse($tanggalAbsen->format('Y-m-d') . ' ' . $shift->jam_pulang_akhir);
+        if ($shift->jam_pulang_akhir < $shift->jam_masuk) {
+            $jamPulangAkhir->addDay();
+        }
+
+        $absensi->jam_keluar = $jamPulangAkhir;
+        $absensi->catatan_keluar = 'tidak-absen-pulang';
+        $absensi->status = 2;
+        $absensi->updated_at = Carbon::now();
+        $absensi->save();
+
+        return response()->json([
+            'success' => true,
+            "message" => "Success"
+        ]);
     }
 }

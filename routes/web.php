@@ -64,6 +64,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
+
 Route::get('/activate/{token}', [RegisteredUserController::class, 'activate'])->name('activate');
 Route::get('/copy_link_tamu/{uuid}', [TamuController::class, 'copy_link_tamu']);
 Route::post('whatsapp_payment', [PaketLanggananController::class, 'whatsapp_payment'])->name('whatsapp.payment');
@@ -97,6 +100,7 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
     Route::get('/absensi_table', [AbsensiController::class, 'absensi_table'])->name('absensi.table');
     Route::get('/absensi_xls', [AbsensiController::class, 'exportXls'])->name('absensi.export.xls');
     Route::get('/absensi_pdf', [AbsensiController::class, 'exportPdf'])->name('absensi.export.pdf');
+    Route::post('/pulang_otomatis', [AbsensiController::class, 'pulangOtomatis']);
 
     Route::resource('patroli', PatroliController::class);
     Route::get('/patroli_table', [PatroliController::class, 'patroli_table'])->name('patroli.table');
@@ -339,5 +343,8 @@ Route::prefix('backadmin')->group(function () {
         Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
     });
 });
+
+
+
 
 require __DIR__ . '/auth.php';

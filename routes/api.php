@@ -26,6 +26,7 @@ use App\Http\Controllers\BOS\BosPatroliController;
 use App\Http\Controllers\BOS\BosSituasiController;
 use App\Http\Controllers\BOS\BosTamuController;
 use App\Http\Controllers\BOS\BosTrackingController;
+use App\Http\Controllers\BOS\Master\BosSatpamController;
 use App\Http\Controllers\Frontend\DuitkuController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -96,9 +97,7 @@ Route::prefix('bos')
         Route::post('/live_tracking', [BosTrackingController::class, 'live_tracking']);
 
 
-        Route::post('/master_satpam', [BosMasterSatpamController::class, 'index']);
-        Route::post('/tambah_satpam', [BosMasterSatpamController::class, 'store']);
-        
+        Route::resource('/master_satpam', BosSatpamController::class);
         
     });
 
