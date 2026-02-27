@@ -197,7 +197,40 @@ class BosSatpamController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $satpam = Satpam::findOrFail($id);
+
+            // Jika ada foto, hapus dari storage
+            if ($satpam->face_photo_path && Storage::disk('public')->exists($satpam->face_photo_path)) {
+                Storage::disk('public')->delete($satpam->face_photo_path);
+            }
+
+            $satpam->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Satpam berhasil dihapus.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Gagal menghapus data: ' . $e->getMessage(),
+                ],
+                500,
+            );
+        }
+    }
+
+    public function ubahStatus(Request $request) {
+        $input = $request->all();
+        $satpam = Satpam::find($input['id']);
+        $satpam->is_active = $input['stat'];
+        $satpam->save();
+        return response()->json([
+            "success" => true,
+            "message" => "sukses"
+        ]);
     }
 
     protected function generateCode($prefix)

@@ -98,6 +98,8 @@ Route::prefix('bos')
 
 
         Route::resource('/master_satpam', BosSatpamController::class);
+        Route::post('/ubah_status_satpam', [BosSatpamController::class, 'ubahStatus']);
+        Route::post('/satpam_lupa_pulang', [BosAbsensiController::class, 'lupaPulang']);
         
     });
 
