@@ -10,7 +10,6 @@ use App\Http\Controllers\API\DuitkuCallbackController;
 use App\Http\Controllers\API\LaporanAnggotaController;
 use App\Http\Controllers\API\LaporanSituasiController;
 use App\Http\Controllers\API\NotifController;
-use App\Http\Controllers\API\NotifikasiController;
 use App\Http\Controllers\API\TamuController;
 use App\Http\Controllers\API\WhatsappController;
 use App\Http\Controllers\BOS\BosAbsensiController;
@@ -20,15 +19,13 @@ use App\Http\Controllers\BOS\BosDashboardController;
 use App\Http\Controllers\BOS\BosDocController;
 use App\Http\Controllers\BOS\BosHomeController;
 use App\Http\Controllers\BOS\BosKandangController;
-use App\Http\Controllers\BOS\BosMasterSatpamController;
 use App\Http\Controllers\BOS\BosNotifikasiController;
 use App\Http\Controllers\BOS\BosPatroliController;
 use App\Http\Controllers\BOS\BosSituasiController;
 use App\Http\Controllers\BOS\BosTamuController;
 use App\Http\Controllers\BOS\BosTrackingController;
 use App\Http\Controllers\BOS\Master\BosSatpamController;
-use App\Http\Controllers\Frontend\DuitkuController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\BOS\Master\BosUserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -100,6 +97,10 @@ Route::prefix('bos')
         Route::resource('/master_satpam', BosSatpamController::class);
         Route::post('/ubah_status_satpam', [BosSatpamController::class, 'ubahStatus']);
         Route::post('/satpam_lupa_pulang', [BosAbsensiController::class, 'lupaPulang']);
+
+
+        Route::resource('/master_user', BosUserController::class);
+        Route::post('/ubah_status_user', [BosUserController::class, 'ubahStatus']);
         
     });
 
