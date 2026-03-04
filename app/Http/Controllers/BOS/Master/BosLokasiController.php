@@ -4,6 +4,7 @@ namespace App\Http\Controllers\BOS\Master;
 
 use App\Http\Controllers\Controller;
 use App\Models\Lokasi;
+use App\Traits\CommonTrait;
 use Illuminate\Http\Request;
 
 class BosLokasiController extends Controller
