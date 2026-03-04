@@ -123,7 +123,7 @@ class TamuController extends Controller
     {
         $input = $request->all();
 
-        $data = Tamu::where('comid', $input['comid'])->where('is_status', 2)->orderBy('id', 'desc')->get();
+        $data = Tamu::where('comid', $input['comid'])->orderBy('id', 'desc')->get();
         return response()->json([
             'success' => true,
             'data' => $data,

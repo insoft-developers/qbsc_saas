@@ -24,6 +24,7 @@ use App\Http\Controllers\BOS\BosPatroliController;
 use App\Http\Controllers\BOS\BosSituasiController;
 use App\Http\Controllers\BOS\BosTamuController;
 use App\Http\Controllers\BOS\BosTrackingController;
+use App\Http\Controllers\BOS\Master\BosLokasiController;
 use App\Http\Controllers\BOS\Master\BosSatpamController;
 use App\Http\Controllers\BOS\Master\BosUserController;
 use Illuminate\Support\Facades\Route;
@@ -101,6 +102,9 @@ Route::prefix('bos')
 
         Route::resource('/master_user', BosUserController::class);
         Route::post('/ubah_status_user', [BosUserController::class, 'ubahStatus']);
+
+        Route::resource('/master_lokasi', BosLokasiController::class);
+        Route::post('/ubah_status_lokasi', [BosLokasiController::class, 'ubahStatus']);
         
     });
 
