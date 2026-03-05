@@ -3,29 +3,20 @@
 namespace App\Http\Controllers\BOS\Master;
 
 use App\Http\Controllers\Controller;
-use App\Models\Lokasi;
-use App\Traits\CommonTrait;
+use App\Models\JadwalPatroli;
+use App\Models\JadwalPatroliDetail;
 use Illuminate\Http\Request;
 
-class BosLokasiController extends Controller
+class BosJadwalPatroliController extends Controller
 {
-    use CommonTrait;
     /**
      * Display a listing of the resource.
      */
-    protected function generateCode($prefix)
-    {
-        $randomNumber = random_int(10000000, 99999999);
-        return $prefix . $randomNumber;
-    }
-
-
     public function index(Request $request)
     {
         $comid = $request->comid;
-        $data = Lokasi::with('company:id,company_name')->where('comid', $comid)
-        ->orderBy('id','desc')
-        ->get();
+        $data = JadwalPatroli::with('company:id,company_name')->where('comid', $comid)->orderBy('id','desc')->get();
+
         return response()->json([
             "success" => true,
             "data" => $data
@@ -48,28 +39,17 @@ class BosLokasiController extends Controller
         $input = $request->all();
         $comid = $input['comid'];
         $validated = $request->validate([
-            'nama_lokasi' => 'required|max:100|min:3',
-            
+            'name' => 'required|max:100|min:3',
+            'description' => 'nullable',
         ]);
-
-        $paket = $this->what_paket($comid);
-        $max = $paket['jumlah_lokasi'];
-
-        $jumlah_lokasi = Lokasi::where('comid', $comid)->where('is_active', 1)->count();
-        if ($jumlah_lokasi >= $max) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Jumlah Lokasi sudah melebihi quota paket anda, silahkan upgrade paket anda untuk menambah jumlah lokasi !!',
-            ]);
-        }
 
         // Simpan ke database
         try {
-            $input['qrcode'] = $this->generateCode("LOC").'-'.$comid;
             $input['comid'] = $comid;
-            $input['nama_lokasi'] = strtoupper($request->nama_lokasi);
+            $input['name'] = strtoupper($request->name);
+            $input['is_active'] = 0;
 
-            Lokasi::create($input);
+            JadwalPatroli::create($input);
             return response()->json([
                 'success' => true,
                 'message' => 'Data berhasil disimpan',
@@ -95,7 +75,7 @@ class BosLokasiController extends Controller
      */
     public function edit(string $id)
     {
-        
+        //
     }
 
     /**
@@ -104,22 +84,21 @@ class BosLokasiController extends Controller
     public function update(Request $request, string $id)
     {
         $input = $request->all();
-
-        $data = Lokasi::findorFail($id);
-        $comid = $request->comid;
-
+        $comid = $input['comid'];
         $validated = $request->validate([
-            'nama_lokasi' => 'required|max:100|min:3',
+            'name' => 'required|max:100|min:3',
+            'description' => 'nullable',
         ]);
 
         // Simpan ke database
         try {
             $input['comid'] = $comid;
-            $input['nama_lokasi'] = strtoupper($request->nama_lokasi);
+            $input['name'] = strtoupper($request->name);
+            $data = JadwalPatroli::find($id);
             $data->update($input);
             return response()->json([
                 'success' => true,
-                'message' => 'Data berhasil diupdate',
+                'message' => 'Data berhasil disimpan',
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -132,33 +111,59 @@ class BosLokasiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+
+    public function destroy(string $id, Request $request)
     {
-        try {
-            Lokasi::destroy($id);
+        $input = $request->all();
+        $comid = $input['comid'];
+        $count = JadwalPatroli::where('comid', $comid)->count();
+        if($count == 1) {
             return response()->json([
-                'success' => true,
-                'message' => 'Data berhasil dihapus.',
+                "success" => false,
+                "message" => "Harus ada 1 jadwal patroli aktif"
             ]);
-        } catch (\Exception $e) {
-            return response()->json(
-                [
-                    'success' => false,
-                    'message' => 'Gagal menghapus data: ' . $e->getMessage(),
-                ],
-                500,
-            );
-        }
+        } 
+        
+        JadwalPatroli::destroy($input['id']);
+        return response()->json([
+                "success" => true,
+                "message" => "success"
+        ]);
     }
+
 
     public function ubahStatus(Request $request) {
         $input = $request->all();
-        $user = Lokasi::find($input['id']);
-        $user->is_active = $input['stat'];
-        $user->save();
+
+        if($input['stat'] == 1) {
+            JadwalPatroli::where('comid', $request->comid)->update([
+                "is_active" => 0
+            ]);
+        }
+
+
+        $jadwal = JadwalPatroli::find($input['id']);
+        $jadwal->is_active = $input['stat'];
+        $jadwal->save();
         return response()->json([
             "success" => true,
             "message" => "sukses"
+        ]);
+    }
+
+
+    public function detail(Request $request) {
+        $input = $request->all();
+        $comid = $input['comid'];
+        $id = $input['id'];
+        $data = JadwalPatroliDetail::with('jadwal','location','company')
+        ->where('comid', $comid)
+        ->where('patroli_id', $id)
+        ->orderBy('urutan','asc')
+        ->get();
+        return response()->json([
+            "success" => true,
+            "data" => $data
         ]);
     }
 }

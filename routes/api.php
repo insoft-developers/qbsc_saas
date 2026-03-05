@@ -24,6 +24,7 @@ use App\Http\Controllers\BOS\BosPatroliController;
 use App\Http\Controllers\BOS\BosSituasiController;
 use App\Http\Controllers\BOS\BosTamuController;
 use App\Http\Controllers\BOS\BosTrackingController;
+use App\Http\Controllers\BOS\Master\BosJadwalPatroliController;
 use App\Http\Controllers\BOS\Master\BosLokasiController;
 use App\Http\Controllers\BOS\Master\BosSatpamController;
 use App\Http\Controllers\BOS\Master\BosUserController;
@@ -105,6 +106,11 @@ Route::prefix('bos')
 
         Route::resource('/master_lokasi', BosLokasiController::class);
         Route::post('/ubah_status_lokasi', [BosLokasiController::class, 'ubahStatus']);
+
+        Route::resource('/master_jadwal', BosJadwalPatroliController::class);
+        Route::post('/ubah_status_jadwal', [BosJadwalPatroliController::class, 'ubahStatus']);
+
+        Route::post('/jadwal_patroli_detail', [BosJadwalPatroliController::class, 'detail']);
         
     });
 
