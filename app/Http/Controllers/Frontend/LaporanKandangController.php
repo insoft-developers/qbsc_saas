@@ -79,6 +79,8 @@ class LaporanKandangController extends Controller
             'tahun' => $input['tahun'],
         ];
 
+        // dd($data);
+
         return Excel::download(new LaporanKandangExport($data), 'laporan-kandang.xlsx');
     }
 
