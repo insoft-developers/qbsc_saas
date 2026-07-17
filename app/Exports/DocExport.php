@@ -3,7 +3,9 @@
 namespace App\Exports;
 
 use App\Models\DocChick;
+use App\Models\User;
 use App\Traits\CommonTrait;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -22,6 +24,7 @@ class DocExport implements FromCollection, WithHeadings, ShouldAutoSize, WithDra
     protected $end;
     protected $satpam_id;
     protected $ekspedisi_id;
+    protected $image_show;
 
     public function __construct($start = null, $end = null, $satpam_id = null, $ekspedisi_id = null)
     {
@@ -29,6 +32,8 @@ class DocExport implements FromCollection, WithHeadings, ShouldAutoSize, WithDra
         $this->end = $end;
         $this->satpam_id = $satpam_id;
         $this->ekspedisi_id = $ekspedisi_id;
+        $user = User::find(Auth::user()->id);
+        $this->image_show = $user->export_report_with_image;
     }
 
     /**
@@ -92,6 +97,9 @@ class DocExport implements FromCollection, WithHeadings, ShouldAutoSize, WithDra
      */
     public function drawings()
     {
+        if ($this->image_show !== 1) {
+            return [];
+        }
         $drawings = [];
 
         $rows = DocChick::where('comid', $this->comid())
@@ -148,6 +156,9 @@ class DocExport implements FromCollection, WithHeadings, ShouldAutoSize, WithDra
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
+                if ($this->image_show !== 1) {
+                    return [];
+                }
                 $sheet = $event->sheet->getDelegate();
 
                 // ===============================

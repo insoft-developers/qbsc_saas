@@ -84,11 +84,18 @@
                 <td style="color:{{$range ? 'black':'red'}}"  >{{ $row->note }}</td>
 
                 {{-- FOTO --}}
+                 @php
+                        $user = \App\Models\User::find(Auth::user()->id);
+                        $imageShow = $user->export_report_with_image;
+
+                    @endphp
                 <td style="text-align:center">
+                    @if($imageShow == 1)
                     @if (!empty($row->photo_path) && file_exists(public_path('storage/'.$row->photo_path)))
                         <img src="{{ public_path('storage/'.$row->photo_path) }}">
                     @else
                         -
+                    @endif
                     @endif
                 </td>
 

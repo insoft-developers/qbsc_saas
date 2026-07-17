@@ -65,7 +65,13 @@
                     <td>{{ $row->nomor_segel ?? '-' }}</td>
                     <td>{{ $row->note ?? '-' }}</td>
                     <td>{{ $row->company->company_name ?? '-' }}</td>
+                     @php
+                        $user = \App\Models\User::find(Auth::user()->id);
+                        $imageShow = $user->export_report_with_image;
+
+                    @endphp
                     <td style="white-space: nowrap;">
+                        @if($imageShow == 1)
                         @php
                             $fotos = [];
                             if($row->foto) {
@@ -81,6 +87,7 @@
                                 <img src="{{ public_path('storage/' . $foto) }}" alt="Foto Doc">
                             @endif
                         @endforeach
+                        @endif
                     </td>
                 </tr>
             @endforeach

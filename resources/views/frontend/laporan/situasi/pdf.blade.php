@@ -61,9 +61,16 @@
                     <td>{{ date('d-m-Y H:i', strtotime($row->tanggal)) }}</td>
                     <td>{{ $row->laporan }}</td>
                     <td>{{ $row->company->company_name ?? '' }}</td>
+                    @php
+                        $user = \App\Models\User::find(Auth::user()->id);
+                        $imageShow = $user->export_report_with_image;
+
+                    @endphp
                     <td>
-                        @if($row->foto)
-                            <img src="{{ public_path('storage/' . $row->foto) }}" alt="Foto Situasi">
+                        @if ($imageShow == 1)
+                            @if ($row->foto)
+                                <img src="{{ public_path('storage/' . $row->foto) }}" alt="Foto Situasi">
+                            @endif
                         @endif
                     </td>
                 </tr>

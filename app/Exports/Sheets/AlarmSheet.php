@@ -3,7 +3,9 @@
 namespace App\Exports\Sheets;
 
 use App\Models\KandangAlarm;
+use App\Models\User;
 use App\Traits\CommonTrait;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -27,6 +29,7 @@ class AlarmSheet implements
     protected $end;
     protected $satpam_id;
     protected $kandang_id;
+    protected $image_show;
 
     /** 🔴 SIMPAN DATA SEKALI */
     protected $rows;
@@ -37,6 +40,8 @@ class AlarmSheet implements
         $this->end = $end;
         $this->satpam_id = $satpam_id;
         $this->kandang_id = $kandang_id;
+        $user = User::find(Auth::user()->id);
+        $this->image_show = $user->export_report_with_image;
     }
 
     /**
@@ -62,13 +67,19 @@ class AlarmSheet implements
         ])
             ->where('comid', $this->comid())
             ->with(['satpam:id,name', 'company:id,company_name', 'kandang:id,name'])
-            ->when($this->start && $this->end, fn($q) =>
+            ->when(
+                $this->start && $this->end,
+                fn($q) =>
                 $q->whereBetween('tanggal', [$this->start, $this->end])
             )
-            ->when($this->satpam_id, fn($q) =>
+            ->when(
+                $this->satpam_id,
+                fn($q) =>
                 $q->where('satpam_id', $this->satpam_id)
             )
-            ->when($this->kandang_id, fn($q) =>
+            ->when(
+                $this->kandang_id,
+                fn($q) =>
                 $q->where('kandang_id', $this->kandang_id)
             )
             ->get();
@@ -129,6 +140,11 @@ class AlarmSheet implements
      */
     public function drawings()
     {
+
+
+        if ($this->image_show !== 1) {
+            return [];
+        }
         $drawings = [];
         $rowIndex = 2;
         $fotoColumn = 'K';
@@ -171,6 +187,10 @@ class AlarmSheet implements
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
+
+                if ($this->image_show !== 1) {
+                    return [];
+                }
 
                 /** 🔹 Lebar kolom */
                 $event->sheet->getColumnDimension('A')->setWidth(12);

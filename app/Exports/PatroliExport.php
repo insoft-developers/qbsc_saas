@@ -3,7 +3,9 @@
 namespace App\Exports;
 
 use App\Models\Patroli;
+use App\Models\User;
 use App\Traits\CommonTrait;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -25,6 +27,7 @@ class PatroliExport implements
     protected $end;
     protected $satpam_id;
     protected $location_id;
+    protected $image_show;
 
     public function __construct($start = null, $end = null, $satpam_id = null, $location_id = null)
     {
@@ -32,6 +35,8 @@ class PatroliExport implements
         $this->end = $end;
         $this->satpam_id = $satpam_id;
         $this->location_id = $location_id;
+        $user = User::find(Auth::user()->id);
+        $this->image_show = $user->export_report_with_image;
     }
 
     /**
@@ -156,6 +161,11 @@ class PatroliExport implements
      */
     public function drawings()
     {
+        
+        if ($this->image_show !== 1) {
+            return [];
+        }
+        
         $drawings = [];
 
         $rows = Patroli::where('comid', $this->comid())
