@@ -3,7 +3,9 @@
 namespace App\Exports;
 
 use App\Models\Absensi;
+use App\Models\User;
 use App\Traits\CommonTrait;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -21,6 +23,7 @@ class AbsensiExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
     protected $satpam_id;
     protected $status;
     protected $jam_absen;
+    protected $image_show;
 
     protected $rows; // simpan data asli DB
 
@@ -31,6 +34,9 @@ class AbsensiExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
         $this->satpam_id = $satpam_id;
         $this->status = $status;
         $this->jam_absen = $jam_absen;
+
+        $user = User::find(Auth::user()->id);
+        $this->image_show = $user->export_report_with_image;
     }
 
     public function collection()
@@ -96,6 +102,10 @@ class AbsensiExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
 
     public function drawings()
     {
+
+        if ($this->image_show !== 1) {
+            return [];
+        }
         $drawings = [];
 
         $headers = $this->headings();
@@ -135,6 +145,9 @@ class AbsensiExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
+                if ($this->image_show !== 1) {
+                    return;
+                }
                 foreach ($this->rows as $i => $row) {
                     $excelRow = $i + 2; // header di baris 1
 

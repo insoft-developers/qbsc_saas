@@ -199,6 +199,9 @@
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="{{ url('running_text') }}">Running Text</a>
                         </li>
+                        <li class="side-nav-item">
+                            <a class="side-nav-link" href="{{ url('report_image') }}">Report Image</a>
+                        </li>
                     </ul>
                 </div>
             </li>

@@ -66,19 +66,28 @@
                     <td>{{ $row->jam_keluar ? date('d-m-Y H:i', strtotime($row->jam_keluar)) : '' }}</td>
                     <td>{{ $row->status == 1 ? 'Masuk' : 'Pulang' }}</td>
                     {{-- FOTO --}}
+                    @php
+                        $user = \App\Models\User::find(Auth::user()->id);
+                        $imageShow = $user->export_report_with_image;
+
+                    @endphp
                     <td style="text-align:center">
-                        @if (!empty($row->foto_masuk) && file_exists(public_path('storage/' . $row->foto_masuk)))
-                            <img src="{{ public_path('storage/' . $row->foto_masuk) }}">
-                        @else
-                            -
+                        @if ($imageShow == 1)
+                            @if (!empty($row->foto_masuk) && file_exists(public_path('storage/' . $row->foto_masuk)))
+                                <img src="{{ public_path('storage/' . $row->foto_masuk) }}">
+                            @else
+                                -
+                            @endif
                         @endif
                     </td>
                     {{-- FOTO --}}
                     <td style="text-align:center">
-                        @if (!empty($row->foto_pulang) && file_exists(public_path('storage/' . $row->foto_pulang)))
-                            <img src="{{ public_path('storage/' . $row->foto_pulang) }}">
-                        @else
-                            -
+                        @if ($imageShow == 1)
+                            @if (!empty($row->foto_pulang) && file_exists(public_path('storage/' . $row->foto_pulang)))
+                                <img src="{{ public_path('storage/' . $row->foto_pulang) }}">
+                            @else
+                                -
+                            @endif
                         @endif
                     </td>
                     <td>{{ $row->catatan_masuk }}</td>

@@ -41,6 +41,7 @@ use App\Http\Controllers\Frontend\TamuController;
 use App\Http\Controllers\Frontend\UserController;
 use App\Http\Controllers\Frontend\ProfileController;
 use App\Http\Controllers\Frontend\RekapController;
+use App\Http\Controllers\Frontend\ReportImageController;
 use App\Http\Controllers\Frontend\RiwayatController;
 use App\Http\Controllers\Frontend\RunningTextController;
 use App\Http\Controllers\Frontend\TrackingController;
@@ -274,6 +275,10 @@ Route::group(['middleware' => ['auth', 'verified', 'isPaket']], function () {
 
     Route::get('/laporan_rekap_excel', [RekapController::class, 'exportExcel'])->name('laporan.rekap.excel');
     Route::get('/laporan_rekap_pdf', [RekapController::class, 'exportPdf'])->name('laporan.rekap.pdf');
+
+
+    Route::get('/report_image', [ReportImageController::class, 'index']);
+    Route::post('/report_image_update', [ReportImageController::class, 'update'])->name('report.image.update');
 });
 
 Route::get('/r/register/{code}', function ($code) {
