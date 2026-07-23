@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminNotifikasiController;
 use App\Http\Controllers\Admin\AdminSliderController;
 use App\Http\Controllers\Admin\AdminTransactionController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Frontend\AbsenLocationController;
 use App\Http\Controllers\Frontend\AbsensiController;
@@ -346,7 +347,10 @@ Route::prefix('backadmin')->group(function () {
         Route::get('/notifikasi_table', [AdminNotifikasiController::class, 'table'])->name('admin.notifikasi.table');
 
         Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
-    });
+
+        Route::resource('/blog', BlogController::class);
+        Route::get('/blog_table', [BlogController::class,'table'])->name('admin.blog.table');
+;    });
 });
 
 

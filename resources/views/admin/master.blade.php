@@ -14,21 +14,18 @@
     <!-- App favicon -->
     <link rel="icon" href="{{ url('/') }}/favicon.ico">
 
-    <link rel="icon" type="image/png" sizes="48x48"
-      href="{{ url('/') }}/favicon-48.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="{{ url('/') }}/favicon-48.png">
 
-    <link rel="icon" type="image/png" sizes="96x96"
-      href="{{ url('/') }}/favicon-96.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ url('/') }}/favicon-96.png">
 
-    <link rel="icon" type="image/png" sizes="192x192"
-      href="{{ url('/') }}/favicon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ url('/') }}/favicon-192.png">
 
-    <link rel="apple-touch-icon" sizes="180x180"
-      href="{{ url('/') }}/favicon-180.png">
-      
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url('/') }}/favicon-180.png">
+
 
     <link rel="canonical" href="{{ request()->url() }}">
-    <meta name="keywords" content="aplikasi patroli satpam, aplikasi satpam, sistem patroli satpam, patroli satpam digital, aplikasi security guard, aplikasi satpam online, aplikasi absensi satpam, laporan monitoring satpam">
+    <meta name="keywords"
+        content="aplikasi patroli satpam, aplikasi satpam, sistem patroli satpam, patroli satpam digital, aplikasi security guard, aplikasi satpam online, aplikasi absensi satpam, laporan monitoring satpam">
     <!-- Datatables css -->
     <link href="{{ asset('template/frontend') }}/assets/vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css"
         rel="stylesheet" type="text/css" />
@@ -65,7 +62,7 @@
     <link href="{{ asset('template/frontend') }}/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     @include('frontend/css')
     <style>
-       
+
     </style>
 
 
@@ -176,7 +173,7 @@
                             <i class="ri-moon-line fs-22"></i>
                         </div>
                     </li>
-                    
+
                     <li class="dropdown">
                         <a class="nav-link dropdown-toggle arrow-none nav-user" data-bs-toggle="dropdown"
                             href="#" role="button" aria-haspopup="false" aria-expanded="false">
@@ -207,7 +204,7 @@
                                 <span>Ganti Password</span>
                             </a>
 
-                            
+
                             <!-- item-->
                             <form method="POST" action="{{ route('admin.logout') }}">
                                 @csrf
@@ -404,7 +401,7 @@
         </div>
 
 
-       
+
 
 
         <div class="offcanvas-footer border-top p-3 text-center">
@@ -464,6 +461,10 @@
     <script src="{{ asset('template/frontend') }}/assets/vendor/datatables.net-select/js/dataTables.select.min.js">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('template/frontend') }}/assets/js/ckeditor/ckeditor.js"></script>
+    <script>
+        CKEDITOR.config.versionCheck = false;
+    </script>
 
 
 
@@ -504,10 +505,8 @@
     <!-- App js -->
     <script src="{{ asset('template/frontend') }}/assets/js/app.min.js"></script>
 
-    <script>
-        
 
-        
+    <script>
         function formatRupiah(angka) {
             return 'Rp ' + new Intl.NumberFormat('id-ID').format(angka);
         }
@@ -550,10 +549,6 @@
 
             return `${hari}-${bulan}-${tahun} ${jam}:${menit}`;
         }
-
-        
-
-        
     </script>
     @stack('admin_scripts')
 

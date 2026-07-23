@@ -80,6 +80,14 @@
                 </a>
             </li>
 
+            <li class="side-nav-item">
+                <a href="{{ url('/backadmin/blog') }}" class="side-nav-link">
+                    <i class="ri-newspaper-line"></i>
+                    <span> Blogs </span>
+
+                </a>
+            </li>
+
         </ul>
         <div style="margin-top: 200px;"></div>
     </div>
