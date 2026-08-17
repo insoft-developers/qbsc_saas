@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\AdminSliderController;
 use App\Http\Controllers\Admin\AdminTransactionController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\PatroliArchiveController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Frontend\AbsenLocationController;
 use App\Http\Controllers\Frontend\AbsensiController;
@@ -52,8 +53,11 @@ use App\Http\Controllers\Reseller\ResellerHomeController;
 use App\Http\Controllers\Reseller\ResellerTransactionController;
 use App\Http\Controllers\Reseller\ResellerUserController;
 use App\Http\Controllers\Reseller\ResellerWithdrawController;
+use App\Services\GoogleDrive\FileService;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
+use App\Services\GoogleDrive\FolderService;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -315,7 +319,9 @@ Route::prefix('reseller')->group(function () {
     });
 });
 
-Route::prefix('backadmin')->group(function () {
+Route::prefix('backadmin')
+    ->name('backadmin.')
+    ->group(function () {
     Route::get('/run-seeder', function () {
         Artisan::call('db:seed', [
             '--class' => 'UserAdminSeeder',
@@ -336,7 +342,7 @@ Route::prefix('backadmin')->group(function () {
         Route::resource('/transaction', AdminTransactionController::class);
         Route::get('/transaction_table', [AdminTransactionController::class, 'table'])->name('admin.transaction.table');
         Route::post('/payment', [AdminTransactionController::class, 'paid'])->name('admin.transaction.paid');
-        
+
         Route::resource('/asset', AdminAssetController::class);
         Route::get('/asset_table', [AdminAssetController::class, 'table'])->name('admin.asset.table');
 
@@ -349,8 +355,11 @@ Route::prefix('backadmin')->group(function () {
         Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
         Route::resource('/blog', BlogController::class);
-        Route::get('/blog_table', [BlogController::class,'table'])->name('admin.blog.table');
-;    });
+        Route::get('/blog_table', [BlogController::class, 'table'])->name('admin.blog.table');
+        Route::resource('/patroli_archive', PatroliArchiveController::class);
+        Route::post('/patroli_archive_process', [PatroliArchiveController::class, 'archive'])->name('patroli-archive.archive');
+        
+    });
 });
 
 

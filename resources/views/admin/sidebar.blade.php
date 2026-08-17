@@ -88,6 +88,25 @@
                 </a>
             </li>
 
+
+             <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#archiveLsyout" aria-expanded="false"
+                    aria-controls="archiveLsyout" class="side-nav-link">
+                    <i class="ri-article-line"></i>
+                    <span>Archives</span>
+                    <span class="menu-arrow"></span>
+
+                </a>
+                <div class="collapse" id="archiveLsyout">
+                    <ul class="side-nav-second-level">
+                        <li class="side-nav-item">
+                            <a class="side-nav-link" href="{{ url('backadmin/patroli_archive') }}">Patroli</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </li>
+
         </ul>
         <div style="margin-top: 200px;"></div>
     </div>

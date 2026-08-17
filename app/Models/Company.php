@@ -24,5 +24,9 @@ class Company extends Model
         return $this->hasOne(User::class, 'company_id', 'id')->where('level', 'owner');
     }
 
-    
+
+    public function patroliArchives():HasMany
+    {
+        return $this->hasMany(PatroliArchive::class);
+    }
 }

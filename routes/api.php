@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminNotifikasiController;
+use App\Http\Controllers\Admin\GoogleDriveController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\PatroliController;
 use App\Http\Controllers\API\ValidateLocationController;
@@ -41,6 +42,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::prefix('backadmin')->group(function () {
+
+    Route::get('/google-drive/connect', [
+        GoogleDriveController::class,
+        'connect'
+    ])->name('google-drive.connect');
+
+    Route::get('/google-drive/callback', [
+        GoogleDriveController::class,
+        'callback'
+    ])->name('google-drive.callback');
+
+
+    Route::get(
+        '/google-drive/test',
+        [GoogleDriveController::class, 'testDrive']
+    )->name('google-drive.test');
+
+
+    Route::get(
+        '/google-drive/test-patroli-upload',
+        [GoogleDriveController::class, 'testPatroliUpload']
+    )->name('google-drive.test-patroli-upload');
+});
+
+
+
+
 Route::prefix('admin')->group(function () {
     Route::get('/notifikasi', [AdminNotifikasiController::class, 'notifikasi']);
 });
@@ -48,10 +77,10 @@ Route::prefix('admin')->group(function () {
 
 Route::prefix('bos')
     ->group(function () {
-   Route::get('/kandang_resume/{comid}', [BosKandangController::class, 'resume']);
-   Route::get('/tampilkan_laporan_kandang', [BosKandangController::class, 'tampilkan_laporan'])
+        Route::get('/kandang_resume/{comid}', [BosKandangController::class, 'resume']);
+        Route::get('/tampilkan_laporan_kandang', [BosKandangController::class, 'tampilkan_laporan'])
             ->name('apibos.tampilkan.laporan.kandang');
-});
+    });
 
 
 
@@ -80,7 +109,7 @@ Route::prefix('bos')
         Route::post('/user', [BosTamuController::class, 'user']);
         Route::post('/tamu_add', [BosTamuController::class, 'add']);
         Route::post('/tamu_delete', [BosTamuController::class, 'delete']);
-        
+
 
         Route::post('/notifikasi', [BosNotifikasiController::class, 'index']);
         Route::post('/profile', [BosAuthController::class, 'profile']);
@@ -111,7 +140,6 @@ Route::prefix('bos')
         Route::post('/ubah_status_jadwal', [BosJadwalPatroliController::class, 'ubahStatus']);
 
         Route::post('/jadwal_patroli_detail', [BosJadwalPatroliController::class, 'detail']);
-        
     });
 
 
@@ -183,7 +211,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/whatsapp_kandang', [WhatsappController::class, 'kandang']);
     Route::post('/whatsapp_doc', [WhatsappController::class, 'doc']);
     Route::post('/whatsapp_patroli', [WhatsappController::class, 'patroli']);
-
 });
 
 

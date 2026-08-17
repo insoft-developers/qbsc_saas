@@ -56,4 +56,12 @@ return [
         'secret' => env('RECAPTCHA_SECRET_KEY'),
     ],
 
+    'google_drive' => [
+        'client_id' => env('GDRIVE_CLIENT_ID'),
+        'client_secret' => env('GDRIVE_CLIENT_SECRET'),
+        'redirect_uri' => env('GDRIVE_REDIRECT_URI'),
+        'root_folder' => env('GDRIVE_ROOT_FOLDER'),
+        'refresh_token' => env('GDRIVE_REFRESH_TOKEN'),
+    ],
+
 ];
