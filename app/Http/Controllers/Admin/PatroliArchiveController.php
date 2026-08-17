@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\DeleteLocalPatroliPhoto;
 use App\Jobs\UploadPatroliToGoogleDrive;
 use App\Models\Company;
 use App\Models\Patroli;
+use App\Models\PatroliArchive;
 use Illuminate\Http\Request;
 
 class PatroliArchiveController extends Controller
@@ -210,6 +212,82 @@ class PatroliArchiveController extends Controller
             ->with(
                 'success',
                 "{$jumlah} foto dimasukkan ke antrean Google Drive."
+            );
+    }
+
+    public function deleteLocal(Request $request)
+    {
+        $validated = $request->validate([
+            'company_id' => [
+                'required',
+                'exists:companies,id',
+            ],
+
+            'tanggal_mulai' => [
+                'required',
+                'date',
+            ],
+
+            'tanggal_akhir' => [
+                'required',
+                'date',
+                'after_or_equal:tanggal_mulai',
+            ],
+        ]);
+
+        $query = PatroliArchive::query()
+            ->with('patroli')
+            ->where('status', 'uploaded')
+            ->whereNotNull('google_drive_file_id')
+            ->whereNull('local_deleted_at')
+            ->whereHas('patroli', function ($q) use ($validated) {
+
+                $q->where(
+                    'comid',
+                    $validated['company_id']
+                );
+
+                $q->whereDate(
+                    'tanggal',
+                    '>=',
+                    $validated['tanggal_mulai']
+                );
+
+                $q->whereDate(
+                    'tanggal',
+                    '<=',
+                    $validated['tanggal_akhir']
+                );
+            });
+
+        $jumlah = 0;
+
+        $query->select('id')
+            ->orderBy('id')
+            ->chunkById(100, function ($archives) use (&$jumlah) {
+
+                foreach ($archives as $archive) {
+
+                    DeleteLocalPatroliPhoto::dispatch(
+                        $archive->id
+                    );
+
+                    $jumlah++;
+                }
+            });
+
+        return redirect()
+            ->route(
+                'backadmin.patroli_archive.index',
+                $request->only([
+                    'company_id',
+                    'tanggal_mulai',
+                    'tanggal_akhir',
+                ])
+            )
+            ->with(
+                'success',
+                "{$jumlah} foto dimasukkan ke antrean penghapusan."
             );
     }
 }

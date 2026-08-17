@@ -320,47 +320,51 @@ Route::prefix('reseller')->group(function () {
 });
 
 Route::prefix('backadmin')
-   
+
     ->group(function () {
-    Route::get('/run-seeder', function () {
-        Artisan::call('db:seed', [
-            '--class' => 'UserAdminSeeder',
-        ]);
+        Route::get('/run-seeder', function () {
+            Artisan::call('db:seed', [
+                '--class' => 'UserAdminSeeder',
+            ]);
 
-        return 'Seeder berhasil dijalankan';
+            return 'Seeder berhasil dijalankan';
+        });
+
+        Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
+        Route::post('/login', [AdminAuthController::class, 'login'])->name('backadmin.login');
+
+        Route::middleware('admin')->group(function () {
+            Route::get('/', [AdminHomeController::class, 'index']);
+            Route::resource('/user', AdminUserController::class);
+            Route::get('/user_table', [AdminUserController::class, 'table'])->name('admin.user.table');
+            Route::post('/user_activate', [AdminUserController::class, 'activate'])->name('admin.user.activate');
+            Route::get('/impersonate/{id}', [AdminUserController::class, 'impersonate'])->name('admin.impersonate');
+            Route::resource('/transaction', AdminTransactionController::class);
+            Route::get('/transaction_table', [AdminTransactionController::class, 'table'])->name('admin.transaction.table');
+            Route::post('/payment', [AdminTransactionController::class, 'paid'])->name('admin.transaction.paid');
+
+            Route::resource('/asset', AdminAssetController::class);
+            Route::get('/asset_table', [AdminAssetController::class, 'table'])->name('admin.asset.table');
+
+            Route::resource('/slider', AdminSliderController::class);
+            Route::get('/slider_table', [AdminSliderController::class, 'table'])->name('admin.slider.table');
+
+            Route::resource('/notifikasi', AdminNotifikasiController::class);
+            Route::get('/notifikasi_table', [AdminNotifikasiController::class, 'table'])->name('admin.notifikasi.table');
+
+            Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+
+            Route::resource('/blog', BlogController::class);
+            Route::get('/blog_table', [BlogController::class, 'table'])->name('admin.blog.table');
+            Route::resource('/patroli_archive', PatroliArchiveController::class)->names('backadmin.patroli_archive');
+            Route::post('/patroli_archive_process', [PatroliArchiveController::class, 'archive'])->name('backadmin.patroli-archive.archive');
+
+            Route::post(
+                '/patroli_archive_delete_local',
+                [PatroliArchiveController::class, 'deleteLocal']
+            )->name('backadmin.patroli_archive.delete_local');
+        });
     });
-
-    Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
-    Route::post('/login', [AdminAuthController::class, 'login'])->name('backadmin.login');
-
-    Route::middleware('admin')->group(function () {
-        Route::get('/', [AdminHomeController::class, 'index']);
-        Route::resource('/user', AdminUserController::class);
-        Route::get('/user_table', [AdminUserController::class, 'table'])->name('admin.user.table');
-        Route::post('/user_activate', [AdminUserController::class, 'activate'])->name('admin.user.activate');
-        Route::get('/impersonate/{id}', [AdminUserController::class, 'impersonate'])->name('admin.impersonate');
-        Route::resource('/transaction', AdminTransactionController::class);
-        Route::get('/transaction_table', [AdminTransactionController::class, 'table'])->name('admin.transaction.table');
-        Route::post('/payment', [AdminTransactionController::class, 'paid'])->name('admin.transaction.paid');
-
-        Route::resource('/asset', AdminAssetController::class);
-        Route::get('/asset_table', [AdminAssetController::class, 'table'])->name('admin.asset.table');
-
-        Route::resource('/slider', AdminSliderController::class);
-        Route::get('/slider_table', [AdminSliderController::class, 'table'])->name('admin.slider.table');
-
-        Route::resource('/notifikasi', AdminNotifikasiController::class);
-        Route::get('/notifikasi_table', [AdminNotifikasiController::class, 'table'])->name('admin.notifikasi.table');
-
-        Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
-
-        Route::resource('/blog', BlogController::class);
-        Route::get('/blog_table', [BlogController::class, 'table'])->name('admin.blog.table');
-        Route::resource('/patroli_archive', PatroliArchiveController::class)->names('backadmin.patroli_archive');
-        Route::post('/patroli_archive_process', [PatroliArchiveController::class, 'archive'])->name('backadmin.patroli-archive.archive');
-        
-    });
-});
 
 
 

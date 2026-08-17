@@ -30,45 +30,35 @@
 
                 {{-- SUCCESS MESSAGE --}}
 
-                @if(session('success'))
-
+                @if (session('success'))
                     <div class="alert alert-success alert-dismissible fade show">
 
                         <i class="ri-checkbox-circle-line me-1"></i>
 
                         {{ session('success') }}
 
-                        <button
-                            type="button"
-                            class="btn-close"
-                            data-bs-dismiss="alert"
-                        ></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 
                     </div>
-
                 @endif
 
 
                 {{-- ERROR MESSAGE --}}
 
-                @if($errors->any())
-
+                @if ($errors->any())
                     <div class="alert alert-danger">
 
                         <strong>Terjadi kesalahan:</strong>
 
                         <ul class="mb-0 mt-1">
 
-                            @foreach($errors->all() as $error)
-
+                            @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
-
                             @endforeach
 
                         </ul>
 
                     </div>
-
                 @endif
 
 
@@ -87,11 +77,8 @@
 
                     <div class="card-body">
 
-                        <form
-                            method="GET"
-                            action="{{ route('backadmin.patroli_archive.index') }}"
-                        >
-                           
+                        <form method="GET" action="{{ route('backadmin.patroli_archive.index') }}">
+
                             <div class="row g-3">
 
 
@@ -103,27 +90,16 @@
                                         Perusahaan
                                     </label>
 
-                                    <select
-                                        name="company_id"
-                                        class="form-select"
-                                        required
-                                    >
+                                    <select name="company_id" class="form-select" required>
 
                                         <option value="">
                                             -- Pilih Perusahaan --
                                         </option>
 
-                                        @foreach($companies as $company)
-
-                                            <option
-                                                value="{{ $company->id }}"
-                                                @selected(
-                                                    request('company_id') == $company->id
-                                                )
-                                            >
+                                        @foreach ($companies as $company)
+                                            <option value="{{ $company->id }}" @selected(request('company_id') == $company->id)>
                                                 {{ $company->company_name }}
                                             </option>
-
                                         @endforeach
 
                                     </select>
@@ -139,13 +115,8 @@
                                         Tanggal Mulai
                                     </label>
 
-                                    <input
-                                        type="date"
-                                        name="tanggal_mulai"
-                                        class="form-control"
-                                        value="{{ request('tanggal_mulai') }}"
-                                        required
-                                    >
+                                    <input type="date" name="tanggal_mulai" class="form-control"
+                                        value="{{ request('tanggal_mulai') }}" required>
 
                                 </div>
 
@@ -158,13 +129,8 @@
                                         Tanggal Akhir
                                     </label>
 
-                                    <input
-                                        type="date"
-                                        name="tanggal_akhir"
-                                        class="form-control"
-                                        value="{{ request('tanggal_akhir') }}"
-                                        required
-                                    >
+                                    <input type="date" name="tanggal_akhir" class="form-control"
+                                        value="{{ request('tanggal_akhir') }}" required>
 
                                 </div>
 
@@ -173,11 +139,7 @@
 
                                 <div class="col-md-1 d-flex align-items-end">
 
-                                    <button
-                                        type="submit"
-                                        class="btn btn-primary w-100"
-                                        title="Cari"
-                                    >
+                                    <button type="submit" class="btn btn-primary w-100" title="Cari">
 
                                         <i class="ri-search-line"></i>
 
@@ -340,10 +302,7 @@
 
                                         <h3 class="mb-0 fw-bold">
 
-                                            {{ number_format(
-                                                $totalUkuran / 1024 / 1024 / 1024,
-                                                2
-                                            ) }}
+                                            {{ number_format($totalUkuran / 1024 / 1024 / 1024, 2) }}
 
                                             <small class="fs-14">
                                                 GB
@@ -376,8 +335,7 @@
 
                 <!-- Action -->
 
-                @if(request()->filled('company_id'))
-
+                @if (request()->filled('company_id'))
                     <div class="card shadow-sm border-0">
 
                         <div class="card-body">
@@ -414,46 +372,25 @@
                             </div>
 
 
-                            @if($belumDiarsipkan > 0)
-
-                                <form
-                                    method="POST"
-                                    action="{{ route(
-                                        'backadmin.patroli-archive.archive'
-                                    ) }}"
+                            @if ($belumDiarsipkan > 0)
+                                <form method="POST" action="{{ route('backadmin.patroli-archive.archive') }}"
                                     onsubmit="
                                         return confirm(
                                             'Yakin ingin memasukkan foto yang dipilih ke antrean Google Drive?'
                                         );
-                                    "
-                                >
+                                    ">
 
                                     @csrf
 
 
-                                    <input
-                                        type="hidden"
-                                        name="company_id"
-                                        value="{{ request('company_id') }}"
-                                    >
+                                    <input type="hidden" name="company_id" value="{{ request('company_id') }}">
 
-                                    <input
-                                        type="hidden"
-                                        name="tanggal_mulai"
-                                        value="{{ request('tanggal_mulai') }}"
-                                    >
+                                    <input type="hidden" name="tanggal_mulai" value="{{ request('tanggal_mulai') }}">
 
-                                    <input
-                                        type="hidden"
-                                        name="tanggal_akhir"
-                                        value="{{ request('tanggal_akhir') }}"
-                                    >
+                                    <input type="hidden" name="tanggal_akhir" value="{{ request('tanggal_akhir') }}">
 
 
-                                    <button
-                                        type="submit"
-                                        class="btn btn-success"
-                                    >
+                                    <button type="submit" class="btn btn-success">
 
                                         <i class="ri-google-drive-line me-1"></i>
 
@@ -467,10 +404,10 @@
 
                                     </button>
 
+
+
                                 </form>
-
                             @else
-
                                 <div class="alert alert-success mb-0">
 
                                     <i class="ri-checkbox-circle-line me-1"></i>
@@ -479,15 +416,44 @@
                                     diarsipkan ke Google Drive.
 
                                 </div>
+                            @endif
 
+                            @if ($sudahDiarsipkan > 0)
+                                <form method="POST" action="{{ route('backadmin.patroli_archive.delete_local') }}"
+                                    class="d-inline"
+                                    onsubmit="
+            return confirm(
+                'PERINGATAN! Foto yang sudah diupload ke Google Drive akan dihapus dari VPS. Lanjutkan?'
+            );
+        ">
+
+                                    @csrf
+
+                                    <input type="hidden" name="company_id" value="{{ request('company_id') }}">
+
+                                    <input type="hidden" name="tanggal_mulai" value="{{ request('tanggal_mulai') }}">
+
+                                    <input type="hidden" name="tanggal_akhir" value="{{ request('tanggal_akhir') }}">
+
+                                    <button style="float: right;" type="submit" class="btn btn-danger">
+
+                                        <i class="ri-delete-bin-line me-1"></i>
+
+                                        Hapus Foto Lokal
+
+                                        <span class="badge bg-white text-danger ms-1">
+                                            {{ number_format($sudahDiarsipkan) }}
+                                        </span>
+
+                                    </button>
+
+                                </form>
                             @endif
 
                         </div>
 
                     </div>
-
                 @else
-
                     <div class="card shadow-sm border-0">
 
                         <div class="card-body text-center py-5">
@@ -506,7 +472,6 @@
                         </div>
 
                     </div>
-
                 @endif
 
 

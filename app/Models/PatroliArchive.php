@@ -18,12 +18,14 @@ class PatroliArchive extends Model
         'error_message',
         'uploaded_at',
         'deleted_at',
+        'local_deleted_at'
     ];
 
     protected $casts = [
         'tanggal' => 'date',
         'uploaded_at' => 'datetime',
         'deleted_at' => 'datetime',
+         'local_deleted_at' => 'datetime',
     ];
 
     public function patroli()
