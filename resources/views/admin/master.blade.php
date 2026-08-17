@@ -206,11 +206,11 @@
 
 
                             <!-- item-->
-                            <form method="POST" action="{{ route('backadmin.admin.logout') }}">
+                            <form method="POST" action="{{ route('admin.logout') }}">
                                 @csrf
                                 <a onclick="event.preventDefault();
                                                 this.closest('form').submit();"
-                                    href="{{ route('backadmin.admin.logout') }}" class="dropdown-item">
+                                    href="{{ route('admin.logout') }}" class="dropdown-item">
                                     <i class="ri-logout-circle-r-line align-middle me-1"></i>
                                     <span>Logout</span>
                                 </a>

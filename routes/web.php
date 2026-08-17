@@ -320,7 +320,7 @@ Route::prefix('reseller')->group(function () {
 });
 
 Route::prefix('backadmin')
-    ->name('backadmin.')
+   
     ->group(function () {
     Route::get('/run-seeder', function () {
         Artisan::call('db:seed', [
@@ -356,8 +356,8 @@ Route::prefix('backadmin')
 
         Route::resource('/blog', BlogController::class);
         Route::get('/blog_table', [BlogController::class, 'table'])->name('admin.blog.table');
-        Route::resource('/patroli_archive', PatroliArchiveController::class);
-        Route::post('/patroli_archive_process', [PatroliArchiveController::class, 'archive'])->name('patroli-archive.archive');
+        Route::resource('/patroli_archive', PatroliArchiveController::class)->names('backadmin.patroli_archive');
+        Route::post('/patroli_archive_process', [PatroliArchiveController::class, 'archive'])->name('backadmin.patroli-archive.archive');
         
     });
 });
