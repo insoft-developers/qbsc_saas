@@ -102,6 +102,10 @@
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="{{ url('backadmin/patroli_archive') }}">Patroli</a>
                         </li>
+
+                        <li class="side-nav-item">
+                            <a class="side-nav-link" href="{{ url('backadmin/patroli-file-scan') }}">Scan Patroli Files</a>
+                        </li>
                         
                     </ul>
                 </div>

@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\AdminTransactionController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\PatroliArchiveController;
+use App\Http\Controllers\Admin\PatroliFileScanController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Frontend\AbsenLocationController;
 use App\Http\Controllers\Frontend\AbsensiController;
@@ -363,6 +364,22 @@ Route::prefix('backadmin')
                 '/patroli_archive_delete_local',
                 [PatroliArchiveController::class, 'deleteLocal']
             )->name('backadmin.patroli_archive.delete_local');
+
+
+            Route::get(
+                '/patroli-file-scan',
+                [PatroliFileScanController::class, 'index']
+            )->name('backadmin.patroli-file-scan.index');
+
+            Route::delete(
+                '/patroli-file-scan/{patroliFileScan}',
+                [PatroliFileScanController::class, 'destroy']
+            )->name('backadmin.patroli-file-scan.destroy');
+
+            Route::post(
+                '/patroli-file-scan/scan',
+                [PatroliFileScanController::class, 'scan']
+            )->name('backadmin.patroli-file-scan.scan');
         });
     });
 
