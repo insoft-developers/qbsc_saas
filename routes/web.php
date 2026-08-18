@@ -380,6 +380,12 @@ Route::prefix('backadmin')
                 '/patroli-file-scan/scan',
                 [PatroliFileScanController::class, 'scan']
             )->name('backadmin.patroli-file-scan.scan');
+
+
+            Route::delete(
+                '/patroli-file-scans/destroy-page',
+                [PatroliFileScanController::class, 'destroyPage']
+            )->name('backadmin.patroli-file-scans.destroy-page');
         });
     });
 

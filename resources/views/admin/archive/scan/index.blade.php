@@ -9,8 +9,8 @@
     <style>
         <style>
         /* =====================================================
-           PATROLI SCAN - PAGINATION
-           ===================================================== */
+                   PATROLI SCAN - PAGINATION
+                   ===================================================== */
 
         .patroli-pagination {
             display: flex;
@@ -92,8 +92,8 @@
 
 
         /* =====================================================
-           MOBILE
-           ===================================================== */
+                   MOBILE
+                   ===================================================== */
 
         @media (max-width: 767.98px) {
 
@@ -573,8 +573,21 @@
                 <div class="card shadow-sm border-0">
 
                     <div class="card-header bg-white">
+                        <form action="{{ route('backadmin.patroli-file-scans.destroy-page') }}" method="POST"
+                            onsubmit="return confirm('Yakin ingin menghapus semua file orphan pada halaman ini? File dan data database akan dihapus permanen.')">
 
-                        <div class="d-flex justify-content-between align-items-center">
+                            @csrf
+                            @method('DELETE')
+
+                            <input type="hidden" name="page" value="{{ $files->currentPage() }}">
+
+                            <button style="float: right;" type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash"></i>
+                                Hapus File di Halaman Ini
+                            </button>
+                        </form>
+
+                        <div class="d-flex justify-content-between ">
 
                             <div>
 
@@ -583,6 +596,7 @@
                                     <i class="ri-folder-image-line me-1"></i>
 
                                     Hasil Scan File
+
 
                                 </h5>
 
@@ -666,7 +680,8 @@
 
                                                 <div class="fw-semibold">
 
-                                                    <a target="_blank" href="{{ asset('storage/patroli') }}/{{$file->file_name}}">{{ $file->file_name }}</a>
+                                                    <a target="_blank"
+                                                        href="{{ asset('storage/patroli') }}/{{ $file->file_name }}">{{ $file->file_name }}</a>
 
                                                 </div>
 

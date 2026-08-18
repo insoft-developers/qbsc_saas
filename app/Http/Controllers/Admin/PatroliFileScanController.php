@@ -200,4 +200,59 @@ class PatroliFileScanController extends Controller
             2
         ) . ' ' . $units[$power];
     }
+
+
+    public function destroyPage(Request $request)
+    {
+        $perPage = 50;
+        $page = (int) $request->input('page', 1);
+
+        $orphans = PatroliFileScan::where('status', 'orphan')
+            ->orderBy('id')
+            ->paginate($perPage, ['*'], 'page', $page);
+
+        if ($orphans->isEmpty()) {
+            return back()->with(
+                'error',
+                'Tidak ada file orphan pada halaman ini.'
+            );
+        }
+
+        $deleted = 0;
+        $failed = 0;
+
+        foreach ($orphans as $patroliFileScan) {
+
+            // Pastikan hanya orphan yang diproses
+            if ($patroliFileScan->status !== 'orphan') {
+                continue;
+            }
+
+            $path = storage_path(
+                'app/public/' . $patroliFileScan->file_path
+            );
+
+            // Hapus file fisik
+            if (is_file($path)) {
+
+                if (!unlink($path)) {
+                    $failed++;
+                    continue;
+                }
+            }
+
+            // Hapus record dari database
+            $patroliFileScan->delete();
+
+            $deleted++;
+        }
+
+        return back()->with(
+            'success',
+            "{$deleted} file orphan berhasil dihapus."
+                . ($failed > 0
+                    ? " {$failed} file gagal dihapus."
+                    : '')
+        );
+    }
 }
