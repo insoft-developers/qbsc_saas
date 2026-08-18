@@ -95,7 +95,7 @@ class PatroliFileScanController extends Controller
 
         $files = $query
             ->latest('id')
-            ->paginate(500);
+            ->paginate(2500);
 
         $files->appends($request->query());
 
@@ -204,7 +204,7 @@ class PatroliFileScanController extends Controller
 
     public function destroyPage(Request $request)
     {
-        $perPage = 500;
+        $perPage = 2500;
         $page = (int) $request->input('page', 1);
 
         $orphans = PatroliFileScan::where('status', 'orphan')
