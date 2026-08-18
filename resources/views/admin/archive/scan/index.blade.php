@@ -6,6 +6,120 @@
     <!-- Start Page Content -->
     <!-- ============================================================== -->
 
+    <style>
+        <style>
+        /* =====================================================
+           PATROLI SCAN - PAGINATION
+           ===================================================== */
+
+        .patroli-pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+
+            padding: 18px 20px;
+
+            border-top: 1px solid #edf0f2;
+            background: #fff;
+        }
+
+        .patroli-pagination-info {
+            color: #74788d;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .patroli-pagination-info strong {
+            color: #343a40;
+            font-weight: 600;
+        }
+
+        .patroli-pagination-nav {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .patroli-page {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 34px;
+            height: 34px;
+
+            padding: 0;
+
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+
+            background: #fff;
+            color: #495057;
+
+            font-size: 13px;
+            font-weight: 500;
+
+            text-decoration: none !important;
+
+            transition: all .15s ease;
+        }
+
+        .patroli-page:hover {
+            background: #f5f6f8;
+            border-color: #d5d9df;
+            color: #343a40;
+        }
+
+        .patroli-page.active {
+            background: #405189;
+            border-color: #405189;
+            color: #fff;
+        }
+
+        .patroli-page.disabled {
+            background: #f8f9fa;
+            border-color: #edf0f2;
+            color: #b5b9c0;
+
+            cursor: not-allowed;
+        }
+
+        .patroli-page i {
+            font-size: 16px;
+            line-height: 1;
+        }
+
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @media (max-width: 767.98px) {
+
+            .patroli-pagination {
+                flex-direction: column;
+                justify-content: center;
+                padding: 15px;
+                gap: 12px;
+            }
+
+            .patroli-pagination-info {
+                width: 100%;
+                text-align: center;
+            }
+
+            .patroli-pagination-nav {
+                justify-content: center;
+            }
+
+            .patroli-page {
+                width: 32px;
+                height: 32px;
+            }
+        }
+    </style>
+    </style>
     <div class="content-page">
 
         <div class="content">
@@ -29,8 +143,7 @@
 
                     <div>
 
-                        <form method="POST"
-                            action="{{ route('backadmin.patroli-file-scan.scan') }}"
+                        <form method="POST" action="{{ route('backadmin.patroli-file-scan.scan') }}"
                             onsubmit="
                                 return confirm(
                                     'Yakin ingin memulai scan seluruh file patroli? Proses akan berjalan melalui queue.'
@@ -57,45 +170,36 @@
                 {{-- SUCCESS MESSAGE --}}
 
                 @if (session('success'))
-
                     <div class="alert alert-success alert-dismissible fade show">
 
                         <i class="ri-checkbox-circle-line me-1"></i>
 
                         {{ session('success') }}
 
-                        <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert">
                         </button>
 
                     </div>
-
                 @endif
 
 
                 {{-- ERROR MESSAGE --}}
 
                 @if (session('error'))
-
                     <div class="alert alert-danger alert-dismissible fade show">
 
                         <i class="ri-error-warning-line me-1"></i>
 
                         {{ session('error') }}
 
-                        <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert">
                         </button>
 
                     </div>
-
                 @endif
 
 
                 @if ($errors->any())
-
                     <div class="alert alert-danger">
 
                         <strong>Terjadi kesalahan:</strong>
@@ -103,17 +207,14 @@
                         <ul class="mb-0 mt-1">
 
                             @foreach ($errors->all() as $error)
-
                                 <li>
                                     {{ $error }}
                                 </li>
-
                             @endforeach
 
                         </ul>
 
                     </div>
-
                 @endif
 
 
@@ -367,8 +468,7 @@
 
                     <div class="card-body">
 
-                        <form method="GET"
-                            action="{{ route('backadmin.patroli-file-scan.index') }}">
+                        <form method="GET" action="{{ route('backadmin.patroli-file-scan.index') }}">
 
                             <div class="row g-3">
 
@@ -381,11 +481,8 @@
                                         Nama File
                                     </label>
 
-                                    <input type="text"
-                                        name="search"
-                                        class="form-control"
-                                        value="{{ request('search') }}"
-                                        placeholder="Cari nama file...">
+                                    <input type="text" name="search" class="form-control"
+                                        value="{{ request('search') }}" placeholder="Cari nama file...">
 
                                 </div>
 
@@ -398,22 +495,18 @@
                                         Perusahaan
                                     </label>
 
-                                    <select name="company_id"
-                                        class="form-select">
+                                    <select name="company_id" class="form-select">
 
                                         <option value="">
                                             -- Semua Perusahaan --
                                         </option>
 
                                         @foreach ($companies as $company)
-
-                                            <option value="{{ $company->id }}"
-                                                @selected(request('company_id') == $company->id)>
+                                            <option value="{{ $company->id }}" @selected(request('company_id') == $company->id)>
 
                                                 {{ $company->company_name }}
 
                                             </option>
-
                                         @endforeach
 
                                     </select>
@@ -429,22 +522,19 @@
                                         Status
                                     </label>
 
-                                    <select name="status"
-                                        class="form-select">
+                                    <select name="status" class="form-select">
 
                                         <option value="">
                                             -- Semua Status --
                                         </option>
 
-                                        <option value="exists"
-                                            @selected(request('status') == 'exists')>
+                                        <option value="exists" @selected(request('status') == 'exists')>
 
                                             Ada di Database
 
                                         </option>
 
-                                        <option value="orphan"
-                                            @selected(request('status') == 'orphan')>
+                                        <option value="orphan" @selected(request('status') == 'orphan')>
 
                                             Tidak Ada di Database
 
@@ -459,8 +549,7 @@
 
                                 <div class="col-md-2 d-flex align-items-end">
 
-                                    <button type="submit"
-                                        class="btn btn-primary w-100">
+                                    <button type="submit" class="btn btn-primary w-100">
 
                                         <i class="ri-search-line me-1"></i>
 
@@ -546,8 +635,7 @@
                                             Status
                                         </th>
 
-                                        <th width="100"
-                                            class="text-center">
+                                        <th width="100" class="text-center">
 
                                             Aksi
 
@@ -561,7 +649,6 @@
                                 <tbody>
 
                                     @forelse ($files as $file)
-
                                         <tr>
 
                                             {{-- NO --}}
@@ -579,7 +666,7 @@
 
                                                 <div class="fw-semibold">
 
-                                                    {{ $file->file_name }}
+                                                    <a target="_blank" href="{{ asset('storage/patroli') }}/{{$file->file_name}}">{{ $file->file_name }}</a>
 
                                                 </div>
 
@@ -597,15 +684,12 @@
                                             <td>
 
                                                 @if ($file->company_name)
-
                                                     <span class="fw-semibold">
 
                                                         {{ $file->company_name }}
 
                                                     </span>
-
                                                 @else
-
                                                     <span class="text-muted">
 
                                                         <i class="ri-subtract-line"></i>
@@ -613,7 +697,6 @@
                                                         Tidak diketahui
 
                                                     </span>
-
                                                 @endif
 
                                             </td>
@@ -628,34 +711,14 @@
                                                     $size = $file->file_size;
 
                                                     if ($size >= 1024 * 1024 * 1024) {
-
                                                         $sizeText =
-                                                            number_format(
-                                                                $size / 1024 / 1024 / 1024,
-                                                                2
-                                                            ) . ' GB';
-
+                                                            number_format($size / 1024 / 1024 / 1024, 2) . ' GB';
                                                     } elseif ($size >= 1024 * 1024) {
-
-                                                        $sizeText =
-                                                            number_format(
-                                                                $size / 1024 / 1024,
-                                                                2
-                                                            ) . ' MB';
-
+                                                        $sizeText = number_format($size / 1024 / 1024, 2) . ' MB';
                                                     } elseif ($size >= 1024) {
-
-                                                        $sizeText =
-                                                            number_format(
-                                                                $size / 1024,
-                                                                2
-                                                            ) . ' KB';
-
+                                                        $sizeText = number_format($size / 1024, 2) . ' KB';
                                                     } else {
-
-                                                        $sizeText =
-                                                            $size . ' B';
-
+                                                        $sizeText = $size . ' B';
                                                     }
 
                                                 @endphp
@@ -670,7 +733,6 @@
                                             <td>
 
                                                 @if ($file->status === 'exists')
-
                                                     <span class="badge bg-success-subtle text-success">
 
                                                         <i class="ri-checkbox-circle-line me-1"></i>
@@ -678,9 +740,7 @@
                                                         Ada di DB
 
                                                     </span>
-
                                                 @else
-
                                                     <span class="badge bg-danger-subtle text-danger">
 
                                                         <i class="ri-error-warning-line me-1"></i>
@@ -688,7 +748,6 @@
                                                         Tidak Ada di DB
 
                                                     </span>
-
                                                 @endif
 
                                             </td>
@@ -699,12 +758,8 @@
                                             <td class="text-center">
 
                                                 @if ($file->status === 'orphan')
-
                                                     <form method="POST"
-                                                        action="{{ route(
-                                                            'backadmin.patroli-file-scan.destroy',
-                                                            $file
-                                                        ) }}"
+                                                        action="{{ route('backadmin.patroli-file-scan.destroy', $file) }}"
                                                         onsubmit="
                                                             return confirm(
                                                                 'PERINGATAN! File ini tidak memiliki data di database. Yakin ingin menghapus file secara permanen dari server?'
@@ -715,8 +770,7 @@
 
                                                         @method('DELETE')
 
-                                                        <button type="submit"
-                                                            class="btn btn-sm btn-danger"
+                                                        <button type="submit" class="btn btn-sm btn-danger"
                                                             title="Hapus File">
 
                                                             <i class="ri-delete-bin-line"></i>
@@ -724,15 +778,12 @@
                                                         </button>
 
                                                     </form>
-
                                                 @else
-
                                                     <span class="text-muted">
 
                                                         <i class="ri-lock-line"></i>
 
                                                     </span>
-
                                                 @endif
 
                                             </td>
@@ -743,8 +794,7 @@
 
                                         <tr>
 
-                                            <td colspan="6"
-                                                class="text-center py-5">
+                                            <td colspan="6" class="text-center py-5">
 
                                                 <div class="text-muted">
 
@@ -771,7 +821,6 @@
                                             </td>
 
                                         </tr>
-
                                     @endforelse
 
                                 </tbody>
@@ -786,45 +835,61 @@
                     {{-- PAGINATION --}}
 
                     @if ($files->hasPages())
+                        <div class="patroli-pagination">
 
-                        <div class="card-footer bg-white">
+                            <div class="patroli-pagination-info">
+                                Menampilkan
+                                <strong>{{ $files->firstItem() }}</strong>
+                                -
+                                <strong>{{ $files->lastItem() }}</strong>
+                                dari
+                                <strong>{{ number_format($files->total()) }}</strong>
+                                file
+                            </div>
 
-                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <div class="patroli-pagination-nav">
 
-                                <div class="text-muted">
+                                {{-- Previous --}}
+                                @if ($files->onFirstPage())
+                                    <span class="patroli-page disabled">
+                                        <i class="ri-arrow-left-s-line"></i>
+                                    </span>
+                                @else
+                                    <a href="{{ $files->previousPageUrl() }}" class="patroli-page">
+                                        <i class="ri-arrow-left-s-line"></i>
+                                    </a>
+                                @endif
 
-                                    Menampilkan
 
-                                    <strong>
-                                        {{ $files->firstItem() }}
-                                    </strong>
+                                {{-- Nomor halaman --}}
+                                @foreach ($files->getUrlRange(max(1, $files->currentPage() - 2), min($files->lastPage(), $files->currentPage() + 2)) as $page => $url)
+                                    @if ($page == $files->currentPage())
+                                        <span class="patroli-page active">
+                                            {{ $page }}
+                                        </span>
+                                    @else
+                                        <a href="{{ $url }}&{{ http_build_query(request()->except('page')) }}"
+                                            class="patroli-page">
+                                            {{ $page }}
+                                        </a>
+                                    @endif
+                                @endforeach
 
-                                    sampai
 
-                                    <strong>
-                                        {{ $files->lastItem() }}
-                                    </strong>
-
-                                    dari
-
-                                    <strong>
-                                        {{ number_format($files->total()) }}
-                                    </strong>
-
-                                    file
-
-                                </div>
-
-                                <div>
-
-                                    {{ $files->appends(request()->query())->links() }}
-
-                                </div>
+                                {{-- Next --}}
+                                @if ($files->hasMorePages())
+                                    <a href="{{ $files->nextPageUrl() }}" class="patroli-page">
+                                        <i class="ri-arrow-right-s-line"></i>
+                                    </a>
+                                @else
+                                    <span class="patroli-page disabled">
+                                        <i class="ri-arrow-right-s-line"></i>
+                                    </span>
+                                @endif
 
                             </div>
 
                         </div>
-
                     @endif
 
                 </div>
