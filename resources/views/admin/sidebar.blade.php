@@ -51,6 +51,9 @@
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="{{ url('backadmin/notifikasi') }}">Notifikasi</a>
                         </li>
+                         <li class="side-nav-item">
+                            <a class="side-nav-link" href="{{ url('backadmin/company') }}">Perusahaan</a>
+                        </li>
                         
                     </ul>
                 </div>

@@ -40,7 +40,8 @@ class BosAbsensiController extends Controller
         ]);
     }
 
-    public function satpam(Request $request) {
+    public function satpam(Request $request)
+    {
         $comid = $request->comid;
 
         $data = Satpam::where('comid', $comid)->get();
@@ -49,17 +50,15 @@ class BosAbsensiController extends Controller
             "success" => true,
             "data" => $data
         ]);
-
     }
 
     public function lupaPulang(Request $request)
     {
-        
         $input = $request->all();
-        
 
         $absensi = Absensi::find($input['id']);
-        if(!$absensi) {
+
+        if (!$absensi) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data absensi tidak ditemukan..!',
@@ -75,21 +74,50 @@ class BosAbsensiController extends Controller
 
         $shift = JamShift::find($absensi->shift_id);
 
-        $tanggalAbsen = Carbon::parse($absensi->tanggal);
-        $jamPulangAkhir = Carbon::parse($tanggalAbsen->format('Y-m-d') . ' ' . $shift->jam_pulang_akhir);
+        if (!$shift) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Shift Kerja tidak ditemukan..!',
+            ]);
+        }
+
+        // Ambil timezone perusahaan
+        $timezone = $absensi->company?->timezone ?? 'Asia/Jakarta';
+
+        // Tanggal absensi dianggap sebagai tanggal lokal perusahaan
+        $tanggalAbsen = Carbon::parse(
+            $absensi->tanggal,
+            $timezone
+        );
+
+        // Jam pulang adalah jam lokal perusahaan
+        $jamPulangAkhir = Carbon::createFromFormat(
+            'H:i:s',
+            $shift->jam_pulang_akhir,
+            $timezone
+        )->setDate(
+            $tanggalAbsen->year,
+            $tanggalAbsen->month,
+            $tanggalAbsen->day
+        );
+
+        // Jika jam pulang melewati tengah malam
         if ($shift->jam_pulang_akhir < $shift->jam_masuk) {
             $jamPulangAkhir->addDay();
         }
 
-        $absensi->jam_keluar = $jamPulangAkhir;
+        $absensi->jam_keluar = $jamPulangAkhir->format('Y-m-d H:i:s');
         $absensi->catatan_keluar = 'tidak-absen-pulang';
         $absensi->status = 2;
+
+        // updated_at adalah waktu server/aplikasi
         $absensi->updated_at = Carbon::now();
+
         $absensi->save();
 
         return response()->json([
             'success' => true,
-            "message" => "Success"
+            'message' => 'Success',
         ]);
     }
 }

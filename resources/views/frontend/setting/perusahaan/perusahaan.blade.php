@@ -29,6 +29,7 @@
                                         <th class="text-center" width="5%">No</th>
                                         <th class="text-center">Aksi</th>
                                         <th>Nama Perusahaan</th>
+                                        <th>Timezone</th>
                                         <th>Alamat</th>
                                         <th>Penanggung Jawab</th>
                                         <th>Email Perusahaan</th>

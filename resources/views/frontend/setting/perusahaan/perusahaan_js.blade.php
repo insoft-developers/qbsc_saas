@@ -30,6 +30,10 @@
                 name: 'company_name'
             },
             {
+                data: 'timezone',
+                name: 'timezone'
+            },
+            {
                 data: 'company_address',
                 name: 'company_address'
             },

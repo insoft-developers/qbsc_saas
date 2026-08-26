@@ -10,7 +10,11 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\PatroliArchiveController;
 use App\Http\Controllers\Admin\PatroliFileScanController;
+use App\Http\Controllers\Admin\AdminCompanyController;
+
+
 use App\Http\Controllers\Auth\RegisteredUserController;
+
 use App\Http\Controllers\Frontend\AbsenLocationController;
 use App\Http\Controllers\Frontend\AbsensiController;
 use App\Http\Controllers\Frontend\AssetController;
@@ -386,6 +390,9 @@ Route::prefix('backadmin')
                 '/patroli-file-scans/destroy-page',
                 [PatroliFileScanController::class, 'destroyPage']
             )->name('backadmin.patroli-file-scans.destroy-page');
+
+            Route::resource('/company', AdminCompanyController::class);
+            Route::get('/company_table', [AdminCompanyController::class, 'table'])->name('backadmin.company.table');
         });
     });
 

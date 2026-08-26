@@ -18,6 +18,15 @@
                                   <input type="text" id="company_name" name="company_name" class="form-control">
                               </div>
                               <div class="mb-2">
+                                  <label for="timezone" class="form-label">Zona Waktu (Timezone)</label>
+                                  <select id="timezone" name="timezone" class="form-control">
+                                    <option value="">Pilih zona waktu</option>
+                                    <option value="Asia/Jakarta">WIB(Waktu Indonesia Barat)</option>
+                                    <option value="Asia/Makassar">WITA(Waktu Indonesia Tengah)</option>
+                                    <option value="Asia/Jayapura">WIB(Waktu Indonesia Timur)</option>
+                                  </select>
+                              </div>
+                              <div class="mb-2">
                                   <label for="company_address" class="form-label">Alamat Perusahaan</label>
                                   <input type="text" id="company_address" name="company_address" class="form-control">
                               </div>

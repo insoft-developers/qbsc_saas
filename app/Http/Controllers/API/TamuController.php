@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\Tamu;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -36,28 +38,43 @@ class TamuController extends Controller
     public function saveDataTamu(Request $request)
     {
         $input = $request->all();
+
         $is_masuk = $input['masuk'];
         $id = $input['id'];
         $satpam_id = $input['satpam_id'];
 
         $tamu = Tamu::find($id);
 
+        if (!$tamu) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tamu tidak ditemukan.',
+            ], 404);
+        }
+
+        $timezone = $tamu->company?->timezone ?? 'Asia/Jakarta';
+
+        $now = Carbon::now($timezone);
+
         if ($is_masuk == 'masuk') {
             $tamu->satpam_id = $satpam_id;
             $tamu->is_status = 2;
-            $tamu->arrive_at = date('Y-m-d H:i:s');
+            $tamu->arrive_at = $now->format('Y-m-d H:i:s');
         } else {
             $tamu->satpam_id_pulang = $satpam_id;
             $tamu->is_status = 3;
-            $tamu->leave_at = date('Y-m-d H:i:s');
+            $tamu->leave_at = $now->format('Y-m-d H:i:s');
         }
+
         $tamu->save();
 
         return response()->json([
             'success' => true,
-            'message' => 'berhasil',
+            'message' => 'Berhasil',
         ]);
     }
+
+
 
     public function tambahDataTamu(Request $request)
     {
@@ -111,7 +128,13 @@ class TamuController extends Controller
         $input['uuid'] = Str::uuid();
         $input['is_status'] = 2;
         $input['created_by'] = -1;
-        $input['arrive_at'] = date('Y-m-d H:i:s');
+
+        $timezone = Company::where('id', $input['comid'])
+            ->value('timezone') ?? 'Asia/Jakarta';
+
+        $now = Carbon::now($timezone);
+
+        $input['arrive_at'] = $now->format('Y-m-d H:i:s');
         Tamu::create($input);
         return response()->json([
             'success' => true,
@@ -133,15 +156,29 @@ class TamuController extends Controller
     public function updateStatusTamu(Request $request)
     {
         $input = $request->all();
+
         $data = Tamu::find($input['id']);
+
+        if (!$data) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tamu tidak ditemukan.',
+            ], 404);
+        }
+
+        $timezone = $data->company?->timezone ?? 'Asia/Jakarta';
+
+        $now = Carbon::now($timezone);
+
         $data->satpam_id_pulang = $input['satpam_id'];
-        $data->leave_at = date('Y-m-d H:i:s');
+        $data->leave_at = $now->format('Y-m-d H:i:s');
         $data->is_status = 3;
+
         $data->save();
 
         return response()->json([
             'success' => true,
-            'message' => 'success',
+            'message' => 'Tamu berhasil ditandai pulang.',
         ]);
     }
 }

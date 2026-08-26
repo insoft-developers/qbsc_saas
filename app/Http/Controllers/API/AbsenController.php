@@ -28,16 +28,47 @@ class AbsenController extends Controller
         $userId = $request->user_id;
         $file = $request->file('image');
         $model = $request->absen_model;
-        $jamSekarang = date('H:i:s');
-        // $jamSekarang = '08:30:30';
 
-        $now = Carbon::now();
+        $user = Satpam::find($userId);
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User tidak ditemukan.',
+            ], 404);
+        }
+
+        $timezone = $user->company?->timezone ?? 'Asia/Jakarta';
+
+        $now = Carbon::now($timezone);
+        $jamSekarang = $now->format('H:i:s');
+
+
+
         $myShift = JamShift::find($request->shift_id);
 
         if ($model == 'masuk') {
-            $jamMasukAwal = Carbon::parse($myShift->jam_masuk_awal)->setDateFrom($now);
-            $jamMasukAkhir = Carbon::parse($myShift->jam_masuk_akhir)->setDateFrom($now);
-            $jamMasukUser = Carbon::parse($jamSekarang)->setDateFrom($now);
+            // Jadwal dianggap sebagai JAM LOKAL perusahaan
+            $jamMasukAwal = Carbon::createFromFormat(
+                'H:i:s',
+                $myShift->jam_masuk_awal,
+                $timezone
+            )->setDate(
+                $now->year,
+                $now->month,
+                $now->day
+            );
+
+            $jamMasukAkhir = Carbon::createFromFormat(
+                'H:i:s',
+                $myShift->jam_masuk_akhir,
+                $timezone
+            )->setDate(
+                $now->year,
+                $now->month,
+                $now->day
+            );
+
+            $jamMasukUser = $now->copy();
 
             if ($jamMasukAkhir->lt($jamMasukAwal)) {
                 $jamMasukAkhir->addDay();
@@ -65,9 +96,28 @@ class AbsenController extends Controller
             }
         } else {
             $jamPulang = date('H:i:s');
-            $jamPulangAwal = Carbon::parse($myShift->jam_pulang_awal)->setDateFrom($now);
-            $jamPulangAkhir = Carbon::parse($myShift->jam_pulang_akhir)->setDateFrom($now);
-            $jamPulangUser = Carbon::parse($jamPulang)->setDateFrom($now);
+            $jamPulangAwal = Carbon::createFromFormat(
+                'H:i:s',
+                $myShift->jam_pulang_awal,
+                $timezone
+            )->setDate(
+                $now->year,
+                $now->month,
+                $now->day
+            );
+
+            $jamPulangAkhir = Carbon::createFromFormat(
+                'H:i:s',
+                $myShift->jam_pulang_akhir,
+                $timezone
+            )->setDate(
+                $now->year,
+                $now->month,
+                $now->day
+            );
+
+            // Waktu sekarang sesuai timezone perusahaan
+            $jamPulangUser = $now->copy();
 
             if ($jamPulangAkhir->lt($jamPulangAwal)) {
                 $jamPulangAkhir->addDay();
@@ -95,8 +145,8 @@ class AbsenController extends Controller
             }
         }
 
-        $user = Satpam::find($userId);
-        if (!$user || !$user->face_embedding) {
+
+        if (!$user->face_embedding) {
             return response()->json(
                 [
                     'success' => false,
@@ -126,8 +176,10 @@ class AbsenController extends Controller
 
         $matched = $result['matched'] ?? false;
         $distance = $result['distance'] ?? null;
-        $tanggal = date('Y-m-d');
-        $jam = date('Y-m-d H:i:s');
+
+        $tanggal = $now->format('Y-m-d');
+        $jam = $now->format('Y-m-d H:i:s');
+
         if ($matched) {
             if ($model == 'masuk') {
                 $myShift = JamShift::find($request->shift_id);
@@ -233,7 +285,7 @@ class AbsenController extends Controller
                         $pathPulang = 'absensi/' . $filename;
                     }
 
-                    $absensi->jam_keluar = date('Y-m-d H:i:s');
+                    $absensi->jam_keluar = $now->format('Y-m-d H:i:s');
                     $absensi->status = 2;
                     $absensi->latitude2 = $request->latitude;
                     $absensi->longitude2 = $request->longitude;
@@ -266,23 +318,40 @@ class AbsenController extends Controller
     {
         $input = $request->all();
 
-        $data = Absensi::where('satpam_id', $input['satpam_id'])->orderBy('id', 'desc')->first();
+        $satpam = Satpam::find($input['satpam_id']);
+
+        if (!$satpam) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Satpam tidak ditemukan.',
+            ], 404);
+        }
+
+        $data = Absensi::where('satpam_id', $input['satpam_id'])
+            ->orderBy('id', 'desc')
+            ->first();
+
         if ($data) {
             return response()->json([
                 'success' => true,
                 'data' => $data,
             ]);
-        } else {
-            return response()->json([
-                'success' => true,
-                'data' => [
-                    'tanggal' => date('Y-m-d H:i:s'),
-                    'jam_masuk' => null,
-                    'jam_keluar' => null,
-                    'status' => null,
-                ],
-            ]);
         }
+
+        // Gunakan timezone perusahaan
+        $timezone = $satpam->company?->timezone ?? 'Asia/Jakarta';
+
+        $now = Carbon::now($timezone);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'tanggal' => $now->format('Y-m-d H:i:s'),
+                'jam_masuk' => null,
+                'jam_keluar' => null,
+                'status' => null,
+            ],
+        ]);
     }
 
     public function getDataShift(Request $request)
