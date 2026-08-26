@@ -3,66 +3,79 @@
 namespace App\Console\Commands;
 
 use App\Models\Absensi;
-use Illuminate\Console\Command;
 use Carbon\Carbon;
+use Illuminate\Console\Command;
 
 class AbsenPulangCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'app:absen-pulang-cron';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Command description';
+    protected $description = 'Memproses status pulang absensi';
 
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
-        $absen_pulang = Absensi::whereNull('catatan_keluar')
-            ->where('status', 2) // sudah scan pulang
-            ->get();
+        Absensi::whereNull('catatan_keluar')
+            ->where('status', 2)
+            ->with('company:id,timezone')
+            ->chunkById(500, function ($absensis) {
 
-        foreach ($absen_pulang as $pulang) {
-            $jamMasuk = Carbon::parse($pulang->jam_masuk); // tanggal shift
-            $jamPulang = Carbon::parse($pulang->jam_keluar); // actual pulang
+                foreach ($absensis as $pulang) {
 
-            // Buat jam setting pulang → tempel tanggal dari jam masuk
-            $jamSetting = Carbon::parse($pulang->jam_setting_pulang)->setDate($jamMasuk->year, $jamMasuk->month, $jamMasuk->day);
+                    // Timezone perusahaan
+                    $timezone = $pulang->company?->timezone ?? 'Asia/Jakarta';
 
-            // Jika setting < jam masuk → berarti setting ada di hari berikutnya (shift malam)
-            if ($jamSetting->lt($jamMasuk)) {
-                $jamSetting->addDay();
-            }
+                    // Jam masuk aktual
+                    $jamMasuk = Carbon::parse(
+                        $pulang->jam_masuk,
+                        $timezone
+                    );
 
-            // Tentukan status pulang
-            if ($jamPulang->gte($jamSetting)) {
-                $status = 'tepat-waktu';
-                $isPulangCepat = 0;
-                // Jika ingin hitung lembur:
-                // $menitLembur = $jamSetting->diffInMinutes($jamPulang);
-                // if ($menitLembur > 0) {
-                //     $status = "lembur $menitLembur menit";
-                // }
-            } else {
-                // Pulang lebih cepat
-                $lebihCepat = $jamSetting->diffInMinutes($jamPulang);
-                $status = "pulang lebih cepat $lebihCepat menit";
-                $isPulangCepat = 1;
-            }
+                    // Jam pulang aktual
+                    $jamPulang = Carbon::parse(
+                        $pulang->jam_keluar,
+                        $timezone
+                    );
 
-            $pulang->update([
-                'catatan_keluar' => $status,
-                'is_pulang_cepat' => $isPulangCepat
-            ]);
-        }
+                    // Jam setting pulang
+                    $jamSetting = Carbon::parse(
+                        $pulang->jam_setting_pulang,
+                        $timezone
+                    )->setDate(
+                        $jamMasuk->year,
+                        $jamMasuk->month,
+                        $jamMasuk->day
+                    );
+
+                    // Jika jam pulang lebih kecil dari jam masuk,
+                    // berarti shift melewati tengah malam.
+                    if ($jamSetting->lt($jamMasuk)) {
+                        $jamSetting->addDay();
+                    }
+
+                    // Tentukan status pulang
+                    if ($jamPulang->gte($jamSetting)) {
+
+                        $status = 'tepat-waktu';
+                        $isPulangCepat = 0;
+
+                    } else {
+
+                        $lebihCepat = $jamSetting->diffInMinutes($jamPulang);
+
+                        $status = "pulang lebih cepat {$lebihCepat} menit";
+                        $isPulangCepat = 1;
+                    }
+
+                    // Simpan hasil
+                    $pulang->update([
+                        'catatan_keluar' => $status,
+                        'is_pulang_cepat' => $isPulangCepat,
+                    ]);
+                }
+            });
+
+        $this->info('Proses absensi pulang selesai.');
+
+        return Command::SUCCESS;
     }
 }

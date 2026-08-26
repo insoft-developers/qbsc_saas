@@ -8,54 +8,69 @@ use Illuminate\Console\Command;
 
 class AbsenCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'app:absen-cron';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Command description';
+    protected $description = 'Memproses status keterlambatan absensi';
 
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
-        $absen_masuk = Absensi::whereNull('catatan_masuk')->get();
+        Absensi::whereNull('catatan_masuk')
+            ->with('company:id,timezone')
+            ->chunkById(500, function ($absensis) {
 
-        foreach ($absen_masuk as $masuk) {
-            // Waktu karyawan datang
-            $jamMasuk = Carbon::parse($masuk->jam_masuk);
+                foreach ($absensis as $masuk) {
 
-            // Jam setting shift (tanpa tanggal → tempel tanggal jam masuk)
-            $jamSetting = Carbon::parse($masuk->jam_setting_masuk)->setDateFrom($jamMasuk);
+                    // Timezone perusahaan
+                    $timezone = $masuk->company?->timezone ?? 'Asia/Jakarta';
 
-            // Jika melewati tengah malam
-            if ($jamSetting->lt($jamMasuk) && $jamMasuk->diffInHours($jamSetting) >= 6) {
-                $jamSetting->addDay();
-            }
+                    // Jam masuk aktual
+                    $jamMasuk = Carbon::parse(
+                        $masuk->jam_masuk,
+                        $timezone
+                    );
 
-            if ($jamMasuk->lte($jamSetting)) {
-                $status = 'tepat-waktu';
-                $isTerlambat = 0;
-            } else {
-                // Hitung keterlambatan dalam menit
-                $menitTerlambat = $jamMasuk->diffInMinutes($jamSetting);
-                $status = "terlambat $menitTerlambat menit";
-                $isTerlambat = 1;
-            }
+                    // Jam masuk dari setting shift
+                    $jamSetting = Carbon::parse(
+                        $masuk->jam_setting_masuk,
+                        $timezone
+                    )->setDate(
+                        $jamMasuk->year,
+                        $jamMasuk->month,
+                        $jamMasuk->day
+                    );
 
-            // Simpan
-            $masuk->update([
-                'catatan_masuk' => $status,
-                'is_terlambat' => $isTerlambat
-            ]);
-        }
+                    // Jika shift melewati tengah malam
+                    if (
+                        $jamSetting->lt($jamMasuk) &&
+                        $jamMasuk->diffInHours($jamSetting) >= 6
+                    ) {
+                        $jamSetting->addDay();
+                    }
+
+                    // Cek terlambat
+                    if ($jamMasuk->lte($jamSetting)) {
+
+                        $status = 'tepat-waktu';
+                        $isTerlambat = 0;
+
+                    } else {
+
+                        $menitTerlambat = $jamMasuk->diffInMinutes($jamSetting);
+
+                        $status = "terlambat {$menitTerlambat} menit";
+                        $isTerlambat = 1;
+                    }
+
+                    // Simpan hasil
+                    $masuk->update([
+                        'catatan_masuk' => $status,
+                        'is_terlambat' => $isTerlambat,
+                    ]);
+                }
+            });
+
+        $this->info('Proses absensi selesai.');
+
+        return Command::SUCCESS;
     }
 }
