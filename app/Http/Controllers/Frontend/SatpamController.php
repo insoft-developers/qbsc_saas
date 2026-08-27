@@ -42,6 +42,10 @@ class SatpamController extends Controller
                 ->addColumn('company', function ($row) {
                     return $row->company->company_name ?? '';
                 })
+
+                ->addColumn('app_version', function($row){
+                    return $row->app_version ?? ' - ';
+                })
                 ->addColumn('last_position', function ($row) {
                     if(!empty($row->last_latitude && !empty($row->last_longitude))) {
                         $lokasi_url = "https://www.google.com/maps/search/?api=1&query=".$row->last_latitude.",".$row->last_longitude."";

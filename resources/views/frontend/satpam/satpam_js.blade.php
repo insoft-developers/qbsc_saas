@@ -29,6 +29,10 @@
                 data: 'foto',
                 name: 'foto'
             },
+              {
+                data: 'app_version',
+                name: 'app_version'
+            },
             // {
             //     data: 'badge_id',
             //     name: 'badge_id'
