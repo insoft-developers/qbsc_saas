@@ -4,6 +4,7 @@ namespace App\Http\Controllers\BOS;
 
 use App\Http\Controllers\Controller;
 use App\Models\MainSlider;
+use App\Models\Satpam;
 use Illuminate\Http\Request;
 
 class BosHomeController extends Controller
@@ -38,5 +39,21 @@ class BosHomeController extends Controller
             'success' => true,
             'data' => $data,
         ]);
+    }
+
+
+    public function update_app_version(Request $request)
+    {
+        $input = $request->all();
+
+        $satpam = Satpam::find($input['userid']);
+        $satpam->app_version = $input['version'];
+        $satpam->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Sukses update version',
+        ]);
+
     }
 }
