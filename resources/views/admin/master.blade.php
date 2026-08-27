@@ -60,6 +60,9 @@
 
     <!-- Icons css -->
     <link href="{{ asset('template/frontend') }}/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+
     @include('frontend/css')
     <style>
 
@@ -108,8 +111,8 @@
 
                     <!-- Page Title -->
                     @php
-                        $resid = Auth::guard('admin')->user()->id;
-                        $reseller = \App\Models\Admin::find($resid);
+                    $resid = Auth::guard('admin')->user()->id;
+                    $reseller = \App\Models\Admin::find($resid);
 
                     @endphp
                     <h4 class="page-title d-none d-sm-block">QBSC ADMIN PANEL</h4>
@@ -155,86 +158,86 @@
 
                             <!-- All-->
                             <a href="{{ url('notifikasi') }}"
-                                class="dropdown-item text-center text-primary text-decoration-underline fw-bold notify-item border-top border-light py-2">
-                                Lihat Semua
-                            </a>
+                    class="dropdown-item text-center text-primary text-decoration-underline fw-bold notify-item border-top border-light py-2">
+                    Lihat Semua
+                    </a>
 
-                        </div>
-                    </li> --}}
-
-                    <li class="d-none d-sm-inline-block">
-                        <a class="nav-link" data-bs-toggle="offcanvas" href="#theme-settings-offcanvas">
-                            <span class="ri-settings-3-line fs-22"></span>
-                        </a>
-                    </li>
-
-                    <li class="d-none d-sm-inline-block">
-                        <div class="nav-link" id="light-dark-mode">
-                            <i class="ri-moon-line fs-22"></i>
-                        </div>
-                    </li>
-
-                    <li class="dropdown">
-                        <a class="nav-link dropdown-toggle arrow-none nav-user" data-bs-toggle="dropdown"
-                            href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                            <span class="account-user-avatar">
-                                <img src="{{ $reseller->foto == null ? asset('images/default.png') : asset('storage/' . $reseller->foto) }}"
-                                    alt="user-image" width="32" height="32" class="rounded-circle">
-                            </span>
-                            <span class="d-lg-block d-none">
-                                <h5 class="my-0 fw-normal">{{ Auth::guard('admin')->user()->name }}<i
-                                        class="ri-arrow-down-s-line fs-22 d-none d-sm-inline-block align-middle"></i>
-                                </h5>
-                            </span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated profile-dropdown">
-                            <!-- item-->
-                            <div class=" dropdown-header noti-title">
-                                <h6 class="text-overflow m-0">Welcome !</h6>
-                            </div>
-
-                            <!-- item-->
-                            <a href="{{ url('profile') }}" class="dropdown-item">
-                                <i class="ri-account-pin-circle-line fs-16 align-middle me-1 "></i>
-                                <span>Profil</span>
-                            </a>
-
-                            <a href="{{ url('change_password') }}" class="dropdown-item">
-                                <i class="ri-lock-unlock-line fs-16 align-middle me-1"></i>
-                                <span>Ganti Password</span>
-                            </a>
-
-
-                            <!-- item-->
-                            <form method="POST" action="{{ route('admin.logout') }}">
-                                @csrf
-                                <a onclick="event.preventDefault();
-                                                this.closest('form').submit();"
-                                    href="{{ route('admin.logout') }}" class="dropdown-item">
-                                    <i class="ri-logout-circle-r-line align-middle me-1"></i>
-                                    <span>Logout</span>
-                                </a>
-                            </form>
-
-                        </div>
-                    </li>
-                </ul>
             </div>
+            </li> --}}
+
+            <li class="d-none d-sm-inline-block">
+                <a class="nav-link" data-bs-toggle="offcanvas" href="#theme-settings-offcanvas">
+                    <span class="ri-settings-3-line fs-22"></span>
+                </a>
+            </li>
+
+            <li class="d-none d-sm-inline-block">
+                <div class="nav-link" id="light-dark-mode">
+                    <i class="ri-moon-line fs-22"></i>
+                </div>
+            </li>
+
+            <li class="dropdown">
+                <a class="nav-link dropdown-toggle arrow-none nav-user" data-bs-toggle="dropdown"
+                    href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                    <span class="account-user-avatar">
+                        <img src="{{ $reseller->foto == null ? asset('images/default.png') : asset('storage/' . $reseller->foto) }}"
+                            alt="user-image" width="32" height="32" class="rounded-circle">
+                    </span>
+                    <span class="d-lg-block d-none">
+                        <h5 class="my-0 fw-normal">{{ Auth::guard('admin')->user()->name }}<i
+                                class="ri-arrow-down-s-line fs-22 d-none d-sm-inline-block align-middle"></i>
+                        </h5>
+                    </span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated profile-dropdown">
+                    <!-- item-->
+                    <div class=" dropdown-header noti-title">
+                        <h6 class="text-overflow m-0">Welcome !</h6>
+                    </div>
+
+                    <!-- item-->
+                    <a href="{{ url('profile') }}" class="dropdown-item">
+                        <i class="ri-account-pin-circle-line fs-16 align-middle me-1 "></i>
+                        <span>Profil</span>
+                    </a>
+
+                    <a href="{{ url('change_password') }}" class="dropdown-item">
+                        <i class="ri-lock-unlock-line fs-16 align-middle me-1"></i>
+                        <span>Ganti Password</span>
+                    </a>
+
+
+                    <!-- item-->
+                    <form method="POST" action="{{ route('admin.logout') }}">
+                        @csrf
+                        <a onclick="event.preventDefault();
+                                                this.closest('form').submit();"
+                            href="{{ route('admin.logout') }}" class="dropdown-item">
+                            <i class="ri-logout-circle-r-line align-middle me-1"></i>
+                            <span>Logout</span>
+                        </a>
+                    </form>
+
+                </div>
+            </li>
+            </ul>
         </div>
-        <!-- ========== Topbar End ========== -->
+    </div>
+    <!-- ========== Topbar End ========== -->
 
-        @include('admin.sidebar')
+    @include('admin.sidebar')
 
 
-        <!-- ============================================================== -->
-        <!-- Start Page Content here -->
-        <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Start Page Content here -->
+    <!-- ============================================================== -->
 
-        @yield('admin')
+    @yield('admin')
 
-        <!-- ============================================================== -->
-        <!-- End Page content -->
-        <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- End Page content -->
+    <!-- ============================================================== -->
 
     </div>
     <!-- END wrapper -->
@@ -462,6 +465,8 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('template/frontend') }}/assets/js/ckeditor/ckeditor.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js">
+    </script>
     <script>
         CKEDITOR.config.versionCheck = false;
     </script>
@@ -470,37 +475,37 @@
 
     <!-- Apex Charts js -->
     @if ($view == 'dashboard')
-        {{-- <script src="{{ asset('template/frontend') }}/assets/vendor/apexcharts/apexcharts.min.js"></script> --}}
+    {{-- <script src="{{ asset('template/frontend') }}/assets/vendor/apexcharts/apexcharts.min.js"></script> --}}
 
-        <!-- Vector Map js -->
-        <script
-            src="{{ asset('template/frontend') }}/assets/vendor/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js">
-        </script>
-        <script
-            src="{{ asset('template/frontend') }}/assets/vendor/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js">
-        </script>
+    <!-- Vector Map js -->
+    <script
+        src="{{ asset('template/frontend') }}/assets/vendor/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js">
+    </script>
+    <script
+        src="{{ asset('template/frontend') }}/assets/vendor/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js">
+    </script>
 
-        <script>
-            function copy_link() {
-                const input = document.getElementById('referal_url');
-                input.select();
-                input.setSelectionRange(0, 99999); // mobile support
+    <script>
+        function copy_link() {
+            const input = document.getElementById('referal_url');
+            input.select();
+            input.setSelectionRange(0, 99999); // mobile support
 
-                navigator.clipboard.writeText(input.value).then(() => {
-                    alert('Link referral berhasil disalin');
-                }).catch(() => {
-                    // fallback kalau clipboard API tidak tersedia
-                    document.execCommand('copy');
-                    alert('Link referral berhasil disalin');
-                });
-            }
-        </script>
-
-
+            navigator.clipboard.writeText(input.value).then(() => {
+                alert('Link referral berhasil disalin');
+            }).catch(() => {
+                // fallback kalau clipboard API tidak tersedia
+                document.execCommand('copy');
+                alert('Link referral berhasil disalin');
+            });
+        }
+    </script>
 
 
-        <!-- Dashboard App js -->
-        {{-- <script src="{{ asset('template/frontend') }}/assets/js/pages/dashboard.js"></script> --}}
+
+
+    <!-- Dashboard App js -->
+    {{-- <script src="{{ asset('template/frontend') }}/assets/js/pages/dashboard.js"></script> --}}
     @endif
     <!-- App js -->
     <script src="{{ asset('template/frontend') }}/assets/js/app.min.js"></script>

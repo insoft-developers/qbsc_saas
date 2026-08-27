@@ -10,4 +10,9 @@ class MainSlider extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+
+    protected $casts = [
+        'comid' => 'array',
+    ];
 }

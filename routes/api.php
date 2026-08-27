@@ -105,6 +105,7 @@ Route::prefix('bos')
         Route::post('/broadcast_delete', [BosBroadcastController::class, 'delete']);
         Route::post('/situasi', [BosSituasiController::class, 'index']);
         Route::post('/slider', [BosHomeController::class, 'slider']);
+        Route::post('/slider_new', [BosHomeController::class, 'slider_new']);
         Route::post('/tamu', [BosTamuController::class, 'index']);
         Route::post('/user', [BosTamuController::class, 'user']);
         Route::post('/tamu_add', [BosTamuController::class, 'add']);
@@ -200,6 +201,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/bos_user', [BosTamuController::class, 'user']);
     Route::post('/bos_situasi', [BosSituasiController::class, 'index']);
 
+
     Route::post('/kandang_suhu', [BosKandangController::class, 'suhu']);
     Route::post('/kandang_kipas', [BosKandangController::class, 'kipas']);
     Route::post('/kandang_alarm', [BosKandangController::class, 'alarm']);
@@ -211,6 +213,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/whatsapp_kandang', [WhatsappController::class, 'kandang']);
     Route::post('/whatsapp_doc', [WhatsappController::class, 'doc']);
     Route::post('/whatsapp_patroli', [WhatsappController::class, 'patroli']);
+    Route::post('/slider_new', [BosHomeController::class, 'slider_new']);
 });
 
 

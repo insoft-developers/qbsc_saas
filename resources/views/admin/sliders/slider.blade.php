@@ -7,7 +7,7 @@
     <div class="content-page">
         <div class="content">
             <div class="container-fluid">
-
+             
                 <!-- Page Header -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="mb-0 fw-bold">Slider Page</h4>
@@ -28,6 +28,8 @@
                                         <th class="text-center">Aksi</th>
                                         <th>Image</th>
                                         <th>Title</th>
+                                        <th>Subtitle</th>
+                                        <th>Company</th>
                                         <th>Status</th>
                                         <th>Created At</th>
                                         

@@ -1,8 +1,55 @@
 <script>
+    CKEDITOR.replace('content');
+
+    $('#select-all-companies').on('click', function() {
+
+        $('.company-checkbox')
+            .prop('checked', true)
+            .prop('disabled', false);
+
+        $('#all_companies').prop('checked', false);
+    });
+
+
+    $('#clear-all-companies').on('click', function() {
+
+        $('.company-checkbox')
+            .prop('checked', false)
+            .prop('disabled', false);
+
+        $('#all_companies').prop('checked', false);
+    });
+
+    $('#all_companies').on('change', function() {
+
+        if ($(this).is(':checked')) {
+
+            $('.company-checkbox')
+                .prop('checked', false)
+                .prop('disabled', true);
+
+        } else {
+
+            $('.company-checkbox')
+                .prop('disabled', false);
+
+        }
+
+    });
+
+    $('.company-checkbox').on('change', function() {
+
+        if ($('.company-checkbox:checked').length > 0) {
+            $('#all_companies').prop('checked', false);
+        }
+
+    });
+
+
     var table = $('#list-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{{ route('admin.slider.table') }}',
+        ajax: "{{ route('admin.slider.table') }}",
         order: [
             [0, 'desc']
         ],
@@ -33,6 +80,14 @@
                 name: 'title'
             },
             {
+                data: 'subtitle',
+                name: 'subtitle'
+            },
+            {
+                data: 'comid',
+                name: 'comid'
+            },
+            {
                 data: 'is_active',
                 name: 'is_active'
             },
@@ -40,7 +95,7 @@
                 data: 'created_at',
                 name: 'created_at'
             },
-            
+
         ]
     });
 
@@ -59,10 +114,15 @@
         var id = $('#id').val();
         if (save_method == "add") url = "{{ url('backadmin/slider') }}";
         else url = "{{ url('backadmin/slider') . '/' }}" + id;
+
+        var CKContent = CKEDITOR.instances.content.getData();
+        let formData = new FormData($('#modal-tambah form')[0]);
+        formData.append("content", CKContent);
+
         $.ajax({
             url: url,
             type: "POST",
-            data: new FormData($('#modal-tambah form')[0]),
+            data: formData,
             contentType: false,
             processData: false,
             success: function(data) {
@@ -115,8 +175,39 @@
                 $('.modal-title').text("Edit Data Slider");
                 $('#id').val(data.id);
                 $("#title").val(data.title);
+                $("#subtitle").val(data.subtitle);
+                CKEDITOR.instances.content.setData(data.content);
                 $("#image").val(null);
                 $("#is_active").val(data.is_active);
+
+                $('.company-checkbox')
+                    .prop('checked', false)
+                    .prop('disabled', false);
+
+                $('#all_companies').prop('checked', false);
+
+
+                // =====================================
+                // SET PERUSAHAAN YANG DIPILIH
+                // =====================================
+                if (data.comid && data.comid.length > 0) {
+
+                    data.comid.forEach(function(comid) {
+
+                        $('#company_' + comid).prop('checked', true);
+
+                    });
+
+                } else {
+
+                    // NULL / kosong = semua perusahaan
+                    $('#all_companies')
+                        .prop('checked', true);
+
+                    $('.company-checkbox')
+                        .prop('checked', false)
+                        .prop('disabled', true);
+                }
 
             }
         })
@@ -203,6 +294,4 @@
             }
         });
     }
-
-
 </script>

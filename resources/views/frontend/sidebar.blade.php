@@ -52,6 +52,7 @@
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="{{ url('user') }}">Data User</a>
                         </li>
+                        
                     </ul>
                 </div>
             </li>
