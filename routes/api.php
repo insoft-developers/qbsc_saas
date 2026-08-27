@@ -215,6 +215,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/whatsapp_patroli', [WhatsappController::class, 'patroli']);
     Route::post('/slider_new', [BosHomeController::class, 'slider_new']);
     Route::post('/update_app_version', [BosHomeController::class, 'update_app_version']);
+    Route::post('/lupa_pulang', [BosAbsensiController::class, 'lupaPulang']);
 });
 
 
