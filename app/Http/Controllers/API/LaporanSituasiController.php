@@ -4,13 +4,15 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\LaporanSituasi;
+use App\Services\FcmService;
 use Illuminate\Http\Request;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 
 class LaporanSituasiController extends Controller
 {
-    public function laporan_situasi(Request $request) {
+    public function laporan_situasi(Request $request)
+    {
         $input = $request->all();
         $request->validate([
             'uuid' => 'required|uuid',
@@ -55,6 +57,12 @@ class LaporanSituasiController extends Controller
 
             $input['foto'] = $photoPath;
             $result = LaporanSituasi::create($input);
+            if ($result) {
+                $topic = 'qbsc_bos_' . $input['comid'];
+                $title = 'Laporan Situasi';
+                $body = $input['laporan'];
+                $this->send($topic, $title, $body);
+            }
 
             return response()->json([
                 'success' => true,
@@ -68,5 +76,13 @@ class LaporanSituasiController extends Controller
                 'error' => 'Gangguan Server/Offline Mode',
             ]);
         }
+    }
+
+    protected function send($topic, $title, $body)
+    {
+        $fcm = new FcmService();
+        return $fcm->sendToTopic($topic, $title, $body, [
+            'comid' => $topic,
+        ]);
     }
 }
