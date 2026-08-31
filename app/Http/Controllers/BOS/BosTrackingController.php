@@ -165,7 +165,7 @@ class BosTrackingController extends Controller
         $comid = $request->comid;
 
         // ==========================================
-        // SATPAM AKTIF + SEDANG ABSEN
+        // SEMUA SATPAM AKTIF
         // ==========================================
         $satpams = Satpam::query()
             ->select([
@@ -177,9 +177,6 @@ class BosTrackingController extends Controller
             ])
             ->where('comid', $comid)
             ->where('is_active', 1)
-            ->whereHas('absensi', function ($query) {
-                $query->where('status', 1);
-            })
             ->whereNotNull('last_latitude')
             ->whereNotNull('last_longitude')
             ->get();
