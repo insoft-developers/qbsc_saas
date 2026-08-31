@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\JadwalPatroli;
 use App\Models\JadwalPatroliDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class BosJadwalPatroliController extends Controller
 {
@@ -15,7 +17,7 @@ class BosJadwalPatroliController extends Controller
     public function index(Request $request)
     {
         $comid = $request->comid;
-        $data = JadwalPatroli::with('company:id,company_name')->where('comid', $comid)->orderBy('id','desc')->get();
+        $data = JadwalPatroli::with('company:id,company_name')->where('comid', $comid)->orderBy('id', 'desc')->get();
 
         return response()->json([
             "success" => true,
@@ -114,28 +116,43 @@ class BosJadwalPatroliController extends Controller
 
     public function destroy(string $id, Request $request)
     {
-        $input = $request->all();
-        $comid = $input['comid'];
-        $count = JadwalPatroli::where('comid', $comid)->count();
-        if($count == 1) {
+
+        DB::beginTransaction();
+        try {
+            $input = $request->all();
+            $comid = $input['comid'];
+            $count = JadwalPatroli::where('comid', $comid)->count();
+            if ($count == 1) {
+                return response()->json([
+                    "success" => false,
+                    "message" => "Harus ada 1 jadwal patroli aktif"
+                ]);
+            }
+
+            JadwalPatroliDetail::where('patroli_id', $id)->delete();
+
+            JadwalPatroli::destroy($id);
+
+            DB::commit();
             return response()->json([
-                "success" => false,
-                "message" => "Harus ada 1 jadwal patroli aktif"
-            ]);
-        } 
-        
-        JadwalPatroli::destroy($input['id']);
-        return response()->json([
                 "success" => true,
                 "message" => "success"
-        ]);
+            ]);
+        } catch (Throwable $th) {
+            DB::rollBack();
+            return response()->json([
+                "success" => false,
+                "message" => $th->getMessage()
+            ]);
+        }
     }
 
 
-    public function ubahStatus(Request $request) {
+    public function ubahStatus(Request $request)
+    {
         $input = $request->all();
 
-        if($input['stat'] == 1) {
+        if ($input['stat'] == 1) {
             JadwalPatroli::where('comid', $request->comid)->update([
                 "is_active" => 0
             ]);
@@ -152,18 +169,5 @@ class BosJadwalPatroliController extends Controller
     }
 
 
-    public function detail(Request $request) {
-        $input = $request->all();
-        $comid = $input['comid'];
-        $id = $input['id'];
-        $data = JadwalPatroliDetail::with('jadwal','location','company')
-        ->where('comid', $comid)
-        ->where('patroli_id', $id)
-        ->orderBy('urutan','asc')
-        ->get();
-        return response()->json([
-            "success" => true,
-            "data" => $data
-        ]);
-    }
+    
 }
