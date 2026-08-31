@@ -42,7 +42,7 @@ class BosTrackingController extends Controller
 
     public function map(Request $request)
     {
-        
+
         $comid = $request->comid;
         $id = $request->id;
         $absensi = Absensi::findOrFail($id);
@@ -117,7 +117,7 @@ class BosTrackingController extends Controller
             ->orderBy('recorded_at', 'asc')
             ->get();
 
-        foreach($satcol as $sc) {
+        foreach ($satcol as $sc) {
             $this->pushRow($row_data, $sc->recorded_at, $sc->satpam->name ?? '', 'Walking ', $sc->latitude, $sc->longitude);
         }
 
@@ -160,47 +160,77 @@ class BosTrackingController extends Controller
     }
 
 
-    public function live_tracking(Request $request) {
+    public function live_tracking(Request $request)
+    {
         $comid = $request->comid;
-        $data = [];
-        $satpams = Satpam::with([
-            'absensi' => function ($query) {
-                $query->where('status', 1);
-            },
-        ])
-        ->whereHas('absensi', function ($q) {
-                    $q->where('status', 1);
-                })
-        ->where('comid', $comid)
-        ->get();
 
-        foreach($satpams as $satpam) {
-            $row['id'] = $satpam->id;
-            $row['type'] = 'satpam';
-            $row['name'] = $satpam->name;
-            $row['latitude'] = $satpam->last_latitude;
-            $row['longitude'] = $satpam->last_longitude;
-            array_push($data, $row);
+        // ==========================================
+        // SATPAM AKTIF + SEDANG ABSEN
+        // ==========================================
+        $satpams = Satpam::query()
+            ->select([
+                'id',
+                'name',
+                'last_latitude',
+                'last_longitude',
+                'last_seen_at',
+            ])
+            ->where('comid', $comid)
+            ->where('is_active', 1)
+            ->whereHas('absensi', function ($query) {
+                $query->where('status', 1);
+            })
+            ->whereNotNull('last_latitude')
+            ->whereNotNull('last_longitude')
+            ->get();
+
+        // ==========================================
+        // LOKASI PATROLI
+        // ==========================================
+        $patrolis = Lokasi::query()
+            ->select([
+                'id',
+                'nama_lokasi',
+                'latitude',
+                'longitude',
+            ])
+            ->where('comid', $comid)
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->get();
+
+        $data = [];
+
+        // ==========================================
+        // SATPAM
+        // ==========================================
+        foreach ($satpams as $satpam) {
+            $data[] = [
+                'id' => $satpam->id,
+                'type' => 'satpam',
+                'name' => $satpam->name,
+                'latitude' => (float) $satpam->last_latitude,
+                'longitude' => (float) $satpam->last_longitude,
+                'last_seen_at' => $satpam->last_seen_at,
+            ];
         }
 
-        $patrolis = Lokasi::select('id', 'nama_lokasi', 'latitude', 'longitude')
-        ->whereNotNull('latitude')
-        ->whereNotNull('longitude')
-        ->where('comid', $comid)
-        ->get();
-
-        foreach($patrolis as $p) {
-            $row['id'] = $p->id;
-            $row['type'] = 'patroli';
-            $row['name'] = $p->nama_lokasi;
-            $row['latitude'] = $p->latitude;
-            $row['longitude'] = $p->longitude;
-            array_push($data, $row);
+        // ==========================================
+        // LOKASI PATROLI
+        // ==========================================
+        foreach ($patrolis as $patroli) {
+            $data[] = [
+                'id' => $patroli->id,
+                'type' => 'patroli',
+                'name' => $patroli->nama_lokasi,
+                'latitude' => (float) $patroli->latitude,
+                'longitude' => (float) $patroli->longitude,
+            ];
         }
 
         return response()->json([
-            "success" => true,
-            "data" => $data
+            'success' => true,
+            'data' => $data,
         ]);
     }
 }
