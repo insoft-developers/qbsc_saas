@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\BOS\Master;
 
 use App\Http\Controllers\Controller;
+use App\Models\AbsenLocation;
 use App\Models\Lokasi;
 use App\Traits\CommonTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Throwable;
 
 class BosLokasiController extends Controller
 {
@@ -24,8 +27,8 @@ class BosLokasiController extends Controller
     {
         $comid = $request->comid;
         $data = Lokasi::with('company:id,company_name')->where('comid', $comid)
-        ->orderBy('id','desc')
-        ->get();
+            ->orderBy('id', 'desc')
+            ->get();
         return response()->json([
             "success" => true,
             "data" => $data
@@ -49,7 +52,7 @@ class BosLokasiController extends Controller
         $comid = $input['comid'];
         $validated = $request->validate([
             'nama_lokasi' => 'required|max:100|min:3',
-            
+
         ]);
 
         $paket = $this->what_paket($comid);
@@ -65,7 +68,7 @@ class BosLokasiController extends Controller
 
         // Simpan ke database
         try {
-            $input['qrcode'] = $this->generateCode("LOC").'-'.$comid;
+            $input['qrcode'] = $this->generateCode("LOC") . '-' . $comid;
             $input['comid'] = $comid;
             $input['nama_lokasi'] = strtoupper($request->nama_lokasi);
 
@@ -93,10 +96,7 @@ class BosLokasiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        
-    }
+    public function edit(string $id) {}
 
     /**
      * Update the specified resource in storage.
@@ -151,7 +151,8 @@ class BosLokasiController extends Controller
         }
     }
 
-    public function ubahStatus(Request $request) {
+    public function ubahStatus(Request $request)
+    {
         $input = $request->all();
         $user = Lokasi::find($input['id']);
         $user->is_active = $input['stat'];
@@ -160,5 +161,44 @@ class BosLokasiController extends Controller
             "success" => true,
             "message" => "sukses"
         ]);
+    }
+
+    public function absenLocationUpdate(Request $request)
+    {
+        $input = $request->all();
+        try {
+            $data = AbsenLocation::where('comid', $input['comid'])->firstorFail();
+            $data->latitude = $input['latitude'];
+            $data->longitude = $input['longitude'];
+            $data->updated_at = Carbon::now();
+            $data->update();
+
+            return response()->json([
+                "success" => true,
+                "message" => "Sukses"
+            ]);
+        } catch (Throwable $th) {
+            return response()->json([
+                "success" => false,
+                "message" => $th->getMessage()
+            ]);
+        }
+    }
+
+    public function getCurrentAbsenLocation(Request $request)
+    {
+        $input = $request->all();
+        try {
+            $data = AbsenLocation::where('comid', $input['comid'])->firstorFail();
+            return response()->json([
+                "success" => true,
+                "data" => $data
+            ]);
+        } catch (Throwable $th) {
+             return response()->json([
+                "success" => false,
+                "message" => $th->getMessage()
+            ]);
+        }
     }
 }

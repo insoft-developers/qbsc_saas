@@ -25,9 +25,12 @@ use App\Http\Controllers\BOS\BosPatroliController;
 use App\Http\Controllers\BOS\BosSituasiController;
 use App\Http\Controllers\BOS\BosTamuController;
 use App\Http\Controllers\BOS\BosTrackingController;
+use App\Http\Controllers\BOS\Master\BosEmergencyListController;
 use App\Http\Controllers\BOS\Master\BosJadwalPatroliController;
 use App\Http\Controllers\BOS\Master\BosJadwalPatroliDetailController;
+use App\Http\Controllers\BOS\Master\BosJamShiftController;
 use App\Http\Controllers\BOS\Master\BosLokasiController;
+use App\Http\Controllers\BOS\Master\BosRunningTextController;
 use App\Http\Controllers\BOS\Master\BosSatpamController;
 use App\Http\Controllers\BOS\Master\BosUserController;
 use Illuminate\Support\Facades\Route;
@@ -145,6 +148,25 @@ Route::prefix('bos')
         Route::post('/jadwal_detail_store', [BosJadwalPatroliDetailController::class, 'store']);
         Route::post('/jadwal_detail_update', [BosJadwalPatroliDetailController::class, 'update']);
         Route::post('/jadwal_detail_delete', [BosJadwalPatroliDetailController::class, 'destroy']);
+        Route::post('/lokasi_absen_update', [BosLokasiController::class, 'absenLocationUpdate']);
+        Route::post('/get_current_absen_location', [BosLokasiController::class, 'getCurrentAbsenLocation']);
+        Route::get('jam-shifts', [BosJamShiftController::class, 'index']);
+        Route::post('jam-shifts', [BosJamShiftController::class, 'store']);
+        Route::get('jam-shifts/{id}', [BosJamShiftController::class, 'show']);
+        Route::patch('jam-shifts/{id}', [BosJamShiftController::class, 'update']);
+        Route::delete('jam-shifts/{id}', [BosJamShiftController::class, 'destroy']);
+
+
+        Route::get('running-texts', [BosRunningTextController::class, 'index']);
+        Route::post('running-texts', [BosRunningTextController::class, 'store']);
+        Route::delete('running-texts/{id}', [BosRunningTextController::class, 'destroy']);
+
+
+        Route::get('emergency-lists', [BosEmergencyListController::class, 'index']);
+        Route::post('emergency-lists', [BosEmergencyListController::class, 'store']);
+        Route::get('emergency-lists/{id}', [BosEmergencyListController::class, 'show']);
+        Route::patch('emergency-lists/{id}', [BosEmergencyListController::class, 'update']);
+        Route::delete('emergency-lists/{id}', [BosEmergencyListController::class, 'destroy']);
     });
 
 
