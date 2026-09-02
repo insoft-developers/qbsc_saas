@@ -15,6 +15,7 @@ use App\Http\Controllers\API\TamuController;
 use App\Http\Controllers\API\WhatsappController;
 use App\Http\Controllers\BOS\BosAbsensiController;
 use App\Http\Controllers\BOS\BosAuthController;
+use App\Http\Controllers\BOS\BosBlogController;
 use App\Http\Controllers\BOS\BosBroadcastController;
 use App\Http\Controllers\BOS\BosDashboardController;
 use App\Http\Controllers\BOS\BosDocController;
@@ -167,6 +168,9 @@ Route::prefix('bos')
         Route::get('emergency-lists/{id}', [BosEmergencyListController::class, 'show']);
         Route::patch('emergency-lists/{id}', [BosEmergencyListController::class, 'update']);
         Route::delete('emergency-lists/{id}', [BosEmergencyListController::class, 'destroy']);
+
+        Route::post('/blogs', [BosBlogController::class, 'index']);
+        Route::get('/blogs/{slug}', [BosBlogController::class, 'show']);
     });
 
 
