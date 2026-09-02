@@ -171,6 +171,8 @@ Route::prefix('bos')
 
         Route::post('/blogs', [BosBlogController::class, 'index']);
         Route::get('/blogs/{slug}', [BosBlogController::class, 'show']);
+        Route::post('/lokasi-kunjungan',[BosPatroliController::class, 'lokasiKunjungan']);
+        Route::post('/lokasi-kunjungan/detail',[BosPatroliController::class, 'lokasiKunjunganDetail']);
     });
 
 
