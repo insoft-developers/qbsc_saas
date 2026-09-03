@@ -18,10 +18,16 @@ class AdminAuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::guard('admin')->attempt($credentials)) {
-            return redirect()->intended('/backadmin');
+            $request->session()->regenerate();
+
+            return redirect('/backadmin');
         }
 
-        return back()->withErrors(['email' => 'Login gagal']);
+        return back()
+            ->withErrors([
+                'email' => 'Email atau password salah.',
+            ])
+            ->withInput($request->only('email'));
     }
 
     public function logout()

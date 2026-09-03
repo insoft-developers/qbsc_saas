@@ -11,8 +11,7 @@ use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\PatroliArchiveController;
 use App\Http\Controllers\Admin\PatroliFileScanController;
 use App\Http\Controllers\Admin\AdminCompanyController;
-
-
+use App\Http\Controllers\Admin\AdminPackageController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 
 use App\Http\Controllers\Frontend\AbsenLocationController;
@@ -393,6 +392,10 @@ Route::prefix('backadmin')
 
             Route::resource('/company', AdminCompanyController::class);
             Route::get('/company_table', [AdminCompanyController::class, 'table'])->name('backadmin.company.table');
+
+            Route::resource('/package', AdminPackageController::class);
+            Route::get('/package_table', [AdminPackageController::class, 'table'])->name('admin.package.table');
+
         });
     });
 
