@@ -27,14 +27,14 @@
                                 <div class="card-body p-4 d-flex flex-column">
 
 
-                                    <h2 class="fw-bold mb-0">GRATIS <span class="fs-6 fw-medium">/ 14 Hari - Paket Farm
-                                            Ultimate</span></h2>
-                                    <p class="text-muted">Paket Ideal untuk kebutuhan Lengkap Kontrol Keamanan Anda.</p>
+                                    <h2 class="fw-bold mb-0">GRATIS <span class="fs-6 fw-medium">/ Paket Farm
+                                            Free</span></h2>
+                                    <p class="text-muted">Paket Dasar untuk kebutuhan Kontrol Keamanan Peternakan Anda.</p>
 
 
                                     <button onclick="paket_free(14)"
                                         class="btn btn-info w-100 fw-semibold rounded-3 mt-auto btn-color">
-                                        Coba Gratis Paket Farm Ultimate Sekarang
+                                        Coba Sekarang Gratis Selamanya
                                     </button>
                                 </div>
                             </div>
@@ -313,13 +313,13 @@
                                 <div class="card-body p-4 d-flex flex-column">
 
 
-                                    <h2 class="fw-bold mb-0">GRATIS <span class="fs-6 fw-medium">/ 14 Hari - Paket Ultimate</span></h2>
-                                    <p class="text-muted">Paket Ideal untuk kebutuhan Lengkap Kontrol Keamanan Anda.</p>
+                                    <h2 class="fw-bold mb-0">GRATIS <span class="fs-6 fw-medium">/ Selamanya - Paket Free</span></h2>
+                                    <p class="text-muted">Paket Dasar Untuk Kontrol Keamanan Anda.</p>
 
 
                                     <button onclick="paket_free(13)"
                                         class="btn btn-info w-100 fw-semibold rounded-3 mt-auto btn-color">
-                                        Coba Gratis Paket Ultimate Sekarang
+                                        Coba Sekarang Gratis Selamanya
                                     </button>
                                 </div>
                             </div>
@@ -626,7 +626,7 @@
                 <div class="modal-content">
 
                     <div class="modal-header">
-                        <h4 class="modal-title" id="standard-modalLabel">Paket 14 Hari Gratis</h4>
+                        <h4 class="modal-title" id="standard-modalLabel">Paket Gratis Selamanya</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -635,36 +635,32 @@
                                 <div class="mb-2">
                                     <input type="hidden" id="paket-gratis-id">
                                     <h2 data-start="157" data-end="206">📄 <strong data-start="163"
-                                            data-end="206">Syarat &amp; Ketentuan Paket Gratis 14 Hari</strong></h2>
+                                            data-end="206">Syarat &amp; Ketentuan Paket Gratis Selamanya</strong></h2>
                                     <ol data-start="208" data-end="1306">
                                         <li data-start="208" data-end="314">
-                                            <p data-start="211" data-end="314">Paket Gratis 14 Hari hanya berlaku untuk
+                                            <p data-start="211" data-end="314">Paket Gratis Selamanya hanya berlaku untuk
                                                 <strong data-start="252" data-end="269">pengguna baru</strong> yang belum
                                                 pernah berlangganan layanan QBSC.</p>
                                         </li>
                                         <li data-start="315" data-end="410">
-                                            <p data-start="318" data-end="410">Masa uji coba <strong data-start="332"
-                                                    data-end="381">berlaku selama 14 (empat belas) hari kalender</strong>
-                                                sejak tanggal aktivasi akun.</p>
+                                            <p data-start="318" data-end="410">Masa Penggunaan <strong data-start="332"
+                                                    data-end="381">berlaku Tanpa batas waktu</strong>
+                                                sejak aktivasi akun.</p>
                                         </li>
                                         <li data-start="411" data-end="512">
                                             <p data-start="414" data-end="512">Selama masa gratis, pengguna dapat
                                                 menikmati <strong data-start="459" data-end="490">fitur sesuai paket
-                                                    Ultimate</strong> tanpa dipungut biaya.</p>
+                                                    FREE</strong> tanpa dipungut biaya.</p>
                                         </li>
                                         <li data-start="513" data-end="601">
                                             <p data-start="516" data-end="601">Tidak diperlukan metode pembayaran atau
                                                 kartu kredit untuk mengaktifkan paket gratis.</p>
                                         </li>
-                                        <li data-start="602" data-end="724">
-                                            <p data-start="605" data-end="724">Setelah masa uji coba berakhir, akun akan
-                                                <strong data-start="647" data-end="673">otomatis dinonaktifkan</strong>
-                                                apabila tidak melakukan upgrade ke paket berbayar.</p>
-                                        </li>
+                                       
                                         <li data-start="725" data-end="840">
-                                            <p data-start="728" data-end="840">Data pengguna selama masa uji coba akan
+                                            <p data-start="728" data-end="840">Data pengguna selama masa gratis akan
                                                 <strong data-start="768" data-end="787">tetap tersimpan</strong> dan dapat
-                                                diakses kembali setelah melakukan upgrade.</p>
+                                                diakses walaupun jika pelanggan melakukan upgrade.</p>
                                         </li>
                                         <li data-start="841" data-end="947">
                                             <p data-start="844" data-end="947">Satu perusahaan / satu nomor WhatsApp /

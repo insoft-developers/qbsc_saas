@@ -64,7 +64,7 @@ class PaketLanggananController extends Controller
             ]);
 
             if ($pembelian) {
-                $expired_date = Carbon::now()->addDays(14)->format('Y-m-d');
+                $expired_date = Carbon::now()->addYears(100)->format('Y-m-d');
                 
                 $company->paket_id = $paket->id;
                 $company->expired_date = $expired_date;
