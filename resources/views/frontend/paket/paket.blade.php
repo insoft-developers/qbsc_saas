@@ -41,27 +41,31 @@
                         </div>
                         @endif
 
+                        @php
+                            $p1 = \App\Models\PaketLangganan::find(1);
+                        @endphp
+
                         <div class="col-xl-4 col-lg-5 col-md-6 mb-4">
                             <div class="card pricing-card h-100 shadow-sm border-0 rounded-4">
                                 <div class="card-body p-4 d-flex flex-column">
 
                                     <span
                                         class="paket-title badge bg-info-subtle text-info px-3 py-2 rounded-pill fw-semibold mb-3">
-                                        Paket Farm M-Basic
+                                        {{ $p1->nama_paket ?? '' }}
                                     </span>
 
 
-                                    <h2 class="fw-bold mb-0">Rp. 349.000 <span class="fs-6 fw-medium">/ bulan</span></h2>
-                                    <p class="text-muted">Paket ideal untuk kebutuhan dasar Kontrol Keamanan Anda.</p>
+                                    <h2 class="fw-bold mb-0">Rp. {{ number_format($p1->harga) }} <span class="fs-6 fw-medium">/ bulan</span></h2>
+                                    <p class="text-muted">{{ $p1->subtitle }}</p>
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
                                         <x-pricing-check text="Absen Scan Wajah + GPS" />
-                                        <x-pricing-check text="4 Personil Satpam" />
-                                        <x-pricing-check text="5 Titik Lokasi" />
-                                        <x-pricing-check text="Cek Kontrol 6 Kandang" />
+                                        <x-pricing-check text="{{ $p1->jumlah_satpam }} Personil Satpam" />
+                                        <x-pricing-check text="{{ $p1->jumlah_lokasi }} Titik Lokasi" />
+                                        <x-pricing-check text="Cek Kontrol {{ $p1->jumlah_farm }} Kandang" />
                                         <x-pricing-check text="Catat Pengeluaran DOC" />
                                         <x-pricing-minus text="Broadcast Message" />
-                                        <x-pricing-check text="1 User Admin" />
+                                        <x-pricing-check text="{{ $p1->jumlah_user_admin }} User Admin" />
                                         <x-pricing-check text="Input Tamu Manual" />
                                         <x-pricing-minus text="Scan QR Tamu" />
                                         <x-pricing-minus text="Area User" />
@@ -81,28 +85,31 @@
                         </div>
 
                         {{-- Business Pack --}}
+                       @php
+                            $p1 = \App\Models\PaketLangganan::find(2);
+                        @endphp
+
                         <div class="col-xl-4 col-lg-5 col-md-6 mb-4">
-                            <div class="card pricing-card h-100 shadow-lg border-0 rounded-4 premium-card">
+                            <div class="card pricing-card h-100 shadow-sm border-0 rounded-4">
                                 <div class="card-body p-4 d-flex flex-column">
 
                                     <span
                                         class="paket-title badge bg-danger-subtle text-danger px-3 py-2 rounded-pill fw-semibold mb-3">
-                                        Paket Farm M-Medium
+                                        {{ $p1->nama_paket ?? '' }}
                                     </span>
 
 
-
-                                    <h2 class="fw-bold mb-0">Rp. 469.000 <span class="fs-6 fw-medium">/ bulan</span></h2>
-                                    <p class="text-muted">Paket ideal untuk kebutuhan lanjut Kontrol Keamanan Anda.</p>
+                                    <h2 class="fw-bold mb-0">Rp. {{ number_format($p1->harga) }} <span class="fs-6 fw-medium">/ bulan</span></h2>
+                                    <p class="text-muted">{{ $p1->subtitle }}</p>
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
                                         <x-pricing-check text="Absen Scan Wajah + GPS" />
-                                        <x-pricing-check text="8 Personil Satpam" />
-                                        <x-pricing-check text="8 Titik Lokasi" />
-                                        <x-pricing-check text="Cek Kontrol 8 Kandang" />
+                                        <x-pricing-check text="{{ $p1->jumlah_satpam }} Personil Satpam" />
+                                        <x-pricing-check text="{{ $p1->jumlah_lokasi }} Titik Lokasi" />
+                                        <x-pricing-check text="Cek Kontrol {{ $p1->jumlah_farm }} Kandang" />
                                         <x-pricing-check text="Catat Pengeluaran DOC" />
                                         <x-pricing-minus text="Broadcast Message" />
-                                        <x-pricing-check text="5 User Admin" />
+                                        <x-pricing-check text="{{ $p1->jumlah_user_admin }} User Admin" />
                                         <x-pricing-check text="Input Tamu Manual" />
                                         <x-pricing-minus text="Scan QR Tamu" />
                                         <x-pricing-minus text="Area User" />
@@ -122,28 +129,31 @@
                         </div>
 
                         {{-- Enterprise Pack --}}
+                        @php
+                            $p1 = \App\Models\PaketLangganan::find(3);
+                        @endphp
+
                         <div class="col-xl-4 col-lg-5 col-md-6 mb-4">
                             <div class="card pricing-card h-100 shadow-sm border-0 rounded-4">
                                 <div class="card-body p-4 d-flex flex-column">
 
                                     <span
-                                        class="paket-title badge bg-info-subtle text-info px-3 py-2 rounded-pill fw-semibold mb-3">
-                                        Paket Farm M-Ultimate
+                                        class="paket-title badge bg-warning-subtle text-warning px-3 py-2 rounded-pill fw-semibold mb-3">
+                                        {{ $p1->nama_paket ?? '' }}
                                     </span>
 
 
-
-                                    <h2 class="fw-bold mb-0">Rp. 599.000 <span class="fs-6 fw-medium">/ bulan</span></h2>
-                                    <p class="text-muted">Paket ideal untuk kebutuhan Lengkap Kontrol Keamanan Anda.</p>
+                                    <h2 class="fw-bold mb-0">Rp. {{ number_format($p1->harga) }} <span class="fs-6 fw-medium">/ bulan</span></h2>
+                                    <p class="text-muted">{{ $p1->subtitle }}</p>
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
                                         <x-pricing-check text="Absen Scan Wajah + GPS" />
-                                        <x-pricing-check text="30 Personil Satpam" />
-                                        <x-pricing-check text="30 Titik Lokasi" />
-                                        <x-pricing-check text="Cek 30 Kandang" />
+                                        <x-pricing-check text="{{ $p1->jumlah_satpam }} Personil Satpam" />
+                                        <x-pricing-check text="{{ $p1->jumlah_lokasi }} Titik Lokasi" />
+                                        <x-pricing-check text="Cek Kontrol {{ $p1->jumlah_farm }} Kandang" />
                                         <x-pricing-check text="Catat Pengeluaran DOC" />
                                         <x-pricing-check text="Broadcast Message" />
-                                        <x-pricing-check text="30 User Admin" />
+                                        <x-pricing-check text="{{ $p1->jumlah_user_admin }} User Admin" />
                                         <x-pricing-check text="Input Tamu Manual" />
                                         <x-pricing-check text="Scan QR Tamu" />
                                         <x-pricing-check text="Area User" />
@@ -155,7 +165,7 @@
                                     </ul>
 
                                     <button onclick="beli_paket(3)"
-                                        class="btn btn-info w-100 fw-semibold rounded-3 mt-auto">
+                                        class="btn btn-warning w-100 fw-semibold rounded-3 mt-auto">
                                         Pilih Paket
                                     </button>
                                 </div>
@@ -164,27 +174,31 @@
 
 
                         {{-- Professional Pack --}}
+                        @php
+                            $p1 = \App\Models\PaketLangganan::find(4);
+                        @endphp
+
                         <div class="col-xl-4 col-lg-5 col-md-6 mb-4">
                             <div class="card pricing-card h-100 shadow-sm border-0 rounded-4">
                                 <div class="card-body p-4 d-flex flex-column">
 
                                     <span
                                         class="paket-title badge bg-info-subtle text-info px-3 py-2 rounded-pill fw-semibold mb-3">
-                                        Paket Farm T-Basic
+                                        {{ $p1->nama_paket ?? '' }}
                                     </span>
 
 
-                                    <h2 class="fw-bold mb-0">Rp. 3.490.000 <span class="fs-6 fw-medium">/ tahun</span></h2>
-                                    <p class="text-muted">Paket ideal untuk kebutuhan dasar Kontrol Keamanan Anda.</p>
+                                    <h2 class="fw-bold mb-0">Rp. {{ number_format($p1->harga) }} <span class="fs-6 fw-medium">/ tahun</span></h2>
+                                    <p class="text-muted">{{ $p1->subtitle }}</p>
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
                                         <x-pricing-check text="Absen Scan Wajah + GPS" />
-                                        <x-pricing-check text="4 Personil Satpam" />
-                                        <x-pricing-check text="5 Titik Lokasi" />
-                                        <x-pricing-check text="Cek Kontrol 6 Kandang" />
+                                        <x-pricing-check text="{{ $p1->jumlah_satpam }} Personil Satpam" />
+                                        <x-pricing-check text="{{ $p1->jumlah_lokasi }} Titik Lokasi" />
+                                        <x-pricing-check text="Cek Kontrol {{ $p1->jumlah_farm }} Kandang" />
                                         <x-pricing-check text="Catat Pengeluaran DOC" />
-                                        <x-pricing-check text="Broadcast Message" />
-                                        <x-pricing-check text="1 User Admin" />
+                                        <x-pricing-minus text="Broadcast Message" />
+                                        <x-pricing-check text="{{ $p1->jumlah_user_admin }} User Admin" />
                                         <x-pricing-check text="Input Tamu Manual" />
                                         <x-pricing-minus text="Scan QR Tamu" />
                                         <x-pricing-minus text="Area User" />
@@ -204,29 +218,31 @@
                         </div>
 
                         {{-- Business Pack --}}
+                       @php
+                            $p1 = \App\Models\PaketLangganan::find(5);
+                        @endphp
+
                         <div class="col-xl-4 col-lg-5 col-md-6 mb-4">
-                            <div class="card pricing-card h-100 shadow-lg border-0 rounded-4 premium-card">
+                            <div class="card pricing-card h-100 shadow-sm border-0 rounded-4">
                                 <div class="card-body p-4 d-flex flex-column">
 
                                     <span
                                         class="paket-title badge bg-danger-subtle text-danger px-3 py-2 rounded-pill fw-semibold mb-3">
-                                        Paket Farm T-Medium
+                                        {{ $p1->nama_paket ?? '' }}
                                     </span>
 
 
-
-                                    <h2 class="fw-bold mb-0">Rp. 4.690.000 <span class="fs-6 fw-medium">/ tahun</span>
-                                    </h2>
-                                    <p class="text-muted">Paket ideal untuk kebutuhan lanjut Kontrol Keamanan Anda.</p>
+                                    <h2 class="fw-bold mb-0">Rp. {{ number_format($p1->harga) }} <span class="fs-6 fw-medium">/ tahun</span></h2>
+                                    <p class="text-muted">{{ $p1->subtitle }}</p>
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
                                         <x-pricing-check text="Absen Scan Wajah + GPS" />
-                                        <x-pricing-check text="8 Personil Satpam" />
-                                        <x-pricing-check text="8 Titik Lokasi" />
-                                        <x-pricing-check text="Cek Kontrol 8 Kandang" />
+                                        <x-pricing-check text="{{ $p1->jumlah_satpam }} Personil Satpam" />
+                                        <x-pricing-check text="{{ $p1->jumlah_lokasi }} Titik Lokasi" />
+                                        <x-pricing-check text="Cek Kontrol {{ $p1->jumlah_farm }} Kandang" />
                                         <x-pricing-check text="Catat Pengeluaran DOC" />
                                         <x-pricing-check text="Broadcast Message" />
-                                        <x-pricing-check text="5 User Admin" />
+                                        <x-pricing-check text="{{ $p1->jumlah_user_admin }} User Admin" />
                                         <x-pricing-check text="Input Tamu Manual" />
                                         <x-pricing-minus text="Scan QR Tamu" />
                                         <x-pricing-minus text="Area User" />
@@ -246,29 +262,31 @@
                         </div>
 
                         {{-- Enterprise Pack --}}
+                       @php
+                            $p1 = \App\Models\PaketLangganan::find(6);
+                        @endphp
+
                         <div class="col-xl-4 col-lg-5 col-md-6 mb-4">
                             <div class="card pricing-card h-100 shadow-sm border-0 rounded-4">
                                 <div class="card-body p-4 d-flex flex-column">
 
                                     <span
-                                        class="paket-title badge bg-info-subtle text-info px-3 py-2 rounded-pill fw-semibold mb-3">
-                                        Paket Farm T-Ultimate
+                                        class="paket-title badge bg-warning-subtle text-warning px-3 py-2 rounded-pill fw-semibold mb-3">
+                                        {{ $p1->nama_paket ?? '' }}
                                     </span>
 
 
-
-                                    <h2 class="fw-bold mb-0">Rp. 5.990.000 <span class="fs-6 fw-medium">/ tahun</span>
-                                    </h2>
-                                    <p class="text-muted">Paket ideal untuk kebutuhan Lengkap Kontrol Keamanan Anda.</p>
+                                    <h2 class="fw-bold mb-0">Rp. {{ number_format($p1->harga) }} <span class="fs-6 fw-medium">/ tahun</span></h2>
+                                    <p class="text-muted">{{ $p1->subtitle }}</p>
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
                                         <x-pricing-check text="Absen Scan Wajah + GPS" />
-                                        <x-pricing-check text="30 Personil Satpam" />
-                                        <x-pricing-check text="30 Titik Lokasi" />
-                                        <x-pricing-check text="Cek 30 Kandang" />
+                                        <x-pricing-check text="{{ $p1->jumlah_satpam }} Personil Satpam" />
+                                        <x-pricing-check text="{{ $p1->jumlah_lokasi }} Titik Lokasi" />
+                                        <x-pricing-check text="Cek Kontrol {{ $p1->jumlah_farm }} Kandang" />
                                         <x-pricing-check text="Catat Pengeluaran DOC" />
-                                        <x-pricing-check text="Broadcast Message" />
-                                        <x-pricing-check text="30 User Admin" />
+                                        <x-pricing-minus text="Broadcast Message" />
+                                        <x-pricing-check text="{{ $p1->jumlah_user_admin }} User Admin" />
                                         <x-pricing-check text="Input Tamu Manual" />
                                         <x-pricing-check text="Scan QR Tamu" />
                                         <x-pricing-check text="Area User" />
@@ -280,7 +298,7 @@
                                     </ul>
 
                                     <button onclick="beli_paket(6)"
-                                        class="btn btn-info w-100 fw-semibold rounded-3 mt-auto">
+                                        class="btn btn-warning w-100 fw-semibold rounded-3 mt-auto">
                                         Pilih Paket
                                     </button>
                                 </div>
@@ -312,22 +330,25 @@
                         <div class="col-xl-4 col-lg-5 col-md-6 mb-4">
                             <div class="card pricing-card h-100 shadow-sm border-0 rounded-4">
                                 <div class="card-body p-4 d-flex flex-column">
+                                    @php
+                                        $p = \App\Models\PaketLangganan::find(7);
+                                    @endphp
 
                                     <span
                                         class="paket-title badge bg-info-subtle text-info px-3 py-2 rounded-pill fw-semibold mb-3">
-                                        Paket M-Basic
+                                        {{ $p->nama_paket ?? '' }}
                                     </span>
 
 
-                                    <h2 class="fw-bold mb-0">Rp. 249.000 <span class="fs-6 fw-medium">/ bulan</span></h2>
-                                    <p class="text-muted">Paket ideal untuk kebutuhan dasar Kontrol Keamanan Anda.</p>
+                                    <h2 class="fw-bold mb-0">Rp. {{ number_format($p->harga) }} <span class="fs-6 fw-medium">/ bulan</span></h2>
+                                    <p class="text-muted">{{ $p->subtitle ?? '' }}</p>
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
                                         <x-pricing-check text="Absen Scan Wajah + GPS" />
-                                        <x-pricing-check text="4 Personil Satpam" />
-                                        <x-pricing-check text="5 Titik Lokasi" />
+                                        <x-pricing-check text="{{ $p->jumlah_satpam }} Personil Satpam" />
+                                        <x-pricing-check text="{{ $p->jumlah_lokasi }} Titik Lokasi" />
                                         <x-pricing-minus text="Broadcast Message" />
-                                        <x-pricing-check text="1 User Admin" />
+                                        <x-pricing-check text="{{ $p->jumlah_user_admin }} User Admin" />
                                         <x-pricing-check text="Input Tamu Manual" />
                                         <x-pricing-minus text="Scan QR Tamu" />
                                         <x-pricing-minus text="Area User" />
@@ -351,22 +372,25 @@
                             <div class="card pricing-card h-100 shadow-lg border-0 rounded-4 premium-card">
                                 <div class="card-body p-4 d-flex flex-column">
 
+                                     @php
+                                        $p = \App\Models\PaketLangganan::find(8);
+                                    @endphp
+
                                     <span
                                         class="paket-title badge bg-danger-subtle text-danger px-3 py-2 rounded-pill fw-semibold mb-3">
-                                        Paket M-Medium
+                                        {{ $p->nama_paket ?? '' }}
                                     </span>
 
 
-
-                                    <h2 class="fw-bold mb-0">Rp. 369.000 <span class="fs-6 fw-medium">/ bulan</span></h2>
-                                    <p class="text-muted">Paket ideal untuk kebutuhan lanjut Kontrol Keamanan Anda.</p>
+                                    <h2 class="fw-bold mb-0">Rp. {{ number_format($p->harga) }} <span class="fs-6 fw-medium">/ bulan</span></h2>
+                                    <p class="text-muted">{{ $p->subtitle ?? '' }}</p>
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
                                         <x-pricing-check text="Absen Scan Wajah + GPS" />
-                                        <x-pricing-check text="8 Personil Satpam" />
-                                        <x-pricing-check text="8 Titik Lokasi" />
+                                        <x-pricing-check text="{{ $p->jumlah_satpam }} Personil Satpam" />
+                                        <x-pricing-check text="{{ $p->jumlah_lokasi }} Titik Lokasi" />
                                         <x-pricing-minus text="Broadcast Message" />
-                                        <x-pricing-check text="5 User Admin" />
+                                        <x-pricing-check text="{{ $p->jumlah_user_admin }} User Admin" />
                                         <x-pricing-check text="Input Tamu Manual" />
                                         <x-pricing-minus text="Scan QR Tamu" />
                                         <x-pricing-minus text="Area User" />
@@ -390,22 +414,25 @@
                             <div class="card pricing-card h-100 shadow-sm border-0 rounded-4">
                                 <div class="card-body p-4 d-flex flex-column">
 
+                                     @php
+                                        $p = \App\Models\PaketLangganan::find(9);
+                                    @endphp
+
                                     <span
-                                        class="paket-title badge bg-info-subtle text-info px-3 py-2 rounded-pill fw-semibold mb-3">
-                                        Paket M-Ultimate
+                                        class="paket-title badge bg-warning-subtle text-warning px-3 py-2 rounded-pill fw-semibold mb-3">
+                                        {{ $p->nama_paket ?? '' }}
                                     </span>
 
 
-
-                                    <h2 class="fw-bold mb-0">Rp. 499.000 <span class="fs-6 fw-medium">/ bulan</span></h2>
-                                    <p class="text-muted">Paket ideal untuk kebutuhan Lengkap Kontrol Keamanan Anda.</p>
+                                    <h2 class="fw-bold mb-0">Rp. {{ number_format($p->harga) }} <span class="fs-6 fw-medium">/ bulan</span></h2>
+                                    <p class="text-muted">{{ $p->subtitle ?? '' }}</p>
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
                                         <x-pricing-check text="Absen Scan Wajah + GPS" />
-                                        <x-pricing-check text="30 Personil Satpam" />
-                                        <x-pricing-check text="30 Titik Lokasi" />
+                                        <x-pricing-check text="{{ $p->jumlah_satpam }} Personil Satpam" />
+                                        <x-pricing-check text="{{ $p->jumlah_lokasi }} Titik Lokasi" />
                                         <x-pricing-check text="Broadcast Message" />
-                                        <x-pricing-check text="30 User Admin" />
+                                        <x-pricing-check text="{{ $p->jumlah_user_admin }} User Admin" />
                                         <x-pricing-check text="Input Tamu Manual" />
                                         <x-pricing-check text="Scan QR Tamu" />
                                         <x-pricing-check text="Area User" />
@@ -417,7 +444,7 @@
                                     </ul>
 
                                     <button onclick="beli_paket(9)"
-                                        class="btn btn-info w-100 fw-semibold rounded-3 mt-auto">
+                                        class="btn btn-warning w-100 fw-semibold rounded-3 mt-auto">
                                         Pilih Paket
                                     </button>
                                 </div>
@@ -430,22 +457,25 @@
                             <div class="card pricing-card h-100 shadow-sm border-0 rounded-4">
                                 <div class="card-body p-4 d-flex flex-column">
 
+                                     @php
+                                        $p = \App\Models\PaketLangganan::find(10);
+                                    @endphp
+
                                     <span
                                         class="paket-title badge bg-info-subtle text-info px-3 py-2 rounded-pill fw-semibold mb-3">
-                                        Paket T-Basic
+                                        {{ $p->nama_paket ?? '' }}
                                     </span>
 
 
-                                    <h2 class="fw-bold mb-0">Rp. 2.490.000 <span class="fs-6 fw-medium">/ tahun</span>
-                                    </h2>
-                                    <p class="text-muted">Paket ideal untuk kebutuhan dasar Kontrol Keamanan Anda.</p>
+                                    <h2 class="fw-bold mb-0">Rp. {{ number_format($p->harga) }} <span class="fs-6 fw-medium">/ tahun</span></h2>
+                                    <p class="text-muted">{{ $p->subtitle ?? '' }}</p>
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
                                         <x-pricing-check text="Absen Scan Wajah + GPS" />
-                                        <x-pricing-check text="4 Personil Satpam" />
-                                        <x-pricing-check text="5 Titik Lokasi" />
-                                        <x-pricing-check text="Broadcast Message" />
-                                        <x-pricing-check text="1 User Admin" />
+                                        <x-pricing-check text="{{ $p->jumlah_satpam }} Personil Satpam" />
+                                        <x-pricing-check text="{{ $p->jumlah_lokasi }} Titik Lokasi" />
+                                        <x-pricing-minus text="Broadcast Message" />
+                                        <x-pricing-check text="{{ $p->jumlah_user_admin }} User Admin" />
                                         <x-pricing-check text="Input Tamu Manual" />
                                         <x-pricing-minus text="Scan QR Tamu" />
                                         <x-pricing-minus text="Area User" />
@@ -469,23 +499,25 @@
                             <div class="card pricing-card h-100 shadow-lg border-0 rounded-4 premium-card">
                                 <div class="card-body p-4 d-flex flex-column">
 
+                                    @php
+                                        $p = \App\Models\PaketLangganan::find(11);
+                                    @endphp
+
                                     <span
                                         class="paket-title badge bg-danger-subtle text-danger px-3 py-2 rounded-pill fw-semibold mb-3">
-                                        Paket T-Medium
+                                        {{ $p->nama_paket ?? '' }}
                                     </span>
 
 
-
-                                    <h2 class="fw-bold mb-0">Rp. 3.690.000 <span class="fs-6 fw-medium">/ tahun</span>
-                                    </h2>
-                                    <p class="text-muted">Paket ideal untuk kebutuhan lanjut Kontrol Keamanan Anda.</p>
+                                    <h2 class="fw-bold mb-0">Rp. {{ number_format($p->harga) }} <span class="fs-6 fw-medium">/ tahun</span></h2>
+                                    <p class="text-muted">{{ $p->subtitle ?? '' }}</p>
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
                                         <x-pricing-check text="Absen Scan Wajah + GPS" />
-                                        <x-pricing-check text="8 Personil Satpam" />
-                                        <x-pricing-check text="8 Titik Lokasi" />
-                                        <x-pricing-check text="Broadcast Message" />
-                                        <x-pricing-check text="5 User Admin" />
+                                        <x-pricing-check text="{{ $p->jumlah_satpam }} Personil Satpam" />
+                                        <x-pricing-check text="{{ $p->jumlah_lokasi }} Titik Lokasi" />
+                                        <x-pricing-minus text="Broadcast Message" />
+                                        <x-pricing-check text="{{ $p->jumlah_user_admin }} User Admin" />
                                         <x-pricing-check text="Input Tamu Manual" />
                                         <x-pricing-minus text="Scan QR Tamu" />
                                         <x-pricing-minus text="Area User" />
@@ -509,23 +541,25 @@
                             <div class="card pricing-card h-100 shadow-sm border-0 rounded-4">
                                 <div class="card-body p-4 d-flex flex-column">
 
+                                   @php
+                                        $p = \App\Models\PaketLangganan::find(12);
+                                    @endphp
+
                                     <span
-                                        class="paket-title badge bg-info-subtle text-info px-3 py-2 rounded-pill fw-semibold mb-3">
-                                        Paket T-Ultimate
+                                        class="paket-title badge bg-warning-subtle text-warning px-3 py-2 rounded-pill fw-semibold mb-3">
+                                        {{ $p->nama_paket ?? '' }}
                                     </span>
 
 
-
-                                    <h2 class="fw-bold mb-0">Rp. 4.990.000 <span class="fs-6 fw-medium">/ tahun</span>
-                                    </h2>
-                                    <p class="text-muted">Paket ideal untuk kebutuhan Lengkap Kontrol Keamanan Anda.</p>
+                                    <h2 class="fw-bold mb-0">Rp. {{ number_format($p->harga) }} <span class="fs-6 fw-medium">/ tahun</span></h2>
+                                    <p class="text-muted">{{ $p->subtitle ?? '' }}</p>
 
                                     <ul class="list-unstyled flex-grow-1 mt-3 mb-4">
                                         <x-pricing-check text="Absen Scan Wajah + GPS" />
-                                        <x-pricing-check text="30 Personil Satpam" />
-                                        <x-pricing-check text="30 Titik Lokasi" />
+                                        <x-pricing-check text="{{ $p->jumlah_satpam }} Personil Satpam" />
+                                        <x-pricing-check text="{{ $p->jumlah_lokasi }} Titik Lokasi" />
                                         <x-pricing-check text="Broadcast Message" />
-                                        <x-pricing-check text="30 User Admin" />
+                                        <x-pricing-check text="{{ $p->jumlah_user_admin }} User Admin" />
                                         <x-pricing-check text="Input Tamu Manual" />
                                         <x-pricing-check text="Scan QR Tamu" />
                                         <x-pricing-check text="Area User" />
@@ -537,7 +571,7 @@
                                     </ul>
 
                                     <button onclick="beli_paket(12)"
-                                        class="btn btn-info w-100 fw-semibold rounded-3 mt-auto">
+                                        class="btn btn-warning w-100 fw-semibold rounded-3 mt-auto">
                                         Pilih Paket
                                     </button>
                                 </div>
