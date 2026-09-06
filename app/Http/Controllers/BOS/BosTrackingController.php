@@ -167,6 +167,7 @@ class BosTrackingController extends Controller
         // ==========================================
         // SEMUA SATPAM AKTIF
         // ==========================================
+       
         $satpams = Satpam::query()
             ->select([
                 'id',
@@ -179,6 +180,7 @@ class BosTrackingController extends Controller
             ->where('is_active', 1)
             ->whereNotNull('last_latitude')
             ->whereNotNull('last_longitude')
+            ->where('last_seen_at', '>=', now()->subHours(8))
             ->get();
 
         // ==========================================
