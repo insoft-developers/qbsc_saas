@@ -12,6 +12,9 @@ use App\Http\Controllers\Admin\PatroliArchiveController;
 use App\Http\Controllers\Admin\PatroliFileScanController;
 use App\Http\Controllers\Admin\AdminCompanyController;
 use App\Http\Controllers\Admin\AdminPackageController;
+use App\Http\Controllers\Admin\AdminTutorialCategoryController;
+use App\Http\Controllers\Admin\TutorialCategoryController;
+use App\Http\Controllers\Admin\TutorialController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 
 use App\Http\Controllers\Frontend\AbsenLocationController;
@@ -396,6 +399,14 @@ Route::prefix('backadmin')
             Route::resource('/package', AdminPackageController::class);
             Route::get('/package_table', [AdminPackageController::class, 'table'])->name('admin.package.table');
 
+
+            Route::resource('/tutorial_category', AdminTutorialCategoryController::class);
+            Route::get('/tutorial_category_table', [AdminTutorialCategoryController::class, 'table'])->name('backadmin.tutorial.category.table');
+
+
+            Route::post('/backadmin_reset_password', [AdminUserController::class, 'resetPassword'])->name('admin.reset.password');
+
+            
         });
     });
 

@@ -1,8 +1,49 @@
 <script>
+    function resetPassword(id) {
+        Swal.fire({
+            title: 'Yakin ingin reset password?',
+            text: "Password akan di reset ke password standard!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, reset!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{ route('admin.reset.password') }}",
+                    type: 'POST',
+                    data: {
+
+                        "id": id,
+                        "_token": "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        Swal.fire('Berhasil!', response.message, 'success');
+                        reloadTable();
+                    },
+                    error: function(xhr) {
+                        Swal.fire('Gagal!', xhr.responseJSON.message || 'Terjadi kesalahan.',
+                            'error');
+                    }
+                });
+            }
+        });
+    }
+
     var table = $('#list-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{{ route('admin.user.table') }}',
+        ajax: {
+            url: "{{ route('admin.user.table') }}",
+            type: "GET",
+            data: function(d) {
+                d.level = $('#filter_level').val();
+                d.paket_id = $("#filter_paket").val();
+                d.com_id = $("#filter_company").val();
+            }
+        },
         order: [
             [0, 'desc']
         ],
@@ -56,9 +97,14 @@
                 data: 'profile_image',
                 name: 'profile_image'
             },
-            
+
 
         ]
+    });
+
+
+    $('#filter_level, #filter_paket, #filter_company').on('change', function() {
+        reloadTable();
     });
 
 
@@ -128,7 +174,7 @@
                 $("#paket_id").val(data.company.paket_id);
                 $("#is_active").val(data.company.is_active);
                 $("#expired_date").val(data.company.expired_date);
-                
+
 
             }
         })
@@ -216,6 +262,4 @@
             }
         });
     }
-
-
 </script>

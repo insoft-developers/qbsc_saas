@@ -51,23 +51,23 @@
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="{{ url('backadmin/notifikasi') }}">Notifikasi</a>
                         </li>
-                         <li class="side-nav-item">
+                        <li class="side-nav-item">
                             <a class="side-nav-link" href="{{ url('backadmin/company') }}">Perusahaan</a>
                         </li>
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="{{ url('backadmin/package') }}">Paket Langganan</a>
                         </li>
-                        
+
                     </ul>
                 </div>
             </li>
 
             {{-- <li class="side-nav-item">
                 <a href="{{ url('/notifikasi') }}" class="side-nav-link">
-                    <i class="ri-notification-line"></i>
-                    <span> Notifikasi </span>
+            <i class="ri-notification-line"></i>
+            <span> Notifikasi </span>
 
-                </a>
+            </a>
             </li>
             --}}
             <li class="side-nav-item">
@@ -94,8 +94,29 @@
                 </a>
             </li>
 
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#tutorialLayout" aria-expanded="false"
+                    aria-controls="tutorialLayout" class="side-nav-link">
+                    <i class="ri-article-line"></i>
+                    <span>Tutorials</span>
+                    <span class="menu-arrow"></span>
 
-             <li class="side-nav-item">
+                </a>
+                <div class="collapse" id="tutorialLayout">
+                    <ul class="side-nav-second-level">
+                        <li class="side-nav-item">
+                            <a class="side-nav-link" href="{{ url('backadmin/tutorial_category') }}">Kategori</a>
+                        </li>
+
+                        <li class="side-nav-item">
+                            <a class="side-nav-link" href="{{ url('') }}">Tutorials</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </li>
+
+            <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#archiveLsyout" aria-expanded="false"
                     aria-controls="archiveLsyout" class="side-nav-link">
                     <i class="ri-article-line"></i>
@@ -112,7 +133,7 @@
                         <li class="side-nav-item">
                             <a class="side-nav-link" href="{{ url('backadmin/patroli-file-scan') }}">Scan Patroli Files</a>
                         </li>
-                        
+
                     </ul>
                 </div>
             </li>

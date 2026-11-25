@@ -34,6 +34,7 @@ use App\Models\UserArea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 
 class AdminUserController extends Controller
@@ -41,7 +42,27 @@ class AdminUserController extends Controller
     public function table(Request $request)
     {
         if ($request->ajax()) {
-            $data = User::with('company.paket')->get();
+
+            $query = User::with('company.paket');
+
+            if ($request->filled('level')) {
+                $query->where('level', $request->level);
+            }
+
+            // Filter Paket dari tabel companies
+            if ($request->filled('paket_id')) {
+                $query->whereHas('company', function ($q) use ($request) {
+                    $q->where('paket_id', $request->paket_id);
+                });
+            }
+
+            if ($request->filled('com_id')) {
+                $query->where('company_id', $request->com_id);
+            }
+
+
+            $data = $query->get();
+
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('is_active', function ($row) {
@@ -80,6 +101,8 @@ class AdminUserController extends Controller
                     $button = '';
                     $button .= '<center>';
 
+                    $button .= '<button onclick="resetPassword(' . $row->id . ')"  title="Reset Password" class="me-0 btn btn-insoft btn-primary"><i class="bi bi-lock"></i></button>';
+
                     if ($row->is_active == 1) {
                         $button .= '<button onclick="activate(' . $row->id . ', 0)" title="Non Aktifkan" class="me-0 btn btn-insoft btn-danger"><i class="bi bi-x-lg"></i></button>';
                     } else {
@@ -104,7 +127,8 @@ class AdminUserController extends Controller
     {
         $view = 'user';
         $pakets = PaketLangganan::all();
-        return view('admin.user.user', compact('view', 'pakets'));
+        $companies = Company::all();
+        return view('admin.user.user', compact('view', 'pakets', 'companies'));
     }
 
     /**
@@ -259,11 +283,28 @@ class AdminUserController extends Controller
 
     public function impersonate($id)
     {
-        
+
         $user = User::findOrFail($id);
 
         Auth::login($user);
 
         return redirect('/'); // arahkan ke halaman user
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:users,id',
+        ]);
+
+        $user = User::findOrFail($request->id);
+
+        $user->password = Hash::make('12345678');
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Password berhasil direset menjadi 12345678'
+        ]);
     }
 }
