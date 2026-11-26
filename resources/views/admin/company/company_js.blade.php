@@ -34,6 +34,14 @@
                 data: 'timezone',
                 name: 'timezone'
             },
+            {
+                data: 'paket',
+                name: 'paket'
+            },
+            {
+                data: 'expired_date',
+                name: 'expired_date'
+            },
             
             {
                 data: 'is_active',

@@ -55,7 +55,7 @@
                             <a class="side-nav-link" href="{{ url('backadmin/company') }}">Perusahaan</a>
                         </li>
                         <li class="side-nav-item">
-                            <a class="side-nav-link" href="{{ url('backadmin/package') }}">Paket Langganan</a>
+                            <a class="side-nav-link" href="{{ url('backadmin/paket') }}">Paket Langganan</a>
                         </li>
 
                     </ul>

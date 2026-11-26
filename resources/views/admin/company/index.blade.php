@@ -26,6 +26,8 @@
                                         <th class="text-center">Aksi</th>
                                         <th>Company Name</th>
                                         <th>Timezone</th>
+                                        <th>Paket</th>
+                                        <th>Expired Date</th>
                                         <th>Status</th>
                                         
                                     </tr>

@@ -396,8 +396,13 @@ Route::prefix('backadmin')
             Route::resource('/company', AdminCompanyController::class);
             Route::get('/company_table', [AdminCompanyController::class, 'table'])->name('backadmin.company.table');
 
-            Route::resource('/package', AdminPackageController::class);
-            Route::get('/package_table', [AdminPackageController::class, 'table'])->name('admin.package.table');
+
+
+            Route::get('/paket/table', [AdminPackageController::class, 'table'])
+                ->name('admin.paket.table');
+
+            Route::resource('/paket', AdminPackageController::class)
+                ->names('admin.paket');
 
 
             Route::resource('/tutorial_category', AdminTutorialCategoryController::class);
@@ -405,8 +410,6 @@ Route::prefix('backadmin')
 
 
             Route::post('/backadmin_reset_password', [AdminUserController::class, 'resetPassword'])->name('admin.reset.password');
-
-            
         });
     });
 

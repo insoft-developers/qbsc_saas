@@ -48,13 +48,21 @@ class AdminCompanyController extends Controller
                     return $row->is_active === 1 ? '<center><span class="badge bg-success rounded-pill">Aktif</span></center>' : '<center><span class="badge bg-danger rounded-pill">Tidak</span></center>';
                 })
 
+                ->addColumn('paket', function($row){
+                    return optional($row->paket)->nama_paket ?? '';
+                })
+
+                 ->addColumn('expired_date', function($row){
+                    return $row->expired_date ? date('d-m-Y', strtotime($row->expired_date)) : '';
+                })
+
                 
                 ->addColumn('action', function ($row) {
                     $button = '';
                     $button .= '<center>';
 
                     $button .= '<button onclick="editData(' . $row->id . ')" title="Edit Data" class="me-0 btn btn-insoft btn-warning"><i class="bi bi-pencil-square"></i></button>';
-                    $button .= '<button onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
+                    // $button .= '<button onclick="deleteData(' . $row->id . ')" title="Hapus Data" class="btn btn-insoft btn-danger"><i class="bi bi-trash3"></i></button>';
 
                     $button .= '</center>';
                     return $button;

@@ -42,8 +42,8 @@ class DuitkuCallbackController extends Controller
             if ($signature == $calcSignature) {
                 $prefix = substr($merchantOrderId, 0, 2);
                 if ($prefix === 'RF') {
-                    $order = CustomFeature::where('order_id', $merchantOrderId)->where('payment_status','PENDING')->first();
-                    if($order) {
+                    $order = CustomFeature::where('order_id', $merchantOrderId)->where('payment_status', 'PENDING')->first();
+                    if ($order) {
                         $order->payment_amount = $amount;
                         $order->payment_status = 'PAID';
                         $order->payment_date = date('Y-m-d H:i:s');
@@ -51,36 +51,85 @@ class DuitkuCallbackController extends Controller
                         $order->status = 2;
                         $order->reference = $reference;
                         $order->save();
-                    } 
-
+                    }
                 } else {
-                    $pembelian = Pembelian::where('invoice', $merchantOrderId)->where('payment_status', 'PENDING')->first();
+                    $pembelian = Pembelian::where('invoice', $merchantOrderId)
+                        ->where('payment_status', 'PENDING')
+                        ->first();
+
                     if ($pembelian) {
+
+                        $paket = PaketLangganan::find($pembelian->paket_id);
+                        $company = Company::find($pembelian->comid);
+
+                        if (!$paket || !$company) {
+                            throw new Exception('Paket atau Company tidak ditemukan');
+                        }
+
+                        // Paket perusahaan saat ini
+                        $active_id = $company->paket_id;
+
+                        // Paket gratis: ID 13 dan 14
+                        $isFreeOrNull = is_null($active_id) ||
+                            in_array((int) $active_id, [13, 14], true);
+
+                        // Tentukan tanggal dasar perhitungan
+                        $baseDate = Carbon::now();
+
+                        if (!$isFreeOrNull && !empty($company->expired_date)) {
+
+                            $currentExpired = Carbon::parse($company->expired_date);
+
+                            // Jika masih aktif, perpanjangan dimulai dari expired date lama.
+                            // Jika sudah kedaluwarsa, mulai dari hari ini.
+                            if ($currentExpired->greaterThan(Carbon::now())) {
+                                $baseDate = $currentExpired;
+                            }
+                        }
+
+                        // Hitung expired date sesuai periode paket yang dibeli
+                        if ($paket->periode == 1) {
+
+                            $expired_date = $baseDate->copy()
+                                ->addMonthNoOverflow()
+                                ->format('Y-m-d');
+                        } elseif ($paket->periode == 2) {
+
+                            $expired_date = $baseDate->copy()
+                                ->addYearNoOverflow()
+                                ->format('Y-m-d');
+                        } else {
+                            throw new Exception('Periode paket tidak valid');
+                        }
+
+                        // Update pembayaran
                         $pembelian->payment_amount = $amount;
                         $pembelian->payment_status = 'PAID';
                         $pembelian->payment_with = $paymentCode;
-                        $pembelian->payment_date = date('Y-m-d H:i:s');
+                        $pembelian->payment_date = Carbon::now();
                         $pembelian->reference = $reference;
+
+                        // Simpan tanggal expired pada transaksi pembelian
+                        $pembelian->expired_at = $expired_date;
                         $pembelian->save();
 
-                        $paket = PaketLangganan::find($pembelian->paket_id);
-                        $expired_date = null;
-                        if ($paket->periode == 1) {
-                            $expired_date = Carbon::now()->addMonth()->format('Y-m-d');
-                        } elseif ($paket->periode == 2) {
-                            $expired_date = Carbon::now()->addYear()->format('Y-m-d');
-                        }
-
-                        $company = Company::find($pembelian->comid);
-                        $active_id = $company->paket_id;
+                        // Update paket dan masa aktif perusahaan
                         $company->paket_id = $pembelian->paket_id;
                         $company->expired_date = $expired_date;
                         $company->is_active = 1;
                         $company->save();
 
-                        $this->setting_feature($active_id, $pembelian->paket_id, $pembelian->comid) ;
-                        $this->count_referal_fee($company, $pembelian->id);
+                        // Update fitur dan referral
+                        $this->setting_feature(
+                            $active_id,
+                            $pembelian->paket_id,
+                            $pembelian->comid
+                        );
 
+                        $this->count_referal_fee(
+                            $company,
+                            $pembelian->id
+                        );
                     }
                 }
             } else {
@@ -94,30 +143,27 @@ class DuitkuCallbackController extends Controller
     }
 
 
-    protected function count_referal_fee($com, $pembelian_id) 
+    protected function count_referal_fee($com, $pembelian_id)
     {
         $referal_code = $com->referal_code;
         $pembelian = Pembelian::find($pembelian_id);
-        if($referal_code !== null && !empty($referal_code)) {
+        if ($referal_code !== null && !empty($referal_code)) {
             $reseller = Reseller::where('referal_code', $referal_code)->first();
-            if($reseller) {
-                if($pembelian->payment_status == 'PAID') {
+            if ($reseller) {
+                if ($pembelian->payment_status == 'PAID') {
                     $percent = $reseller->percent_fee;
                     $nilai = $percent * $pembelian->amount / 100;
 
                     $pembelian->referal_fee = $nilai;
                     $pembelian->save();
                 }
-                
-
             }
         }
     }
 
-    protected function setting_feature($active_id, $new_id, $comid) 
+    protected function setting_feature($active_id, $new_id, $comid)
     {
-        if($active_id === $new_id) {
-
+        if ($active_id === $new_id) {
         } else {
             $paket_lama = PaketLangganan::find($active_id);
             $paket_baru = PaketLangganan::find($new_id);
@@ -133,40 +179,39 @@ class DuitkuCallbackController extends Controller
 
             $jumlah_farm_lama = $paket_lama->jumlah_farm;
             $jumlah_farm_baru = $paket_baru->jumlah_farm;
-            
 
-            if($jumlah_satpam_baru < $jumlah_satpam_lama) {
+
+            if ($jumlah_satpam_baru < $jumlah_satpam_lama) {
                 Satpam::where('comid', $comid)->update([
                     "is_active" => 0
                 ]);
             }
-            
-            if($jumlah_lokasi_baru < $jumlah_lokasi_lama) {
+
+            if ($jumlah_lokasi_baru < $jumlah_lokasi_lama) {
                 Lokasi::where('comid', $comid)->update([
                     "is_active" => 0
                 ]);
             }
 
-            if($jumlah_user_baru < $jumlah_user_lama) {
+            if ($jumlah_user_baru < $jumlah_user_lama) {
                 User::where('company_id', $comid)
-                ->where('level', 'user')
-                ->update([
-                    "is_active" => 0
-                ]);
+                    ->where('level', 'user')
+                    ->update([
+                        "is_active" => 0
+                    ]);
             }
 
-            if($jumlah_farm_baru < $jumlah_farm_lama) {
+            if ($jumlah_farm_baru < $jumlah_farm_lama) {
                 Kandang::where('comid', $comid)
-                ->update(['is_active'=> 0]);
+                    ->update(['is_active' => 0]);
             }
 
-            if($paket_baru->is_user_area !== 1) {
+            if ($paket_baru->is_user_area !== 1) {
                 User::where('company_id', $comid)
-                ->update([
-                    'is_area' => 0
-                ]);
+                    ->update([
+                        'is_area' => 0
+                    ]);
             }
-
         }
     }
 }

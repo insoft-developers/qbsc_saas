@@ -15,12 +15,69 @@ use Illuminate\Support\Facades\Auth;
 class PaketLanggananController extends Controller
 {
     use CommonTrait;
+
     public function index()
     {
         $view = 'paket';
         $com = Company::find($this->comid());
-        return view('frontend.paket.paket', compact('view', 'com'));
+        $paketAktif = $com->paket_id
+            ? PaketLangganan::find($com->paket_id)
+            : null;
+
+        $expiredDate = $com->expired_date
+            ? Carbon::parse($com->expired_date)->startOfDay()
+            : null;
+
+        $hariIni = Carbon::today();
+
+        $tampilkanTombolPerpanjang = false;
+
+        if ($expiredDate && $paketAktif) {
+            $sisaHari = $hariIni->diffInDays($expiredDate, false);
+
+            $tampilkanTombolPerpanjang = $sisaHari >= 0 && $sisaHari <= 7;
+        }
+
+        // Ambil paket yang sedang digunakan perusahaan
+        $paketSaatIni = PaketLangganan::find($com->paket_id);
+
+        // Harga paket saat ini
+        $hargaSaatIni = $paketSaatIni ? $paketSaatIni->harga : 0;
+
+        // Jenis perusahaan
+        $companyType = $com->is_peternakan == 1 ? 1 : 0;
+
+        // Query paket yang tersedia
+        $pakets = PaketLangganan::where('is_show', 1)
+            ->where('company_type', $companyType)
+
+            // Hanya paket dengan harga lebih tinggi
+            ->where('harga', '>', $hargaSaatIni)
+
+            ->where(function ($query) use ($com) {
+                $query->whereNull('comids')
+                    ->orWhere('comids', '')
+                    ->orWhereRaw('FIND_IN_SET(?, comids)', [$com->id]);
+            })
+
+            ->orderBy('periode', 'asc')
+            ->orderBy('urutan', 'asc')
+            ->orderBy('id', 'asc')
+            ->get();
+
+        $paketBulanan = $pakets->where('periode', 1);
+        $paketTahunan = $pakets->where('periode', 2);
+
+        return view('frontend.paket.paket', compact(
+            'view',
+            'com',
+            'paketBulanan',
+            'paketTahunan',
+            'paketAktif',
+            'tampilkanTombolPerpanjang'
+        ));
     }
+
 
     public function whatsapp_payment(Request $request)
     {
@@ -39,7 +96,7 @@ class PaketLanggananController extends Controller
     {
         $comid = $this->comid();
         $company = Company::find($comid);
-        if($company->has_trial == 1) {
+        if ($company->has_trial == 1) {
             return response()->json([
                 'success' => false,
                 'message' => 'Paket gratis sudah pernah digunakan',
@@ -65,7 +122,7 @@ class PaketLanggananController extends Controller
 
             if ($pembelian) {
                 $expired_date = Carbon::now()->addYears(100)->format('Y-m-d');
-                
+
                 $company->paket_id = $paket->id;
                 $company->expired_date = $expired_date;
                 $company->is_active = 1;
